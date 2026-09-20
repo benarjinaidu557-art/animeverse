@@ -57,6 +57,10 @@ class AppRouter {
     window.addEventListener('scroll', () => this.handleScroll());
   }
 
+  get root() {
+    return this.appRoot || document.getElementById('app-root');
+  }
+
   register(path, viewHandler) {
     this.routes[path] = viewHandler;
   }
@@ -91,18 +95,20 @@ class AppRouter {
     this.updateActiveNavLinks(pathPart);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Handle parameterized routes: e.g. /anime/:id, /character/:id
-    const animeMatch = pathPart.match(/^\/anime\/(\d+)$/);
+    // Handle parameterized routes: e.g. /anime/:id, /anime/:id/:slug, /anime/:slug, /character/:id
+    const animeMatch = pathPart.match(/^\/anime\/(.+)$/);
     if (animeMatch) {
-      const animeId = animeMatch[1];
-      await DetailsView.render(this.appRoot, { id: animeId });
-      return;
+      const rawParam = decodeURIComponent(animeMatch[1]).replace(/\/+$/, '').trim();
+      if (rawParam) {
+        await DetailsView.render(this.root, { id: rawParam });
+        return;
+      }
     }
 
-    const charMatch = pathPart.match(/^\/character\/(\d+)$/);
+    const charMatch = pathPart.match(/^\/character\/(\d+)/);
     if (charMatch) {
       const charId = charMatch[1];
-      await CharacterView.render(this.appRoot, charId);
+      await CharacterView.render(this.root, charId);
       return;
     }
 
@@ -114,11 +120,11 @@ class AppRouter {
     // Standard static routes
     const handler = this.routes[pathPart];
     if (handler) {
-      await handler.render(this.appRoot, queryParams);
+      await handler.render(this.root, queryParams);
     } else {
       // Unknown route -> render 404 view
       SeoService.update({ title: '404 - Page Not Found' });
-      await NotFoundView.render(this.appRoot, pathPart);
+      await NotFoundView.render(this.root, pathPart);
     }
   }
 

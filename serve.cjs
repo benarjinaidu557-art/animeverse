@@ -18,9 +18,45 @@ const MIME_TYPES = {
   '.txt': 'text/plain; charset=utf-8'
 };
 
+function loadEnv() {
+  const envObj = {};
+  for (const file of ['.env', '.env.local']) {
+    const full = path.join(__dirname, file);
+    if (fs.existsSync(full)) {
+      const lines = fs.readFileSync(full, 'utf8').split('\n');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith('#')) {
+          const idx = trimmed.indexOf('=');
+          if (idx > 0) {
+            const k = trimmed.slice(0, idx).trim();
+            const v = trimmed.slice(idx + 1).trim();
+            envObj[k] = v;
+          }
+        }
+      }
+    }
+  }
+  return envObj;
+}
+
 const server = http.createServer((req, res) => {
   let safePath = req.url.split('?')[0];
   if (safePath === '/' || safePath === '') safePath = '/index.html';
+
+  // Dynamically serve latest environment variables from .env / .env.local
+  if (safePath === '/js/config/env.js') {
+    const envVars = loadEnv();
+    const body = `window.ENV = Object.assign(window.ENV || {}, ${JSON.stringify(envVars, null, 2)});`;
+    res.writeHead(200, {
+      'Content-Type': 'text/javascript; charset=utf-8',
+      'Cache-Control': 'no-cache',
+      'Access-Control-Allow-Origin': '*'
+    });
+    res.end(body);
+    return;
+  }
+
   const filePath = path.join(__dirname, safePath);
 
   fs.stat(filePath, (err, stats) => {

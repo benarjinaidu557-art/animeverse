@@ -101,9 +101,34 @@ export const AnimeService = {
 
   /**
    * Fetch Detailed Information for a Single Anime
+   * Supports numeric IDs (e.g. 16498), ID-slug combos (16498-attack-on-titan), or title slugs
    */
-  async getAnimeDetails(id) {
-    const data = await fetchAniListGraphQL(QUERIES.GET_ANIME_DETAILS, { id: Number(id) });
+  async getAnimeDetails(idOrSlug) {
+    if (!idOrSlug) return null;
+
+    let variables = {};
+    const str = String(idOrSlug).trim();
+
+    // Check if starts with digits, e.g. "16498", "16498-attack-on-titan", "16498/attack-on-titan"
+    const leadingNumberMatch = str.match(/^(\d+)/);
+    if (leadingNumberMatch) {
+      const numericId = parseInt(leadingNumberMatch[1], 10);
+      if (!isNaN(numericId) && numericId > 0) {
+        variables = { id: numericId };
+      }
+    }
+
+    // If not numeric, treat as title / slug
+    if (!variables.id) {
+      const cleanSearch = str.replace(/[-_]+/g, ' ').trim();
+      if (cleanSearch) {
+        variables = { search: cleanSearch };
+      } else {
+        return null;
+      }
+    }
+
+    const data = await fetchAniListGraphQL(QUERIES.GET_ANIME_DETAILS, variables);
     return data?.Media || null;
   },
 

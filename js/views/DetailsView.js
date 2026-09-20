@@ -9,6 +9,7 @@ import { AnimeService } from '../services/animeService.js';
 import { StorageService } from '../services/storageService.js';
 import { CommunityService } from '../services/communityService.js';
 import { AuthService } from '../services/authService.js';
+import { AnimeCard } from '../components/AnimeCard.js';
 import { Skeletons } from '../components/Skeletons.js';
 import { Toast } from '../components/Toast.js';
 import { AdSlot } from '../components/AdSlot.js';
@@ -19,16 +20,24 @@ export const DetailsView = {
   activeRatings: null,
   activeReviews: [],
   activeComments: [],
+  container: null,
 
   async render(container, params = {}) {
+    this.container = container || document.getElementById('app-root');
+    const rootContainer = this.container;
     const animeId = params.id;
     if (!animeId) {
       window.router.navigate('/browse');
       return;
     }
 
+    if (!rootContainer) {
+      console.error('[DetailsView] No root container element found.');
+      return;
+    }
+
     // Render loading skeleton
-    container.innerHTML = Skeletons.renderDetailsSkeleton();
+    rootContainer.innerHTML = Skeletons.renderDetailsSkeleton();
 
     try {
       const anime = await AnimeService.getAnimeDetails(animeId);
@@ -37,58 +46,88 @@ export const DetailsView = {
       }
 
       this.activeAnime = anime;
+      const realId = anime.id;
       
-      // Load community data concurrently
-      const [ratings, reviews, comments] = await Promise.all([
-        CommunityService.getAnimeRatings(animeId).catch(() => ({ averageRating: 0, count: 0, userRating: null, distribution: {} })),
-        CommunityService.getAnimeReviews(animeId).catch(() => []),
-        CommunityService.getAnimeComments(animeId).catch(() => []),
-      ]);
+      // Load community data concurrently with complete error isolation
+      let ratings = { averageRating: 0, count: 0, userRating: null, distribution: {} };
+      let reviews = [];
+      let comments = [];
+      try {
+        const [r, rev, com] = await Promise.all([
+          CommunityService.getAnimeRatings(realId).catch(err => {
+            console.warn('[CommunityService] Ratings load error (non-fatal):', err);
+            return { averageRating: 0, count: 0, userRating: null, distribution: {} };
+          }),
+          CommunityService.getAnimeReviews(realId).catch(err => {
+            console.warn('[CommunityService] Reviews load error (non-fatal):', err);
+            return [];
+          }),
+          CommunityService.getAnimeComments(realId).catch(err => {
+            console.warn('[CommunityService] Comments load error (non-fatal):', err);
+            return [];
+          }),
+        ]);
+        if (r) ratings = r;
+        if (rev) reviews = rev;
+        if (com) comments = com;
+      } catch (commErr) {
+        console.warn('[DetailsView] Community data fetch error:', commErr);
+      }
 
       this.activeRatings = ratings;
       this.activeReviews = reviews;
       this.activeComments = comments;
 
-      // Update Dynamic SEO & Structured Data
-      const displayTitle = AnimeService.formatTitle(anime.title);
-      SeoService.update({
-        title: displayTitle,
-        description: (anime.description || '').replace(/<[^>]*>?/gm, '').slice(0, 160) || `Explore ${displayTitle} on AnimeVerse`,
-        image: anime.bannerImage || anime.coverImage?.large,
-        type: 'video.tv_show',
-        schemaJson: {
-          '@context': 'https://schema.org',
-          '@type': anime.format === 'MOVIE' ? 'Movie' : 'TVSeries',
-          'name': displayTitle,
-          'description': (anime.description || '').replace(/<[^>]*>?/gm, ''),
-          'image': anime.coverImage?.large || anime.bannerImage,
-          'genre': anime.genres || [],
-          'startDate': anime.startDate?.year ? `${anime.startDate.year}` : undefined,
-          'numberOfEpisodes': anime.episodes || undefined,
-          'aggregateRating': (ratings?.count > 0) ? {
-            '@type': 'AggregateRating',
-            'ratingValue': ratings.averageRating,
-            'ratingCount': ratings.count,
-            'bestRating': 10,
-            'worstRating': 1
-          } : undefined
-        }
-      });
+      // Update Dynamic SEO & Structured Data safely
+      try {
+        const displayTitle = AnimeService.formatTitle(anime.title);
+        SeoService.update({
+          title: displayTitle,
+          description: (anime.description || '').replace(/<[^>]*>?/gm, '').slice(0, 160) || `Explore ${displayTitle} on AnimeVerse`,
+          image: anime.bannerImage || anime.coverImage?.large,
+          type: 'video.tv_show',
+          schemaJson: {
+            '@context': 'https://schema.org',
+            '@type': anime.format === 'MOVIE' ? 'Movie' : 'TVSeries',
+            'name': displayTitle,
+            'description': (anime.description || '').replace(/<[^>]*>?/gm, ''),
+            'image': anime.coverImage?.large || anime.bannerImage,
+            'genre': anime.genres || [],
+            'startDate': anime.startDate?.year ? `${anime.startDate.year}` : undefined,
+            'numberOfEpisodes': anime.episodes || undefined,
+            'aggregateRating': (ratings?.count > 0) ? {
+              '@type': 'AggregateRating',
+              'ratingValue': ratings.averageRating,
+              'ratingCount': ratings.count,
+              'bestRating': 10,
+              'worstRating': 1
+            } : undefined
+          }
+        });
+      } catch (seoErr) {
+        console.warn('[DetailsView] SEO update error (non-fatal):', seoErr);
+      }
 
-      this.renderContent(container, anime);
+      this.renderContent(rootContainer, anime);
     } catch (error) {
       console.error('Details page render error:', error);
-      container.innerHTML = `
-        <div class="container" style="padding-top: 40px;">
-          <div class="error-state">
-            <div class="state-icon">
+      const is404 = (error.message && (error.message.includes('404') || error.message.includes('not found') || error.message.includes('Not Found')));
+      rootContainer.innerHTML = `
+        <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
+          <div class="error-state" style="max-width: 580px; margin: 0 auto; text-align: center; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 48px 32px;">
+            <div class="state-icon" style="width: 64px; height: 64px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; background: rgba(168, 85, 247, 0.1); border-radius: 50%; color: var(--accent-purple-light);">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             </div>
-            <h3 class="state-title">Unable to Load Anime Details</h3>
-            <p class="state-desc">${error.message || 'We could not load information for this anime from AniList.'}</p>
-            <div style="display: flex; gap: 12px;">
-              <button type="button" class="btn-primary" onclick="window.router.refresh()">Retry</button>
-              <button type="button" class="btn-secondary" onclick="window.router.navigate('/browse')">Back to Browse</button>
+            <h2 class="state-title" style="font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 10px;">
+              ${is404 ? 'Anime Not Found' : 'Unable to Load Anime Details'}
+            </h2>
+            <p class="state-desc" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.6;">
+              ${is404 ? `We could not find an anime matching "${escapeHtml(animeId)}" in the AniList catalog. It may have been removed or the link may be mistyped.` : (error.message || 'We could not load information for this anime from AniList.')}
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+              <button type="button" class="btn-primary" onclick="window.router.refresh()" style="padding: 10px 24px;">Retry</button>
+              <button type="button" class="btn-secondary" onclick="window.router.navigate('/browse')" style="padding: 10px 24px;">Browse Catalog</button>
+              <button type="button" class="btn-secondary" onclick="window.router.navigate('/')" style="padding: 10px 24px;">Go Home</button>
             </div>
           </div>
         </div>
@@ -103,7 +142,7 @@ export const DetailsView = {
     const nativeTitle = anime.title?.native || '';
     const englishTitle = anime.title?.english || '';
     const banner = anime.bannerImage || anime.coverImage?.extraLarge || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=80';
-    const poster = anime.coverImage?.large || anime.coverImage?.medium;
+    const poster = anime.coverImage?.large || anime.coverImage?.medium || 'https://placehold.co/300x450/1e1b2e/c4b5fd?text=No+Poster';
     const score = AnimeService.formatScore(anime.averageScore);
     const status = AnimeService.formatStatus(anime.status);
     const seasonYear = anime.seasonYear || '';
@@ -385,6 +424,7 @@ export const DetailsView = {
             </div>
             <div class="character-grid">
               ${characters.map(edge => {
+                if (!edge || !edge.node) return '';
                 const char = edge.node;
                 const va = edge.voiceActors?.[0];
                 return `
@@ -392,17 +432,17 @@ export const DetailsView = {
                     <img 
                       class="character-thumb" 
                       src="${char.image?.medium || 'https://placehold.co/100x100/1e1b2e/c4b5fd?text=Character'}" 
-                      alt="${escapeHtml(char.name?.full)}" 
+                      alt="${escapeHtml(char.name?.full || 'Character')}" 
                       loading="lazy"
                       onerror="this.src='https://placehold.co/100x100/1e1b2e/c4b5fd?text=Character';"
                     />
                     <div style="flex: 1; min-width: 0;">
                       <div class="character-name" style="display: flex; align-items: center; justify-content: space-between;">
-                        <span>${escapeHtml(char.name?.full)}</span>
+                        <span>${escapeHtml(char.name?.full || 'Character')}</span>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                       </div>
                       <div class="character-role">${escapeHtml(edge.role || 'Main')}</div>
-                      ${va ? `<div style="font-size: 0.72rem; color: var(--accent-cyan-light); margin-top: 2px;">VA: ${escapeHtml(va.name?.full)}</div>` : ''}
+                      ${va ? `<div style="font-size: 0.72rem; color: var(--accent-cyan-light); margin-top: 2px;">VA: ${escapeHtml(va.name?.full || 'VA')}</div>` : ''}
                     </div>
                   </a>
                 `;
@@ -617,19 +657,20 @@ export const DetailsView = {
             </div>
             <div class="character-grid">
               ${staff.map(edge => {
+                if (!edge || !edge.node) return '';
                 const person = edge.node;
                 return `
                   <div class="character-card">
                     <img 
                       class="character-thumb" 
                       src="${person.image?.medium || 'https://placehold.co/100x100/1e1b2e/c4b5fd?text=Staff'}" 
-                      alt="${escapeHtml(person.name?.full)}" 
+                      alt="${escapeHtml(person.name?.full || 'Staff')}" 
                       loading="lazy"
                       onerror="this.src='https://placehold.co/100x100/1e1b2e/c4b5fd?text=Staff';"
                     />
                     <div>
-                      <div class="character-name">${escapeHtml(person.name?.full)}</div>
-                      <div class="character-role">${escapeHtml(edge.role)}</div>
+                      <div class="character-name">${escapeHtml(person.name?.full || 'Staff Member')}</div>
+                      <div class="character-role">${escapeHtml(edge.role || 'Staff')}</div>
                     </div>
                   </div>
                 `;
@@ -649,8 +690,8 @@ export const DetailsView = {
             </div>
             <div class="anime-grid">
               ${relations.map(rel => {
-                const relAnime = rel.node;
-                return AnimeCard.render(relAnime);
+                if (!rel || !rel.node) return '';
+                return AnimeCard.render(rel.node);
               }).join('')}
             </div>
           </section>
@@ -775,13 +816,15 @@ export const DetailsView = {
     const watchlistBtn = document.getElementById('details-btn-watchlist');
     const watchlistText = document.getElementById('details-watchlist-text');
     if (watchlistBtn && watchlistText) {
-      watchlistBtn.onclick = () => {
-        const added = StorageService.toggleWatchlist(anime);
+      watchlistBtn.onclick = async () => {
+        const added = await StorageService.toggleWatchlist(anime);
         if (added) {
           watchlistText.textContent = 'In Watchlist';
+          watchlistBtn.querySelector('svg')?.setAttribute('fill', 'currentColor');
           Toast.show(`Added "${AnimeService.formatTitle(anime.title)}" to your Watchlist!`, 'success');
         } else {
           watchlistText.textContent = 'Add to Watchlist';
+          watchlistBtn.querySelector('svg')?.setAttribute('fill', 'none');
           Toast.show(`Removed from your Watchlist`, 'info');
         }
       };
@@ -791,8 +834,8 @@ export const DetailsView = {
     const favBtn = document.getElementById('details-btn-favorite');
     const favText = document.getElementById('details-fav-text');
     if (favBtn && favText) {
-      favBtn.onclick = () => {
-        const isFav = StorageService.toggleFavorite(id);
+      favBtn.onclick = async () => {
+        const isFav = await StorageService.toggleFavorite(id);
         if (isFav) {
           favText.textContent = 'Favorited';
           favBtn.querySelector('svg')?.setAttribute('fill', '#ec4899');
@@ -874,7 +917,8 @@ export const DetailsView = {
           Toast.show(`Rated ${ratingVal}/10! Thank you for rating.`, 'success');
           // Refresh ratings
           this.activeRatings = await CommunityService.getAnimeRatings(id);
-          this.render(document.getElementById('app-main'), { id });
+          const targetContainer = this.container || document.getElementById('app-root');
+          this.render(targetContainer, { id });
         } catch (err) {
           Toast.show(err.message || 'Failed to submit rating', 'error');
         }
@@ -939,7 +983,8 @@ export const DetailsView = {
         Toast.show('Your review has been published!', 'success');
         closeReview();
         // Refresh details
-        this.render(document.getElementById('app-main'), { id });
+        const targetContainer = this.container || document.getElementById('app-root');
+        this.render(targetContainer, { id });
       } catch (err) {
         Toast.show(err.message || 'Failed to submit review.', 'error');
       }
@@ -974,7 +1019,8 @@ export const DetailsView = {
         try {
           await CommunityService.deleteReview(reviewId);
           Toast.show('Review deleted.', 'info');
-          this.render(document.getElementById('app-main'), { id });
+          const targetContainer = this.container || document.getElementById('app-root');
+          this.render(targetContainer, { id });
         } catch (err) {
           Toast.show(err.message || 'Failed to delete review', 'error');
         }
@@ -999,7 +1045,8 @@ export const DetailsView = {
         });
         if (commentInput) commentInput.value = '';
         Toast.show('Comment posted!', 'success');
-        this.render(document.getElementById('app-main'), { id });
+        const targetContainer = this.container || document.getElementById('app-root');
+        this.render(targetContainer, { id });
       } catch (err) {
         Toast.show(err.message || 'Failed to post comment', 'error');
       }
@@ -1031,7 +1078,8 @@ export const DetailsView = {
         try {
           await CommunityService.deleteComment(commentId);
           Toast.show('Comment deleted.', 'info');
-          this.render(document.getElementById('app-main'), { id });
+          const targetContainer = this.container || document.getElementById('app-root');
+          this.render(targetContainer, { id });
         } catch (err) {
           Toast.show(err.message || 'Failed to delete comment', 'error');
         }

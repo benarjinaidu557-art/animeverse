@@ -249,8 +249,8 @@ export const QUERIES = {
 
   // Full Anime Details Query
   GET_ANIME_DETAILS: `
-    query GetAnimeDetails($id: Int) {
-      Media(id: $id, type: ANIME) {
+    query GetAnimeDetails($id: Int, $search: String) {
+      Media(id: $id, search: $search, type: ANIME) {
         ${MEDIA_CARD_FIELDS}
         source
         countryOfOrigin
