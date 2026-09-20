@@ -1,0 +1,81 @@
+/* ==========================================================================
+   AnimeVerse Design System - CSS Custom Properties
+   ========================================================================== */
+
+:root {
+  /* Brand & Theme Colors */
+  --bg-darkest: #07080c;
+  --bg-primary: #0b0d14;
+  --bg-secondary: #131722;
+  --bg-card: #181d2c;
+  --bg-card-hover: #1f2538;
+  --bg-card-active: #252c42;
+  --bg-glass: rgba(13, 16, 26, 0.82);
+  --bg-glass-card: rgba(24, 29, 44, 0.75);
+  --bg-glass-hover: rgba(35, 43, 66, 0.85);
+  
+  /* Primary Vibrant Accents */
+  --accent-purple: #8b5cf6;
+  --accent-purple-light: #a78bfa;
+  --accent-purple-glow: rgba(139, 92, 246, 0.45);
+  --accent-cyan: #06b6d4;
+  --accent-cyan-light: #38bdf8;
+  --accent-cyan-glow: rgba(6, 182, 212, 0.4);
+  --accent-pink: #ec4899;
+  --accent-pink-light: #f472b6;
+  --accent-amber: #f59e0b;
+  --accent-emerald: #10b981;
+  --accent-red: #ef4444;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  --gradient-secondary: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+  --gradient-gold: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  --gradient-card-overlay: linear-gradient(180deg, rgba(11, 13, 20, 0) 40%, rgba(11, 13, 20, 0.95) 100%);
+  --gradient-hero-overlay: linear-gradient(90deg, rgba(11, 13, 20, 0.96) 0%, rgba(11, 13, 20, 0.82) 45%, rgba(11, 13, 20, 0.3) 100%);
+  --gradient-hero-bottom: linear-gradient(180deg, rgba(11, 13, 20, 0) 0%, var(--bg-primary) 100%);
+  --gradient-banner: linear-gradient(180deg, rgba(11, 13, 20, 0.4) 0%, rgba(11, 13, 20, 0.9) 80%, var(--bg-primary) 100%);
+
+  /* Text Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --text-inverse: #07080c;
+
+  /* Borders & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.14);
+  --border-accent: rgba(139, 92, 246, 0.35);
+  --border-cyan: rgba(6, 182, 212, 0.35);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.65);
+  --shadow-glow: 0 0 24px var(--accent-purple-glow);
+  --shadow-glow-cyan: 0 0 24px var(--accent-cyan-glow);
+
+  /* Border Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-main: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-jp: 'Noto Sans JP', sans-serif;
+
+  /* Layout */
+  --header-height: 72px;
+  --bottom-nav-height: 64px;
+  --max-content-width: 1400px;
+  --container-padding: 24px;
+
+  /* Transitions */
+  --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}

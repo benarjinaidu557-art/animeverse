@@ -1,0 +1,13 @@
+# AnimeVerse Robots Exclusion File
+User-agent: *
+Allow: /
+Disallow: /#/profile
+Disallow: /#/dashboard
+Disallow: /#/login
+Disallow: /#/signup
+
+# Crawl Delay to protect upstream public API endpoints
+Crawl-delay: 2
+
+# XML Sitemap
+Sitemap: https://animeverse.local/sitemap.xml

@@ -1,0 +1,1014 @@
+/* ==========================================================================
+   AnimeVerse - Components Stylesheet
+   ========================================================================== */
+
+/* ==========================================================================
+   Anime Card Component
+   ========================================================================== */
+
+.anime-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+}
+
+.anime-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-accent);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6), 0 0 16px rgba(139, 92, 246, 0.22);
+}
+
+.anime-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 11 / 16;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+.anime-card-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.anime-card:hover .anime-card-poster {
+  transform: scale(1.06);
+}
+
+.anime-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 13, 20, 0.2) 0%, rgba(11, 13, 20, 0.05) 50%, rgba(11, 13, 20, 0.85) 100%);
+  pointer-events: none;
+}
+
+/* Card Top Badges */
+.card-badge-top {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(11, 13, 20, 0.82);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--accent-amber);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.76rem;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.card-badge-top svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+.card-action-bookmark {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(11, 13, 20, 0.78);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  transition: all var(--transition-fast);
+}
+
+.card-action-bookmark:hover {
+  background: var(--accent-purple);
+  color: #fff;
+  border-color: var(--accent-purple-light);
+  transform: scale(1.1);
+}
+
+.card-action-bookmark.active {
+  background: var(--accent-pink);
+  color: #fff;
+  border-color: var(--accent-pink-light);
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.5);
+}
+
+.card-badge-status {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  background: rgba(11, 13, 20, 0.85);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-subtle);
+  color: var(--accent-cyan-light);
+  z-index: 2;
+}
+
+.card-badge-status.finished {
+  color: var(--text-muted);
+}
+.card-badge-status.releasing {
+  color: var(--accent-emerald);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.card-badge-episodes {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(11, 13, 20, 0.8);
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  z-index: 2;
+}
+
+/* Card Content Body */
+.anime-card-content {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.anime-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 6px;
+  transition: color var(--transition-fast);
+}
+
+.anime-card:hover .anime-card-title {
+  color: var(--accent-purple-light);
+}
+
+.anime-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.anime-card-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.genre-pill {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  padding: 1px 7px;
+  border-radius: var(--radius-xs);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Hero Section Component
+   ========================================================================== */
+
+.hero-section {
+  position: relative;
+  min-height: 480px;
+  max-height: 600px;
+  height: 65vh;
+  margin-bottom: 40px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  filter: brightness(0.75);
+  transition: opacity 0.5s ease-in-out, transform 8s ease-out;
+}
+
+.hero-section:hover .hero-backdrop {
+  transform: scale(1.03);
+}
+
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-hero-overlay);
+  z-index: 1;
+}
+
+.hero-bottom-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-hero-bottom);
+  z-index: 1;
+}
+
+.hero-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 40px 48px;
+  max-width: 850px;
+}
+
+.hero-tags {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.hero-badge-spotlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gradient-primary);
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 12px var(--accent-purple-glow);
+}
+
+.hero-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--accent-amber);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.hero-title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #fff;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+}
+
+.hero-synopsis {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 24px;
+  max-width: 650px;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Hero Slide Indicators */
+.hero-controls {
+  position: absolute;
+  bottom: 28px;
+  right: 48px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-nav-arrow {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(11, 13, 20, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-light);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.hero-nav-arrow:hover {
+  background: var(--accent-purple);
+  border-color: var(--accent-purple);
+  transform: scale(1.08);
+}
+
+/* ==========================================================================
+   Surprise Me / Random Anime Section
+   ========================================================================== */
+
+.surprise-section {
+  position: relative;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(6, 182, 212, 0.12) 100%), var(--bg-card);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-xl);
+  padding: 36px 40px;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.surprise-section::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, var(--accent-purple-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.surprise-content h3 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.surprise-content p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  max-width: 520px;
+}
+
+.btn-surprise {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-primary);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 6px 20px var(--accent-purple-glow);
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-surprise:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 28px var(--accent-purple-glow);
+}
+
+/* ==========================================================================
+   Browse & Filter Bar Component
+   ========================================================================== */
+
+.browse-filter-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-sm);
+}
+
+.browse-search-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.search-input-wrap svg {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--text-dim);
+}
+
+.browse-search-input {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px 14px 48px;
+  font-size: 0.98rem;
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast);
+}
+
+.browse-search-input:focus {
+  border-color: var(--accent-purple);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.filter-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.filter-select {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.filter-select:focus,
+.filter-select:hover {
+  border-color: var(--border-accent);
+  color: var(--text-primary);
+}
+
+.filter-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.active-filters-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid var(--border-accent);
+  color: var(--accent-purple-light);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.filter-tag button {
+  color: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.btn-reset-filters {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.btn-reset-filters:hover {
+  color: var(--accent-pink-light);
+}
+
+/* Pagination */
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: var(--border-accent);
+  color: #fff;
+  background: var(--bg-card-hover);
+}
+
+.page-btn.active {
+  background: var(--accent-purple);
+  border-color: var(--accent-purple);
+  color: #fff;
+  box-shadow: 0 0 14px var(--accent-purple-glow);
+}
+
+.page-btn:disabled,
+.page-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Anime Details Page Component
+   ========================================================================== */
+
+.details-hero {
+  position: relative;
+  min-height: 400px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 36px;
+  background: var(--bg-secondary);
+}
+
+.details-banner-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.65);
+}
+
+.details-banner-gradient {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-banner);
+}
+
+.details-header-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 36px;
+  padding: 48px 40px 32px;
+  align-items: flex-end;
+}
+
+.details-poster-wrap {
+  width: 240px;
+  flex-shrink: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg-card);
+}
+
+.details-poster-wrap img {
+  width: 100%;
+  aspect-ratio: 11 / 16;
+  object-fit: cover;
+}
+
+.details-poster-actions {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-card);
+}
+
+.details-info-primary {
+  flex: 1;
+}
+
+.details-title-romaji {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.details-title-native {
+  font-family: var(--font-jp);
+  font-size: 1.15rem;
+  color: var(--accent-purple-light);
+  margin-bottom: 16px;
+}
+
+.details-meta-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.meta-pill.score {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: var(--accent-amber);
+  font-weight: 700;
+}
+
+.details-synopsis-box {
+  margin-bottom: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.details-synopsis-text {
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+/* Characters & Staff Grid */
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.character-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  transition: all var(--transition-fast);
+}
+
+.character-card:hover {
+  border-color: var(--border-accent);
+  background: var(--bg-card-hover);
+}
+
+.character-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.character-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.character-role {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Episode List Component
+   ========================================================================== */
+
+.episode-list-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 36px;
+}
+
+.episode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.episode-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.episode-item:hover {
+  border-color: var(--border-light);
+  background: var(--bg-card-hover);
+}
+
+.episode-item.watched {
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.episode-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.episode-num-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-purple-light);
+  background: rgba(139, 92, 246, 0.12);
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  min-width: 32px;
+  text-align: center;
+}
+
+.episode-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.episode-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-episode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.74rem;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+}
+
+.btn-episode-toggle:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-episode-toggle.watched {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--accent-emerald);
+}
+
+.btn-watch-stream {
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  background: var(--accent-purple);
+  color: #fff;
+  transition: all var(--transition-fast);
+}
+
+.btn-watch-stream:hover {
+  filter: brightness(1.15);
+}
+
+/* ==========================================================================
+   Authorized Viewing Sources Component
+   ========================================================================== */
+
+.authorized-sources-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 36px;
+}
+
+.sources-disclaimer {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.source-item-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: all var(--transition-fast);
+}
+
+.source-item-btn:hover {
+  border-color: var(--accent-purple);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.source-logo-pill {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.04em;
+}
+
+.source-logo-pill.crunchyroll { background: #f47521; color: #fff; }
+.source-logo-pill.netflix { background: #e50914; color: #fff; }
+.source-logo-pill.hulu { background: #1ce783; color: #000; }
+.source-logo-pill.hidive { background: #00a4e4; color: #fff; }
+.source-logo-pill.external { background: var(--accent-purple); color: #fff; }
+
+/* ==========================================================================
+   Loading Skeletons
+   ========================================================================== */
+
+.skeleton {
+  background: linear-gradient(90deg, #181d2c 25%, #252b3d 37%, #181d2c 63%);
+  background-size: 400% 100%;
+  animation: skeletonPulse 1.4s ease infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeletonPulse {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+.card-skeleton {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+}
+
+.card-skeleton-poster {
+  width: 100%;
+  aspect-ratio: 11 / 16;
+}
+
+.card-skeleton-content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-skeleton-line {
+  height: 14px;
+  width: 80%;
+}
+.card-skeleton-line.short {
+  width: 45%;
+  height: 10px;
+}
+
+/* ==========================================================================
+   Empty & Error States
+   ========================================================================== */
+
+.empty-state, .error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-light);
+  border-radius: var(--radius-xl);
+  margin: 32px 0;
+}
+
+.state-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-purple-light);
+  margin-bottom: 20px;
+}
+
+.state-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.state-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  max-width: 440px;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
