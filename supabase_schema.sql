@@ -388,3 +388,134 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+
+-- 14. APPROVED YOUTUBE CHANNELS (Configurable Official Channels Registry)
+create table if not exists public.approved_youtube_channels (
+  id bigserial primary key,
+  channel_id text unique not null,
+  channel_name text not null,
+  handle text,
+  region text default 'IN',
+  is_active boolean default true,
+  created_at timestamptz default timezone('utc'::text, now()) not null
+);
+
+alter table public.approved_youtube_channels enable row level security;
+
+-- Public can view active approved channels
+create policy "Anyone can view active approved channels"
+  on public.approved_youtube_channels for select
+  using (is_active = true);
+
+-- Authenticated users can manage channels
+create policy "Authenticated users can insert approved channels"
+  on public.approved_youtube_channels for insert
+  with check (auth.role() = 'authenticated');
+
+create policy "Authenticated users can update approved channels"
+  on public.approved_youtube_channels for update
+  using (auth.role() = 'authenticated');
+
+create policy "Authenticated users can delete approved channels"
+  on public.approved_youtube_channels for delete
+  using (auth.role() = 'authenticated');
+
+-- Pre-seed approved official anime distributors for India and Asia
+insert into public.approved_youtube_channels (channel_id, channel_name, handle, region, is_active)
+values 
+  ('UCcDvQM6NucVAlpryMA2K19A', 'Ani-One India', '@AniOneIndia', 'IN', true),
+  ('UCYYhAzgWuxPauRXdPpLAX3Q', 'Muse India', '@MuseIndiaChannel', 'IN', true),
+  ('UCGbshtvS9t-8CW11W7TooQg', 'Muse Asia', '@MuseAsia', 'IN', true),
+  ('UC0wNSTMWIL3qaorLx0jie6A', 'Ani-One Asia', '@AniOneAsia', 'IN', true),
+  ('UCejtUitnpnf8Be-v5NuDSLw', 'GundamInfo', '@GundamInfo', 'GLOBAL', true)
+on conflict (channel_id) do update set
+  channel_name = excluded.channel_name,
+  handle = excluded.handle,
+  region = excluded.region,
+  is_active = excluded.is_active;
+
+
+-- 15. WATCH SOURCES (Cached Verified YouTube Episodes & Streams)
+create table if not exists public.watch_sources (
+  id bigserial primary key,
+  anime_id integer not null,
+  provider text not null default 'youtube',
+  channel_name text not null,
+  channel_id text not null,
+  video_id text not null,
+  playlist_id text,
+  episode_number integer not null default 1,
+  season_number integer not null default 1,
+  language text default 'ja-JP / en-Sub',
+  language_status text default 'verified',
+  region text default 'IN',
+  is_official boolean default true,
+  is_embeddable boolean default true,
+  match_confidence numeric default 1.0,
+  verification_status text default 'verified', -- 'verified', 'pending', 'rejected', 'region_restricted', 'unavailable'
+  source_url text,
+  video_title text,
+  thumbnail_url text,
+  verified_at timestamptz default timezone('utc'::text, now()) not null,
+  created_at timestamptz default timezone('utc'::text, now()) not null,
+  updated_at timestamptz default timezone('utc'::text, now()) not null,
+  constraint unique_anime_source unique (anime_id, provider, season_number, episode_number, video_id)
+);
+
+alter table public.watch_sources enable row level security;
+
+-- Public can view verified official embeddable watch sources
+create policy "Anyone can view verified official watch sources"
+  on public.watch_sources for select
+  using (is_official = true and is_embeddable = true and (verification_status = 'verified' or verification_status is null));
+
+-- Safe insert policy for watch sources
+create policy "Anyone can insert watch sources"
+  on public.watch_sources for insert
+  with check (is_official = true and is_embeddable = true);
+
+create policy "Anyone can update watch sources"
+  on public.watch_sources for update
+  using (is_official = true);
+
+create policy "Anyone can delete watch sources"
+  on public.watch_sources for delete
+  using (auth.role() = 'authenticated');
+
+create index if not exists idx_watch_sources_lookup on public.watch_sources(anime_id, provider, season_number, episode_number);
+create index if not exists idx_watch_sources_status on public.watch_sources(verification_status);
+create index if not exists idx_watch_sources_channel on public.watch_sources(channel_id);
+
+
+-- 16. DISCOVERY QUEUE (Controlled Batch YouTube Scanning & Quota Protection)
+create table if not exists public.discovery_queue (
+  anime_id integer primary key,
+  title text not null,
+  status text not null default 'queued', -- 'not_scanned', 'queued', 'scanning', 'completed', 'needs_review', 'failed'
+  priority integer not null default 3, -- 1 = Popular/Airing, 2 = User requested, 3 = Recent, 4 = Catalog
+  attempts integer not null default 0,
+  last_scanned_at timestamptz,
+  next_scan_at timestamptz default timezone('utc'::text, now()),
+  error_message text,
+  created_at timestamptz default timezone('utc'::text, now()) not null,
+  updated_at timestamptz default timezone('utc'::text, now()) not null
+);
+
+alter table public.discovery_queue enable row level security;
+
+create policy "Anyone can view discovery queue"
+  on public.discovery_queue for select
+  using (true);
+
+create policy "Anyone can enqueue anime"
+  on public.discovery_queue for insert
+  with check (true);
+
+create policy "Anyone can update discovery queue"
+  on public.discovery_queue for update
+  using (true);
+
+create index if not exists idx_discovery_queue_status on public.discovery_queue(status, priority);
+
+

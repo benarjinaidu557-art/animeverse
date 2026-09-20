@@ -23,6 +23,7 @@ import { CharacterView } from './views/CharacterView.js';
 import { CharactersSearchView } from './views/CharactersSearchView.js';
 import { InfoPagesView } from './views/InfoPagesView.js';
 import { NotFoundView } from './views/NotFoundView.js';
+import { AdminWatchSourcesView } from './views/AdminWatchSourcesView.js';
 import { SeoService } from './services/seoService.js';
 import { CommunityService } from './services/communityService.js';
 import { Toast } from './components/Toast.js';
@@ -40,6 +41,7 @@ const ROUTE_SEO = {
   '/discover': { title: 'AI Anime Finder', description: 'Interactive AI-powered recommendation engine to find your next favorite anime.' },
   '/dashboard': { title: 'Personal Dashboard', description: 'Your upcoming episode releases, followed anime, and viewing statistics.' },
   '/compare': { title: 'Side-by-Side Anime Comparison', description: 'Compare ratings, popularity, studios, and genres between anime.' },
+  '/admin/watch-sources': { title: 'Admin Watch Sources - AnimeVerse', description: 'Manage and verify official YouTube anime episode watch sources.' },
   '/about': { title: 'About AnimeVerse', description: 'Learn about AnimeVerse mission, architecture, and legal discovery features.' },
   '/privacy': { title: 'Privacy Policy', description: 'Our commitment to protecting your privacy, data security, and authentication.' },
   '/terms': { title: 'Terms of Service', description: 'Terms and community guidelines for using the AnimeVerse platform.' },
@@ -167,6 +169,7 @@ window.router.register('/profile', ProfileView);
 window.router.register('/discover', DiscoverView);
 window.router.register('/dashboard', DashboardView);
 window.router.register('/compare', CompareView);
+window.router.register('/admin/watch-sources', AdminWatchSourcesView);
 
 // Register Legal & Info Routes
 window.router.register('/about', { render: (c, q) => InfoPagesView.render(c, q, 'about') });
@@ -245,8 +248,13 @@ const SearchModal = {
 
   async search(query) {
     try {
-      const { media } = await AnimeService.searchAndFilter({ search: query, perPage: 8 });
-      if (!media || media.length === 0) {
+      const [searchRes, verifiedSources] = await Promise.all([
+        AnimeService.searchAndFilter({ search: query, perPage: 8 }),
+        AnimeService.getVerifiedSources().catch(() => [])
+      ]);
+
+      const media = searchRes?.media || [];
+      if (media.length === 0) {
         this.resultsList.innerHTML = `
           <div style="padding: 24px; text-align: center; color: var(--text-muted);">
             No anime found matching "<strong>${escapeHtml(query)}</strong>"
@@ -255,6 +263,13 @@ const SearchModal = {
         return;
       }
 
+      // Map verified watch sources by anime_id
+      const verifiedMap = new Map();
+      (verifiedSources || []).forEach(s => {
+        const aid = Number(s.anime_id);
+        if (!verifiedMap.has(aid)) verifiedMap.set(aid, s);
+      });
+
       this.resultsList.innerHTML = media.map(anime => {
         const title = AnimeService.formatTitle(anime.title);
         const score = AnimeService.formatScore(anime.averageScore);
@@ -262,11 +277,27 @@ const SearchModal = {
         const thumb = anime.coverImage?.medium || anime.coverImage?.large;
         const genres = (anime.genres || []).slice(0, 2).join(', ');
 
+        const watchSource = verifiedMap.get(Number(anime.id));
+        const isWatchable = Boolean(watchSource);
+        const hasHindi = (watchSource?.language || '').toLowerCase().includes('hindi');
+
         return `
           <div class="search-result-item" onclick="SearchModal.selectAnime(${anime.id})">
             <img class="search-result-thumb" src="${thumb}" alt="${escapeHtml(title)}" />
             <div class="search-result-info">
-              <div class="search-result-title">${escapeHtml(title)}</div>
+              <div class="search-result-title" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span>${escapeHtml(title)}</span>
+                ${isWatchable ? `
+                  <span style="background: rgba(220, 38, 38, 0.9); color: #fff; font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;">
+                    ▶ YouTube
+                  </span>
+                ` : ''}
+                ${hasHindi ? `
+                  <span style="background: rgba(245, 158, 11, 0.95); color: #000; font-size: 0.62rem; font-weight: 800; padding: 1px 5px; border-radius: 3px;">
+                    Hindi Dub
+                  </span>
+                ` : ''}
+              </div>
               <div class="search-result-meta">
                 ${anime.averageScore ? `<span style="color: var(--accent-amber);">★ ${score}</span><span>•</span>` : ''}
                 ${year ? `<span>${year}</span><span>•</span>` : ''}

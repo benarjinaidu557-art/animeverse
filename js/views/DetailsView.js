@@ -14,6 +14,9 @@ import { Skeletons } from '../components/Skeletons.js';
 import { Toast } from '../components/Toast.js';
 import { AdSlot } from '../components/AdSlot.js';
 import { SeoService } from '../services/seoService.js';
+import { OfficialWatchService } from '../services/officialWatchService.js';
+import { YouTubeDiscoveryService } from '../services/youtubeDiscoveryService.js';
+import { YouTubePlayer } from '../components/YouTubePlayer.js';
 
 export const DetailsView = {
   activeAnime: null,
@@ -77,6 +80,17 @@ export const DetailsView = {
       this.activeRatings = ratings;
       this.activeReviews = reviews;
       this.activeComments = comments;
+
+      // Discover official YouTube episodes with Supabase caching
+      let watchSources = { episodes: [], hasOfficialEpisodes: false };
+      const initialSeason = (Number(anime.id) === 101338 || (anime.title?.english || '').includes('Season 2') || (anime.title?.english || '').includes(' II')) ? 2 : 1;
+      this.activeSeason = initialSeason;
+      try {
+        watchSources = await YouTubeDiscoveryService.getEpisodesForAnime(anime, initialSeason);
+      } catch (ytErr) {
+        console.warn('[DetailsView] YouTube episode discovery notice:', ytErr);
+      }
+      this.activeWatchSources = watchSources;
 
       // Update Dynamic SEO & Structured Data safely
       try {
@@ -176,12 +190,9 @@ export const DetailsView = {
       };
     });
 
-    // Authorized streaming links
-    const externalLinks = anime.externalLinks || [];
-    const authorizedSites = externalLinks.filter(link => {
-      const site = (link.site || '').toLowerCase();
-      return ['crunchyroll', 'netflix', 'hulu', 'hidive', 'disney plus', 'amazon prime video', 'official site'].some(s => site.includes(s));
-    });
+    // Official & Licensed viewing sources (YouTube, Muse, Ani-One, Crunchyroll, Netflix, etc.)
+    const watchData = OfficialWatchService.getWatchSources(anime);
+    const { youtubeSources, platformSources, hasAnyOfficialSource, isIndiaPreferred } = watchData;
 
     const ratings = this.activeRatings || { averageRating: 0, count: 0, userRating: null };
     const reviews = this.activeReviews || [];
@@ -316,41 +327,193 @@ export const DetailsView = {
           </div>
         </section>
 
-        <!-- Authorized Viewing Sources Banner -->
-        <section class="authorized-sources-card" style="margin-bottom: 32px;">
-          <div class="authorized-sources-header">
-            <div class="authorized-badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <span>Authorized Official Sources</span>
+        <!-- WATCH ANIME - Built-in Official YouTube Player -->
+        ${YouTubePlayer.render(anime, this.activeWatchSources, { season: this.activeSeason })}
+
+        <!-- Where to Watch Officially Section -->
+        <section id="where-to-watch-section" class="watch-officially-card authorized-sources-card" style="margin-bottom: 32px;">
+          <div class="watch-section-header">
+            <div class="watch-title-group">
+              <div class="watch-badge-official">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Where to Watch Officially</span>
+              </div>
+              <h2 style="font-size: 1.25rem; font-weight: 700; margin: 0; color: #fff;">100% Legal & Licensed Viewing</h2>
             </div>
-            <span class="anti-piracy-badge">Anti-Piracy Compliant &bull; External Viewing Only</span>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              ${isIndiaPreferred ? `
+                <span class="watch-badge-india">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                  India & South Asia Verified
+                </span>
+              ` : ''}
+              <span class="anti-piracy-badge">Anti-Piracy Compliant &bull; Official External Links Only</span>
+            </div>
           </div>
 
-          <div class="source-buttons-grid">
-            ${authorizedSites.length > 0 ? authorizedSites.map(source => {
-              const siteName = source.site || 'Official Stream';
-              const cleanSite = siteName.toLowerCase().replace(/[^a-z0-9]/g, '');
-              return `
-                <a href="${source.url}" target="_blank" rel="noopener noreferrer" class="source-item-btn">
-                  <span class="source-logo-pill ${cleanSite}">${escapeHtml(siteName)}</span>
-                  <span>Watch on ${escapeHtml(siteName)}</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                </a>
-              `;
-            }).join('') : `
-              <div class="source-item-btn" style="cursor: default; opacity: 0.85;">
-                <span class="source-logo-pill crunchyroll">Crunchyroll</span>
-                <span>Search on Crunchyroll</span>
+          ${youtubeSources.length > 0 ? `
+            <!-- Verified Official YouTube Streaming -->
+            <div class="youtube-official-banner">
+              <div class="youtube-banner-header">
+                <div class="youtube-icon-pill">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style="font-weight: 700; font-size: 1.05rem; color: #fff; display: flex; align-items: center; gap: 8px;">
+                    Free Official YouTube Streams
+                    <span style="font-size: 0.72rem; background: #22c55e; color: #000; font-weight: 800; padding: 2px 7px; border-radius: 9999px;">FREE TO WATCH</span>
+                  </div>
+                  <div style="font-size: 0.82rem; color: var(--text-muted);">
+                    Legally licensed by official distributors for India & South Asia (No subscription required)
+                  </div>
+                </div>
               </div>
-              <div class="source-item-btn" style="cursor: default; opacity: 0.85;">
-                <span class="source-logo-pill netflix">Netflix</span>
-                <span>Search on Netflix</span>
+
+              <div class="youtube-sources-grid">
+                ${youtubeSources.map(yt => `
+                  <a href="${yt.url}" target="_blank" rel="noopener noreferrer" class="youtube-source-card" title="${escapeHtml(yt.title || yt.badge)}">
+                    <div style="min-width: 0;">
+                      <div style="font-weight: 700; font-size: 0.95rem; color: #fff; margin-bottom: 2px; display: flex; align-items: center; gap: 6px;">
+                        ${escapeHtml(yt.name)}
+                        ${yt.isIndia ? `<span class="source-badge-india-mini">India</span>` : ''}
+                      </div>
+                      <div style="font-size: 0.76rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        ${escapeHtml(yt.description || 'Official Full Episodes / Clips')}
+                      </div>
+                    </div>
+                    <span class="youtube-card-btn">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      ${escapeHtml(yt.badge || 'Watch on YouTube')}
+                    </span>
+                  </a>
+                `).join('')}
               </div>
-              <div class="source-item-btn" style="cursor: default; opacity: 0.85;">
-                <span class="source-logo-pill hidive">HIDIVE</span>
-                <span>Search on HIDIVE</span>
+            </div>
+          ` : `
+            <div style="margin-bottom: 18px; padding: 12px 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--text-muted);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-dim); flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>Official YouTube stream is not currently available for this title in India. Check the licensed subscription platforms below.</span>
+            </div>
+          `}
+
+          <!-- Licensed Streaming Platforms -->
+          <div>
+            <div class="sources-disclaimer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Verified Subscription & Licensed Platforms</span>
+            </div>
+
+            ${platformSources.length > 0 ? `
+              <div class="sources-grid">
+                ${platformSources.map(source => {
+                  const siteName = source.name || 'Official Stream';
+                  const cleanSite = source.key || 'external';
+                  return `
+                    <a href="${source.url}" target="_blank" rel="noopener noreferrer" class="source-item-btn" title="Watch officially on ${escapeHtml(siteName)}">
+                      <div class="source-item-info">
+                        <span class="source-logo-pill ${cleanSite}">${escapeHtml(siteName)}</span>
+                        <div style="min-width: 0;">
+                          <div style="font-size: 0.88rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px;">
+                            ${escapeHtml(source.badge || `Watch on ${siteName}`)}
+                            ${source.isIndia ? `<span class="source-badge-india-mini">India</span>` : ''}
+                          </div>
+                          <div style="font-size: 0.72rem; color: var(--text-muted);">
+                            ${escapeHtml(source.type || 'Official Partner')}
+                          </div>
+                        </div>
+                      </div>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; color: var(--text-dim);"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </a>
+                  `;
+                }).join('')}
               </div>
-            `}
+            ` : (youtubeSources.length === 0 ? `
+              <div class="sources-empty-state">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 8px; color: var(--text-dim);"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                <div style="font-weight: 600; font-size: 0.95rem; color: #fff; margin-bottom: 4px;">Official source not currently available</div>
+                <div style="font-size: 0.82rem; color: var(--text-dim); max-width: 480px; margin: 0 auto;">
+                  No verified licensed streaming links are listed for your region right now. We do not link to pirate or unauthorized streaming services.
+                </div>
+              </div>
+            ` : '')}
+          </div>
+
+          <!-- AniList Legal External Streaming Episodes (when present) -->
+          ${(anime.streamingEpisodes && anime.streamingEpisodes.length > 0) ? `
+            <div class="streaming-episodes-section" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-subtle);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="section-accent-bar" style="background: var(--accent-cyan); width: 4px; height: 16px; border-radius: 2px;"></span>
+                  <h3 style="font-size: 1rem; font-weight: 700; color: #fff; margin: 0;">
+                    Official Streaming Episodes (${anime.streamingEpisodes.length})
+                  </h3>
+                  <span style="font-size: 0.72rem; background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); padding: 2px 8px; border-radius: 6px; font-weight: 700;">
+                    via ${escapeHtml(anime.streamingEpisodes[0]?.site || 'Authorized Licensor')}
+                  </span>
+                </div>
+                <span style="font-size: 0.78rem; color: var(--text-dim);">Direct official partner links</span>
+              </div>
+
+              <div class="streaming-episodes-carousel" style="display: flex; gap: 14px; overflow-x: auto; padding-bottom: 12px; scrollbar-width: thin;">
+                ${anime.streamingEpisodes.map((ep, idx) => `
+                  <a 
+                    href="${ep.url}" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    class="streaming-ep-card" 
+                    title="${escapeHtml(ep.title || `Episode ${idx + 1}`)}"
+                    style="
+                      flex: 0 0 220px; 
+                      background: rgba(255,255,255,0.03); 
+                      border: 1px solid var(--border-subtle); 
+                      border-radius: 12px; 
+                      overflow: hidden; 
+                      text-decoration: none; 
+                      display: flex; 
+                      flex-direction: column; 
+                      transition: all 0.2s ease;
+                    "
+                    onmouseenter="this.style.borderColor='var(--accent-purple)'; this.style.transform='translateY(-2px)'"
+                    onmouseleave="this.style.borderColor='var(--border-subtle)'; this.style.transform='translateY(0)'"
+                  >
+                    <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #0b0d14; overflow: hidden;">
+                      <img 
+                        src="${ep.thumbnail || 'https://placehold.co/320x180/1a1a2e/ffffff?text=Episode'}" 
+                        alt="${escapeHtml(ep.title || 'Official Stream')}" 
+                        style="width: 100%; height: 100%; object-fit: cover;" 
+                        loading="lazy" 
+                      />
+                      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.8) 100%);"></div>
+                      <span style="position: absolute; bottom: 6px; left: 8px; font-size: 0.68rem; font-weight: 800; color: #fff; background: rgba(0,0,0,0.7); padding: 1px 6px; border-radius: 4px;">
+                        ${escapeHtml(ep.site || 'Legal Stream')}
+                      </span>
+                      <span style="position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; color: #fff;">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      </span>
+                    </div>
+                    <div style="padding: 10px 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                      <div style="font-size: 0.82rem; font-weight: 600; color: #fff; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                        ${escapeHtml(ep.title || `Episode ${idx + 1}`)}
+                      </div>
+                      <div style="font-size: 0.72rem; color: var(--accent-purple-light); margin-top: 6px; display: flex; align-items: center; gap: 4px;">
+                        <span>Watch on ${escapeHtml(ep.site || 'Site')}</span>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                      </div>
+                    </div>
+                  </a>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <div class="anti-piracy-footer">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>AnimeVerse exclusively indexes official YouTube distributors (Ani-One, Muse) and legal licensed platforms.</span>
+            </div>
+            <span>External links open directly in distributor apps or websites.</span>
           </div>
         </section>
 
@@ -807,6 +970,9 @@ export const DetailsView = {
     // Bind Handlers
     this.bindActionHandlers(anime, episodesList);
     this.bindCommunityHandlers(anime);
+
+    // Bind Embedded Official YouTube Player
+    YouTubePlayer.bindEvents(this.container || document);
   },
 
   bindActionHandlers(anime, episodesList) {

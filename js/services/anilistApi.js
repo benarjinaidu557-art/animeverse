@@ -108,6 +108,8 @@ const MEDIA_CARD_FIELDS = `
     english
     native
   }
+  synonyms
+  countryOfOrigin
   coverImage {
     extraLarge
     large
@@ -340,16 +342,21 @@ export const QUERIES = {
     }
   `,
 
-  // Multi-faceted search and filter
+  // Multi-faceted search and filter across entire catalog
   SEARCH_AND_FILTER: `
     query SearchAnime(
       $page: Int = 1,
-      $perPage: Int = 20,
+      $perPage: Int = 50,
       $search: String,
       $genre: String,
       $seasonYear: Int,
       $season: MediaSeason,
       $status: MediaStatus,
+      $format: MediaFormat,
+      $format_in: [MediaFormat],
+      $countryOfOrigin: CountryCode,
+      $startDate_lesser: FuzzyDateInt,
+      $startDate_greater: FuzzyDateInt,
       $sort: [MediaSort]
     ) {
       Page(page: $page, perPage: $perPage) {
@@ -367,6 +374,11 @@ export const QUERIES = {
           seasonYear: $seasonYear,
           season: $season,
           status: $status,
+          format: $format,
+          format_in: $format_in,
+          countryOfOrigin: $countryOfOrigin,
+          startDate_lesser: $startDate_lesser,
+          startDate_greater: $startDate_greater,
           sort: $sort,
           isAdult: false
         ) {
@@ -405,7 +417,7 @@ export const QUERIES = {
   ADVANCED_DISCOVERY: `
     query AdvancedDiscovery(
       $page: Int = 1,
-      $perPage: Int = 20,
+      $perPage: Int = 50,
       $search: String,
       $genre: String,
       $genre_in: [String],
@@ -413,6 +425,10 @@ export const QUERIES = {
       $season: MediaSeason,
       $status: MediaStatus,
       $format: MediaFormat,
+      $format_in: [MediaFormat],
+      $countryOfOrigin: CountryCode,
+      $startDate_lesser: FuzzyDateInt,
+      $startDate_greater: FuzzyDateInt,
       $averageScore_greater: Int,
       $popularity_greater: Int,
       $sort: [MediaSort] = [POPULARITY_DESC]
@@ -434,11 +450,32 @@ export const QUERIES = {
           season: $season,
           status: $status,
           format: $format,
+          format_in: $format_in,
+          countryOfOrigin: $countryOfOrigin,
+          startDate_lesser: $startDate_lesser,
+          startDate_greater: $startDate_greater,
           averageScore_greater: $averageScore_greater,
           popularity_greater: $popularity_greater,
           sort: $sort,
           isAdult: false
         ) {
+          ${MEDIA_CARD_FIELDS}
+        }
+      }
+    }
+  `,
+
+  // Fetch multiple anime by their IDs
+  GET_BY_IDS: `
+    query GetAnimeByIds($ids: [Int], $page: Int = 1, $perPage: Int = 50) {
+      Page(page: $page, perPage: $perPage) {
+        pageInfo {
+          total
+          currentPage
+          lastPage
+          hasNextPage
+        }
+        media(id_in: $ids, type: ANIME) {
           ${MEDIA_CARD_FIELDS}
         }
       }
