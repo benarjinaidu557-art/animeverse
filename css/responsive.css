@@ -1,0 +1,188 @@
+/* ==========================================================================
+   AnimeVerse - Responsive Stylesheet
+   ========================================================================== */
+
+/* Large Tablets and Smaller Desktops (<1100px) */
+@media (max-width: 1100px) {
+  .hero-section {
+    height: auto;
+    min-height: 420px;
+  }
+  
+  .details-header-content {
+    gap: 24px;
+    padding: 32px 24px;
+  }
+  
+  .details-poster-wrap {
+    width: 200px;
+  }
+}
+
+/* Medium Tablets & Mobile Landscape (<900px) */
+@media (max-width: 900px) {
+  .nav-menu {
+    display: none; /* Replaced by bottom nav on smaller screens */
+  }
+
+  .search-trigger {
+    min-width: 160px;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  
+  .surprise-section {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px;
+  }
+}
+
+/* Mobile Screens (<768px) */
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 16px;
+    --header-height: 60px;
+  }
+
+  body {
+    padding-bottom: var(--bottom-nav-height);
+  }
+
+  #app-root {
+    padding-bottom: 80px;
+  }
+
+  /* Show Mobile Bottom Navigation */
+  .mobile-bottom-nav {
+    display: flex;
+  }
+
+  .search-trigger {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    min-width: auto;
+  }
+  
+  .search-trigger .shortcut-badge {
+    display: none;
+  }
+  
+  .btn-profile-nav span {
+    display: none;
+  }
+
+  /* Hero Section Mobile */
+  .hero-section {
+    min-height: 380px;
+    margin-bottom: 28px;
+    border-radius: var(--radius-lg);
+  }
+
+  .hero-container {
+    padding: 24px 20px;
+  }
+
+  .hero-title {
+    font-size: 1.65rem;
+    margin-bottom: 8px;
+  }
+
+  .hero-synopsis {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+    margin-bottom: 16px;
+  }
+
+  .hero-controls {
+    display: none;
+  }
+
+  .hero-actions .btn-secondary {
+    display: none;
+  }
+
+  /* Section Title & Grids */
+  .section-container {
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .anime-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 14px;
+  }
+
+  /* Anime Card Mobile */
+  .anime-card-content {
+    padding: 10px;
+  }
+
+  .anime-card-title {
+    font-size: 0.86rem;
+  }
+
+  .card-badge-top {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+
+  /* Details Page Mobile */
+  .details-hero {
+    min-height: auto;
+    border-radius: var(--radius-lg);
+  }
+
+  .details-header-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px 16px;
+  }
+
+  .details-poster-wrap {
+    width: 170px;
+  }
+
+  .details-meta-pills {
+    justify-content: center;
+  }
+
+  .character-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .episode-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer Mobile */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+/* Extra Small Phones (<480px) */
+@media (max-width: 480px) {
+  .anime-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .filter-controls-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

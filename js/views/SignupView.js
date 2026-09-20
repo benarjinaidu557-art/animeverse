@@ -1,0 +1,198 @@
+/**
+ * Signup View - User Registration with Email/Password & Google OAuth
+ */
+
+import { AuthService } from '../services/authService.js';
+import { Toast } from '../components/Toast.js';
+
+export const SignupView = {
+  render(container) {
+    if (AuthService.isAuthenticated()) {
+      window.router.navigate('/profile');
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="container" style="padding: 48px 16px; display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 200px);">
+        <div style="
+          max-width: 440px; 
+          width: 100%; 
+          background: var(--bg-card); 
+          border: 1px solid var(--border-light); 
+          border-radius: var(--radius-xl); 
+          padding: 36px 32px; 
+          box-shadow: var(--shadow-lg);
+          position: relative;
+        ">
+          <!-- Logo & Header -->
+          <div style="text-align: center; margin-bottom: 28px;">
+            <div style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: var(--gradient-primary); border-radius: 14px; margin-bottom: 12px; box-shadow: var(--shadow-glow);">
+              <span style="color: #fff; font-size: 1.5rem; font-weight: 900;">A</span>
+            </div>
+            <h1 style="font-size: 1.65rem; font-weight: 800; color: #fff; margin-bottom: 6px;">Join AnimeVerse</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Create an account to track your anime journey across any device</p>
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div id="signup-error-alert" style="
+            display: none; 
+            background: rgba(239, 68, 68, 0.12); 
+            border: 1px solid var(--accent-red); 
+            color: #fca5a5; 
+            padding: 12px; 
+            border-radius: var(--radius-sm); 
+            font-size: 0.85rem; 
+            margin-bottom: 20px;
+          "></div>
+
+          <!-- Form -->
+          <form id="signup-form">
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px;" for="signup-username">
+                Username
+              </label>
+              <input 
+                type="text" 
+                id="signup-username" 
+                required 
+                placeholder="e.g. ZenitsuFan" 
+                style="
+                  width: 100%; 
+                  background: var(--bg-secondary); 
+                  border: 1px solid var(--border-subtle); 
+                  border-radius: var(--radius-sm); 
+                  padding: 12px 14px; 
+                  color: #fff; 
+                  font-size: 0.95rem; 
+                  outline: none;
+                "
+              />
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px;" for="signup-email">
+                Email Address
+              </label>
+              <input 
+                type="email" 
+                id="signup-email" 
+                required 
+                placeholder="name@example.com" 
+                style="
+                  width: 100%; 
+                  background: var(--bg-secondary); 
+                  border: 1px solid var(--border-subtle); 
+                  border-radius: var(--radius-sm); 
+                  padding: 12px 14px; 
+                  color: #fff; 
+                  font-size: 0.95rem; 
+                  outline: none;
+                "
+              />
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <label style="display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px;" for="signup-password">
+                Password
+              </label>
+              <input 
+                type="password" 
+                id="signup-password" 
+                required 
+                minlength="6"
+                placeholder="Minimum 6 characters" 
+                style="
+                  width: 100%; 
+                  background: var(--bg-secondary); 
+                  border: 1px solid var(--border-subtle); 
+                  border-radius: var(--radius-sm); 
+                  padding: 12px 14px; 
+                  color: #fff; 
+                  font-size: 0.95rem; 
+                  outline: none;
+                "
+              />
+            </div>
+
+            <button type="submit" id="signup-submit-btn" class="btn-primary" style="width: 100%; padding: 14px; font-size: 1rem;">
+              Create Account
+            </button>
+          </form>
+
+          <!-- Divider -->
+          <div style="display: flex; align-items: center; gap: 12px; margin: 24px 0;">
+            <div style="flex: 1; height: 1px; background: var(--border-subtle);"></div>
+            <span style="font-size: 0.78rem; color: var(--text-dim); text-transform: uppercase;">Or</span>
+            <div style="flex: 1; height: 1px; background: var(--border-subtle);"></div>
+          </div>
+
+          <!-- Google OAuth Button -->
+          <button type="button" id="signup-google-btn" class="btn-secondary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px;">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            Sign up with Google
+          </button>
+
+          <!-- Footer Link -->
+          <div style="text-align: center; margin-top: 24px; font-size: 0.88rem; color: var(--text-muted);">
+            Already have an account? <a href="#/login" style="color: var(--accent-purple-light); font-weight: 600;">Sign in</a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.bindEvents();
+  },
+
+  bindEvents() {
+    const form = document.getElementById('signup-form');
+    const submitBtn = document.getElementById('signup-submit-btn');
+    const googleBtn = document.getElementById('signup-google-btn');
+    const errorAlert = document.getElementById('signup-error-alert');
+
+    if (form) {
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('signup-username').value.trim();
+        const email = document.getElementById('signup-email').value.trim();
+        const password = document.getElementById('signup-password').value;
+
+        errorAlert.style.display = 'none';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating account...';
+
+        try {
+          await AuthService.signUp(email, password, username);
+          Toast.show('Account created successfully!', 'success');
+          window.router.navigate('/profile');
+        } catch (err) {
+          errorAlert.textContent = err.message || 'Signup failed. Please try again.';
+          errorAlert.style.display = 'block';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create Account';
+        }
+      };
+    }
+
+    if (googleBtn) {
+      googleBtn.onclick = async () => {
+        googleBtn.disabled = true;
+        try {
+          await AuthService.signInWithGoogle();
+          Toast.show('Signed in with Google!', 'success');
+          window.router.navigate('/profile');
+        } catch (err) {
+          errorAlert.textContent = err.message || 'Google sign-up failed.';
+          errorAlert.style.display = 'block';
+        } finally {
+          googleBtn.disabled = false;
+        }
+      };
+    }
+  }
+};
