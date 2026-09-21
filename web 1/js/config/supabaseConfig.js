@@ -25,24 +25,41 @@ const setStoredItem = (key, val) => {
   }
 };
 
+const cleanUrl = (url) => {
+  if (!url) return '';
+  return url.trim().replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
+};
+
+const getEnv = (key) => {
+  if (typeof window !== 'undefined' && window.ENV && window.ENV[key]) {
+    return window.ENV[key];
+  }
+  return null;
+};
+
+const DEFAULT_URL = cleanUrl(getEnv('NEXT_PUBLIC_SUPABASE_URL')) || 'https://ddjxbklfcqxslbbeymsr.supabase.co';
+const DEFAULT_KEY = getEnv('NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY') || getEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY') || 'sb_publishable_jIFgnjM1jPy1MbyDSSouxg_gvGPpKh2';
+
 export const SUPABASE_CONFIG = {
-  // Replace these with your Supabase Project details from Project Settings > API
-  URL: getStoredItem('animeverse_supabase_url') || 'https://your-project.supabase.co',
-  ANON_KEY: getStoredItem('animeverse_supabase_anon_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+  // Configured via environment variables or dynamic localStorage
+  URL: cleanUrl(getStoredItem('animeverse_supabase_url')) || DEFAULT_URL,
+  ANON_KEY: getStoredItem('animeverse_supabase_anon_key') || DEFAULT_KEY,
 
   isConfigured() {
     return (
       this.URL &&
       this.ANON_KEY &&
       !this.URL.includes('your-project') &&
+      !this.URL.includes('PASTE YOUR') &&
       !this.ANON_KEY.includes('...')
     );
   },
 
   updateCredentials(url, anonKey) {
-    if (url) setStoredItem('animeverse_supabase_url', url.trim());
+    const sanitized = cleanUrl(url);
+    if (sanitized) setStoredItem('animeverse_supabase_url', sanitized);
     if (anonKey) setStoredItem('animeverse_supabase_anon_key', anonKey.trim());
-    this.URL = url ? url.trim() : '';
+    this.URL = sanitized || '';
     this.ANON_KEY = anonKey ? anonKey.trim() : '';
   },
 
@@ -59,7 +76,7 @@ export const SUPABASE_CONFIG = {
         // ignore
       }
     }
-    this.URL = 'https://your-project.supabase.co';
-    this.ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+    this.URL = DEFAULT_URL;
+    this.ANON_KEY = DEFAULT_KEY;
   }
 };

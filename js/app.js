@@ -87,11 +87,32 @@ class AppRouter {
 
   async handleRoute() {
     let hash = window.location.hash.slice(1) || '/';
+
+    // Intercept and process any OAuth callback tokens, PKCE codes, or errors
+    if (hash.includes('access_token=') || hash.includes('refresh_token=') || hash.includes('error=') || (typeof window !== 'undefined' && window.location.search.includes('code='))) {
+      const oauthResult = await AuthService.processOAuthCallback();
+      if (oauthResult.isOAuth) {
+        if (oauthResult.success) {
+          Toast.show('Signed in successfully!', 'success');
+          hash = oauthResult.targetRoute || '/profile';
+        } else {
+          Toast.show(oauthResult.error || 'Sign-in was not completed.', 'error');
+          hash = oauthResult.targetRoute || '/login';
+        }
+      }
+    }
+
     if (!hash.startsWith('/')) hash = '/' + hash;
 
     // Parse path and query parameters
     const [pathPart, queryPart] = hash.split('?');
     const queryParams = Object.fromEntries(new URLSearchParams(queryPart || ''));
+
+    // Strip any sensitive OAuth tokens from queryParams object
+    delete queryParams.access_token;
+    delete queryParams.refresh_token;
+    delete queryParams.expires_in;
+    delete queryParams.token_type;
 
     this.currentPath = pathPart;
     this.updateActiveNavLinks(pathPart);

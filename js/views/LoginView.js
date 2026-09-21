@@ -5,12 +5,24 @@
 import { AuthService } from '../services/authService.js';
 import { Toast } from '../components/Toast.js';
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 export const LoginView = {
-  render(container) {
+  render(container, queryParams = {}) {
     if (AuthService.isAuthenticated()) {
       window.router.navigate('/profile');
       return;
     }
+
+    const initialError = queryParams.error || '';
 
     container.innerHTML = `
       <div class="container" style="padding: 48px 16px; display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 200px);">
@@ -35,7 +47,7 @@ export const LoginView = {
 
           <!-- Error Alert Banner -->
           <div id="login-error-alert" style="
-            display: none; 
+            display: ${initialError ? 'block' : 'none'}; 
             background: rgba(239, 68, 68, 0.12); 
             border: 1px solid var(--accent-red); 
             color: #fca5a5; 
@@ -43,7 +55,7 @@ export const LoginView = {
             border-radius: var(--radius-sm); 
             font-size: 0.85rem; 
             margin-bottom: 20px;
-          "></div>
+          ">${escapeHtml(initialError)}</div>
 
           <!-- Form -->
           <form id="login-form">

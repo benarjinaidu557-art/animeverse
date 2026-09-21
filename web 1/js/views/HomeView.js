@@ -45,7 +45,7 @@ export const HomeView = {
     `;
 
     try {
-      // Parallel fetch from AniList via AnimeService
+      // Parallel fetch from AniList and Verified Watch Sources
       const [
         trendingData,
         popularData,
@@ -53,6 +53,9 @@ export const HomeView = {
         newReleasesData,
         upcomingData,
         topRatedData,
+        watchableData,
+        hindiWatchableData,
+        moviesData
       ] = await Promise.all([
         AnimeService.getTrending(1, 10),
         AnimeService.getPopular(1, 10),
@@ -60,6 +63,9 @@ export const HomeView = {
         AnimeService.getNewReleases(1, 10),
         AnimeService.getUpcoming(1, 10),
         AnimeService.getTopRated(1, 10),
+        AnimeService.getWatchableAnime({ perPage: 10 }).catch(() => ({ media: [] })),
+        AnimeService.getWatchableAnime({ language: 'Hindi', perPage: 10 }).catch(() => ({ media: [] })),
+        AnimeService.getMovies(1, 10).catch(() => ({ media: [] }))
       ]);
 
       const featuredAnimeList = trendingData.media.slice(0, 5);
@@ -68,6 +74,54 @@ export const HomeView = {
         <div class="container" style="padding-top: 24px;">
           <!-- 1. HERO SPOTLIGHT -->
           ${HeroSection.render(featuredAnimeList)}
+
+          <!-- FREE OFFICIAL YOUTUBE ANIME (Phase 16) -->
+          ${(watchableData?.media && watchableData.media.length > 0) ? `
+            <section class="section-container" style="background: linear-gradient(180deg, rgba(239, 68, 68, 0.08) 0%, transparent 100%); padding: 24px 20px; border-radius: 16px; border: 1px solid rgba(239, 68, 68, 0.2); margin-bottom: 36px;">
+              <div class="section-header">
+                <div class="section-title-wrap">
+                  <span class="section-accent-bar" style="background: #ef4444;"></span>
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <h2 class="section-title" style="color: #fff;">Free Official YouTube Anime</h2>
+                      <span style="background: #ef4444; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px;">100% Legal</span>
+                    </div>
+                    <p class="section-subtitle">Verified licensed full episodes streamable via authorized distributors (Muse, Ani-One, GundamInfo)</p>
+                  </div>
+                </div>
+                <a href="#/browse?watchableOnly=true" class="btn-view-all">
+                  View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>
+              </div>
+              <div class="horizontal-scroll-row">
+                ${watchableData.media.map(anime => AnimeCard.render(anime, { isWatchable: true })).join('')}
+              </div>
+            </section>
+          ` : ''}
+
+          <!-- HINDI DUB AVAILABLE (Phase 16) - Rendered ONLY if verified Hindi dub sources exist -->
+          ${(hindiWatchableData?.media && hindiWatchableData.media.length > 0) ? `
+            <section class="section-container" style="background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, transparent 100%); padding: 24px 20px; border-radius: 16px; border: 1px solid rgba(245, 158, 11, 0.2); margin-bottom: 36px;">
+              <div class="section-header">
+                <div class="section-title-wrap">
+                  <span class="section-accent-bar" style="background: #f59e0b;"></span>
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <h2 class="section-title" style="color: #fff;">Hindi Dub Available</h2>
+                      <span style="background: #f59e0b; color: #000; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 6px;">Indian Audio</span>
+                    </div>
+                    <p class="section-subtitle">Official Hindi dubbed episodes licensed and released by distributor channels</p>
+                  </div>
+                </div>
+                <a href="#/browse?watchableOnly=true" class="btn-view-all">
+                  View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>
+              </div>
+              <div class="horizontal-scroll-row">
+                ${hindiWatchableData.media.map(anime => AnimeCard.render(anime, { isWatchable: true, hasHindi: true })).join('')}
+              </div>
+            </section>
+          ` : ''}
 
           <!-- 2. TRENDING ANIME -->
           <section class="section-container">
@@ -201,6 +255,27 @@ export const HomeView = {
               ${topRatedData.media.slice(0, 8).map(anime => AnimeCard.render(anime)).join('')}
             </div>
           </section>
+
+          <!-- 8. ANIME MOVIES (Phase 16) -->
+          ${(moviesData?.media && moviesData.media.length > 0) ? `
+            <section class="section-container">
+              <div class="section-header">
+                <div class="section-title-wrap">
+                  <span class="section-accent-bar cyan"></span>
+                  <div>
+                    <h2 class="section-title">Anime Feature Films & Movies</h2>
+                    <p class="section-subtitle">Cinematic masterpieces, movie sequels, and standalone stories</p>
+                  </div>
+                </div>
+                <a href="#/browse?format=MOVIE" class="btn-view-all">
+                  View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>
+              </div>
+              <div class="horizontal-scroll-row">
+                ${moviesData.media.map(anime => AnimeCard.render(anime)).join('')}
+              </div>
+            </section>
+          ` : ''}
         </div>
       `;
 

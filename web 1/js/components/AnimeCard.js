@@ -11,7 +11,7 @@ export const AnimeCard = {
    * Generates HTML string for an Anime Card
    * @param {Object} anime - AniList Media object
    */
-  render(anime) {
+  render(anime, options = {}) {
     if (!anime) return '';
 
     const id = anime.id;
@@ -27,6 +27,9 @@ export const AnimeCard = {
     const isWatchlisted = StorageService.isInWatchlist(id);
     const isFavorite = StorageService.isFavorite(id);
     const genres = (anime.genres || []).slice(0, 2);
+
+    const isWatchable = Boolean(options?.isWatchable || anime.isWatchable || anime.hasWatchSource);
+    const hasHindi = Boolean(options?.hasHindi || anime.hasHindiDub);
 
     return `
       <article class="anime-card" data-anime-id="${id}">
@@ -45,6 +48,21 @@ export const AnimeCard = {
             <div class="card-badge-top">
               <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               <span>${score}</span>
+            </div>
+          ` : ''}
+
+          <!-- Watchable & Hindi Dub Badge (Phase 17) -->
+          ${isWatchable ? `
+            <div style="position: absolute; bottom: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 3;">
+              <span style="background: rgba(220, 38, 38, 0.95); color: #fff; font-size: 0.66rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                YouTube Free
+              </span>
+              ${hasHindi ? `
+                <span style="background: rgba(245, 158, 11, 0.95); color: #000; font-size: 0.60rem; font-weight: 800; padding: 1px 6px; border-radius: 3px; letter-spacing: 0.3px; width: fit-content; box-shadow: 0 2px 6px rgba(0,0,0,0.4);">
+                  HINDI DUB
+                </span>
+              ` : ''}
             </div>
           ` : ''}
 

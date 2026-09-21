@@ -70,9 +70,15 @@
 
   /* Layout */
   --header-height: 72px;
-  --bottom-nav-height: 64px;
+  --bottom-nav-height: 62px;
   --max-content-width: 1400px;
   --container-padding: 24px;
+
+  /* Safe Area Insets for iOS & Modern Mobile Browsers */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
 
   /* Transitions */
   --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);

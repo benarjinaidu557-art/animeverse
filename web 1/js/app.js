@@ -23,6 +23,7 @@ import { CharacterView } from './views/CharacterView.js';
 import { CharactersSearchView } from './views/CharactersSearchView.js';
 import { InfoPagesView } from './views/InfoPagesView.js';
 import { NotFoundView } from './views/NotFoundView.js';
+import { AdminWatchSourcesView } from './views/AdminWatchSourcesView.js';
 import { SeoService } from './services/seoService.js';
 import { CommunityService } from './services/communityService.js';
 import { Toast } from './components/Toast.js';
@@ -40,6 +41,7 @@ const ROUTE_SEO = {
   '/discover': { title: 'AI Anime Finder', description: 'Interactive AI-powered recommendation engine to find your next favorite anime.' },
   '/dashboard': { title: 'Personal Dashboard', description: 'Your upcoming episode releases, followed anime, and viewing statistics.' },
   '/compare': { title: 'Side-by-Side Anime Comparison', description: 'Compare ratings, popularity, studios, and genres between anime.' },
+  '/admin/watch-sources': { title: 'Admin Watch Sources - AnimeVerse', description: 'Manage and verify official YouTube anime episode watch sources.' },
   '/about': { title: 'About AnimeVerse', description: 'Learn about AnimeVerse mission, architecture, and legal discovery features.' },
   '/privacy': { title: 'Privacy Policy', description: 'Our commitment to protecting your privacy, data security, and authentication.' },
   '/terms': { title: 'Terms of Service', description: 'Terms and community guidelines for using the AnimeVerse platform.' },
@@ -55,6 +57,10 @@ class AppRouter {
 
     window.addEventListener('hashchange', () => this.handleRoute());
     window.addEventListener('scroll', () => this.handleScroll());
+  }
+
+  get root() {
+    return this.appRoot || document.getElementById('app-root');
   }
 
   register(path, viewHandler) {
@@ -81,28 +87,51 @@ class AppRouter {
 
   async handleRoute() {
     let hash = window.location.hash.slice(1) || '/';
+
+    // Intercept and process any OAuth callback tokens, PKCE codes, or errors
+    if (hash.includes('access_token=') || hash.includes('refresh_token=') || hash.includes('error=') || (typeof window !== 'undefined' && window.location.search.includes('code='))) {
+      const oauthResult = await AuthService.processOAuthCallback();
+      if (oauthResult.isOAuth) {
+        if (oauthResult.success) {
+          Toast.show('Signed in successfully!', 'success');
+          hash = oauthResult.targetRoute || '/profile';
+        } else {
+          Toast.show(oauthResult.error || 'Sign-in was not completed.', 'error');
+          hash = oauthResult.targetRoute || '/login';
+        }
+      }
+    }
+
     if (!hash.startsWith('/')) hash = '/' + hash;
 
     // Parse path and query parameters
     const [pathPart, queryPart] = hash.split('?');
     const queryParams = Object.fromEntries(new URLSearchParams(queryPart || ''));
 
+    // Strip any sensitive OAuth tokens from queryParams object
+    delete queryParams.access_token;
+    delete queryParams.refresh_token;
+    delete queryParams.expires_in;
+    delete queryParams.token_type;
+
     this.currentPath = pathPart;
     this.updateActiveNavLinks(pathPart);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Handle parameterized routes: e.g. /anime/:id, /character/:id
-    const animeMatch = pathPart.match(/^\/anime\/(\d+)$/);
+    // Handle parameterized routes: e.g. /anime/:id, /anime/:id/:slug, /anime/:slug, /character/:id
+    const animeMatch = pathPart.match(/^\/anime\/(.+)$/);
     if (animeMatch) {
-      const animeId = animeMatch[1];
-      await DetailsView.render(this.appRoot, { id: animeId });
-      return;
+      const rawParam = decodeURIComponent(animeMatch[1]).replace(/\/+$/, '').trim();
+      if (rawParam) {
+        await DetailsView.render(this.root, { id: rawParam });
+        return;
+      }
     }
 
-    const charMatch = pathPart.match(/^\/character\/(\d+)$/);
+    const charMatch = pathPart.match(/^\/character\/(\d+)/);
     if (charMatch) {
       const charId = charMatch[1];
-      await CharacterView.render(this.appRoot, charId);
+      await CharacterView.render(this.root, charId);
       return;
     }
 
@@ -114,11 +143,11 @@ class AppRouter {
     // Standard static routes
     const handler = this.routes[pathPart];
     if (handler) {
-      await handler.render(this.appRoot, queryParams);
+      await handler.render(this.root, queryParams);
     } else {
       // Unknown route -> render 404 view
       SeoService.update({ title: '404 - Page Not Found' });
-      await NotFoundView.render(this.appRoot, pathPart);
+      await NotFoundView.render(this.root, pathPart);
     }
   }
 
@@ -161,6 +190,7 @@ window.router.register('/profile', ProfileView);
 window.router.register('/discover', DiscoverView);
 window.router.register('/dashboard', DashboardView);
 window.router.register('/compare', CompareView);
+window.router.register('/admin/watch-sources', AdminWatchSourcesView);
 
 // Register Legal & Info Routes
 window.router.register('/about', { render: (c, q) => InfoPagesView.render(c, q, 'about') });
@@ -239,8 +269,13 @@ const SearchModal = {
 
   async search(query) {
     try {
-      const { media } = await AnimeService.searchAndFilter({ search: query, perPage: 8 });
-      if (!media || media.length === 0) {
+      const [searchRes, verifiedSources] = await Promise.all([
+        AnimeService.searchAndFilter({ search: query, perPage: 8 }),
+        AnimeService.getVerifiedSources().catch(() => [])
+      ]);
+
+      const media = searchRes?.media || [];
+      if (media.length === 0) {
         this.resultsList.innerHTML = `
           <div style="padding: 24px; text-align: center; color: var(--text-muted);">
             No anime found matching "<strong>${escapeHtml(query)}</strong>"
@@ -249,6 +284,13 @@ const SearchModal = {
         return;
       }
 
+      // Map verified watch sources by anime_id
+      const verifiedMap = new Map();
+      (verifiedSources || []).forEach(s => {
+        const aid = Number(s.anime_id);
+        if (!verifiedMap.has(aid)) verifiedMap.set(aid, s);
+      });
+
       this.resultsList.innerHTML = media.map(anime => {
         const title = AnimeService.formatTitle(anime.title);
         const score = AnimeService.formatScore(anime.averageScore);
@@ -256,11 +298,27 @@ const SearchModal = {
         const thumb = anime.coverImage?.medium || anime.coverImage?.large;
         const genres = (anime.genres || []).slice(0, 2).join(', ');
 
+        const watchSource = verifiedMap.get(Number(anime.id));
+        const isWatchable = Boolean(watchSource);
+        const hasHindi = (watchSource?.language || '').toLowerCase().includes('hindi');
+
         return `
           <div class="search-result-item" onclick="SearchModal.selectAnime(${anime.id})">
             <img class="search-result-thumb" src="${thumb}" alt="${escapeHtml(title)}" />
             <div class="search-result-info">
-              <div class="search-result-title">${escapeHtml(title)}</div>
+              <div class="search-result-title" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span>${escapeHtml(title)}</span>
+                ${isWatchable ? `
+                  <span style="background: rgba(220, 38, 38, 0.9); color: #fff; font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;">
+                    ▶ YouTube
+                  </span>
+                ` : ''}
+                ${hasHindi ? `
+                  <span style="background: rgba(245, 158, 11, 0.95); color: #000; font-size: 0.62rem; font-weight: 800; padding: 1px 5px; border-radius: 3px;">
+                    Hindi Dub
+                  </span>
+                ` : ''}
+              </div>
               <div class="search-result-meta">
                 ${anime.averageScore ? `<span style="color: var(--accent-amber);">★ ${score}</span><span>•</span>` : ''}
                 ${year ? `<span>${year}</span><span>•</span>` : ''}

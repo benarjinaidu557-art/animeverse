@@ -36,12 +36,12 @@ export const CommunityService = {
   async getAnimeRatings(animeId) {
     const supabase = await getSupabaseClient();
     const currentUser = AuthService.getUser();
-    const idStr = String(animeId);
+    const idNum = Number(animeId);
 
     const { data: allRatings, error } = await supabase
       .from('anime_ratings')
       .select('*')
-      .eq('anime_id', idStr);
+      .eq('anime_id', idNum);
 
     if (error) {
       console.warn('Error fetching anime ratings:', error);
@@ -85,16 +85,14 @@ export const CommunityService = {
     const supabase = await getSupabaseClient();
     const record = {
       user_id: user.id,
-      anime_id: String(animeId),
+      anime_id: Number(animeId),
       rating: score,
-      anime_title: animeMetadata.title || '',
-      anime_cover: animeMetadata.coverImage || '',
       updated_at: new Date().toISOString(),
     };
 
     const { data, error } = await supabase
       .from('anime_ratings')
-      .insert(record);
+      .upsert(record, { onConflict: 'user_id, anime_id' });
 
     if (error) throw error;
     return { success: true, rating: score };
@@ -109,7 +107,7 @@ export const CommunityService = {
       .from('anime_ratings')
       .delete()
       .eq('user_id', user.id)
-      .eq('anime_id', String(animeId));
+      .eq('anime_id', Number(animeId));
 
     if (error) throw error;
     return { success: true };
@@ -137,12 +135,12 @@ export const CommunityService = {
   async getAnimeReviews(animeId) {
     const supabase = await getSupabaseClient();
     const currentUser = AuthService.getUser();
-    const idStr = String(animeId);
+    const idNum = Number(animeId);
 
     const { data: reviews, error } = await supabase
       .from('anime_reviews')
       .select('*')
-      .eq('anime_id', idStr)
+      .eq('anime_id', idNum)
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -167,16 +165,17 @@ export const CommunityService = {
         avatarUrl: `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${r.user_id}`,
       };
 
+      const rawText = r.review_text || r.content || '';
       return {
         id: r.id,
         animeId: r.anime_id,
         userId: r.user_id,
         rating: r.rating,
-        summary: r.summary,
-        content: r.content,
+        summary: r.summary || '',
+        content: rawText,
         containsSpoilers: Boolean(r.contains_spoilers),
-        animeTitle: r.anime_title,
-        animeCover: r.anime_cover,
+        animeTitle: r.anime_title || '',
+        animeCover: r.anime_cover || '',
         createdAt: r.created_at,
         updatedAt: r.updated_at,
         author,
@@ -196,17 +195,12 @@ export const CommunityService = {
     }
 
     const supabase = await getSupabaseClient();
-    const profile = await AuthService.getProfile();
+    const fullText = (summary && summary.trim() ? summary.trim() + '\n\n' : '') + content.trim();
     const record = {
       user_id: user.id,
-      anime_id: String(animeId),
-      rating: rating ? parseInt(rating, 10) : null,
-      summary: summary ? summary.trim() : '',
-      content: content.trim(),
-      contains_spoilers: Boolean(containsSpoilers),
-      anime_title: animeTitle,
-      anime_cover: animeCover,
-      username: profile?.username || user.email?.split('@')[0] || 'Fan',
+      anime_id: Number(animeId),
+      rating: rating ? parseInt(rating, 10) : 10,
+      review_text: fullText,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -228,9 +222,9 @@ export const CommunityService = {
       updated_at: new Date().toISOString(),
     };
     if (rating !== undefined) updates.rating = parseInt(rating, 10);
-    if (summary !== undefined) updates.summary = summary.trim();
-    if (content !== undefined) updates.content = content.trim();
-    if (containsSpoilers !== undefined) updates.contains_spoilers = Boolean(containsSpoilers);
+    if (content !== undefined) {
+      updates.review_text = (summary && summary.trim() ? summary.trim() + '\n\n' : '') + content.trim();
+    }
 
     const { data, error } = await supabase
       .from('anime_reviews')
@@ -326,12 +320,12 @@ export const CommunityService = {
   async getAnimeComments(animeId) {
     const supabase = await getSupabaseClient();
     const currentUser = AuthService.getUser();
-    const idStr = String(animeId);
+    const idNum = Number(animeId);
 
     const { data: comments, error } = await supabase
       .from('anime_comments')
       .select('*')
-      .eq('anime_id', idStr)
+      .eq('anime_id', idNum)
       .order('created_at', { ascending: true });
 
     if (error) {
@@ -355,12 +349,13 @@ export const CommunityService = {
         avatarUrl: `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${c.user_id}`,
       };
 
+      const rawText = c.comment_text || c.content || '';
       return {
         id: c.id,
         animeId: c.anime_id,
         parentId: c.parent_id || null,
         userId: c.user_id,
-        content: c.content,
+        content: rawText,
         createdAt: c.created_at,
         updatedAt: c.updated_at,
         author,
@@ -380,13 +375,10 @@ export const CommunityService = {
     }
 
     const supabase = await getSupabaseClient();
-    const profile = await AuthService.getProfile();
     const record = {
       user_id: user.id,
-      anime_id: String(animeId),
-      parent_id: parentId ? String(parentId) : null,
-      content: content.trim(),
-      username: profile?.username || user.email?.split('@')[0] || 'Fan',
+      anime_id: Number(animeId),
+      comment_text: content.trim(),
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -406,7 +398,7 @@ export const CommunityService = {
     const supabase = await getSupabaseClient();
     const { data, error } = await supabase
       .from('anime_comments')
-      .update({ content: content.trim(), updated_at: new Date().toISOString() })
+      .update({ comment_text: content.trim(), updated_at: new Date().toISOString() })
       .eq('id', commentId)
       .eq('user_id', user.id);
 

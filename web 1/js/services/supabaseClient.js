@@ -64,7 +64,11 @@ function createLocalSupabaseSimulator() {
   }
 
   function setStored(key, data) {
-    localStorage.setItem(key, JSON.stringify(data));
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(key, JSON.stringify(data));
+      }
+    } catch {}
   }
 
   function getActiveUser() {
@@ -92,6 +96,24 @@ function createLocalSupabaseSimulator() {
 
       async getSession() {
         return { data: { session: getStored(STORAGE_SESSION, null) }, error: null };
+      },
+
+      async setSession({ access_token, refresh_token }) {
+        let session = getStored(STORAGE_SESSION, null);
+        if (!session) {
+          const user = getActiveUser() || {
+            id: 'usr_oauth_sim',
+            email: 'google.user@example.com',
+            user_metadata: { username: 'Google User', avatar_url: 'https://api.dicebear.com/7.x/bottts-neutral/svg?seed=usr_oauth_sim' },
+            created_at: new Date().toISOString()
+          };
+          session = { user, access_token: access_token || 'sim_oauth_token' };
+        } else if (access_token) {
+          session.access_token = access_token;
+        }
+        setStored(STORAGE_SESSION, session);
+        authListeners.forEach(cb => cb('SIGNED_IN', session));
+        return { data: { session, user: session.user }, error: null };
       },
 
       async getUser() {
@@ -216,6 +238,8 @@ function createLocalSupabaseSimulator() {
         'review_likes',
         'anime_comments',
         'comment_likes',
+        'watch_sources',
+        'approved_youtube_channels',
       ]);
 
       const key = 'animeverse_sim_' + tableName;
@@ -305,6 +329,38 @@ function createLocalSupabaseSimulator() {
           return { data: items, error: null };
         },
 
+        async upsert(records, options = {}) {
+          const items = Array.isArray(records) ? records : [records];
+          const stored = getStored(key, []);
+
+          items.forEach(item => {
+            if (tableName === 'watch_sources') {
+              const existingIdx = stored.findIndex(s => 
+                String(s.anime_id) === String(item.anime_id) && 
+                s.provider === item.provider && 
+                s.season_number === item.season_number && 
+                s.episode_number === item.episode_number
+              );
+              if (existingIdx >= 0) stored[existingIdx] = { ...stored[existingIdx], ...item, updated_at: new Date().toISOString() };
+              else stored.push({ ...item, created_at: item.created_at || new Date().toISOString(), updated_at: new Date().toISOString() });
+            } else if (tableName === 'approved_youtube_channels') {
+              const existingIdx = stored.findIndex(s => s.channel_id === item.channel_id);
+              if (existingIdx >= 0) stored[existingIdx] = { ...stored[existingIdx], ...item };
+              else stored.push(item);
+            } else if (tableName === 'anime_ratings') {
+              const uId = item.user_id || activeUser?.id;
+              const existingIdx = stored.findIndex(s => s.user_id === uId && String(s.anime_id) === String(item.anime_id));
+              if (existingIdx >= 0) stored[existingIdx] = { ...stored[existingIdx], ...item, updated_at: new Date().toISOString() };
+              else stored.push({ ...item, user_id: uId, created_at: new Date().toISOString() });
+            } else {
+              stored.push(item);
+            }
+          });
+
+          setStored(key, stored);
+          return { data: items, error: null };
+        },
+
         _pendingUpdate: null,
         _pendingDelete: false,
 
@@ -359,10 +415,14 @@ function createLocalSupabaseSimulator() {
         },
 
         async _executeDelete() {
-          if (!activeUser) return { data: null, error: { message: 'Row Level Security: authenticated user required.' } };
+          if (!activeUser && tableName !== 'watch_sources') return { data: null, error: { message: 'Row Level Security: authenticated user required.' } };
 
           const stored = getStored(key, []);
           const remaining = stored.filter(item => {
+            if (tableName === 'watch_sources') {
+              const matches = this._filters.every(f => String(item[f.column]) === String(f.value));
+              return !matches;
+            }
             const idKey = tableName === 'profiles' ? 'id' : 'user_id';
             if (item[idKey] !== activeUser.id) return true;
             const matches = this._filters.every(f => String(item[f.column]) === String(f.value));

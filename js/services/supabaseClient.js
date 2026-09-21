@@ -98,6 +98,24 @@ function createLocalSupabaseSimulator() {
         return { data: { session: getStored(STORAGE_SESSION, null) }, error: null };
       },
 
+      async setSession({ access_token, refresh_token }) {
+        let session = getStored(STORAGE_SESSION, null);
+        if (!session) {
+          const user = getActiveUser() || {
+            id: 'usr_oauth_sim',
+            email: 'google.user@example.com',
+            user_metadata: { username: 'Google User', avatar_url: 'https://api.dicebear.com/7.x/bottts-neutral/svg?seed=usr_oauth_sim' },
+            created_at: new Date().toISOString()
+          };
+          session = { user, access_token: access_token || 'sim_oauth_token' };
+        } else if (access_token) {
+          session.access_token = access_token;
+        }
+        setStored(STORAGE_SESSION, session);
+        authListeners.forEach(cb => cb('SIGNED_IN', session));
+        return { data: { session, user: session.user }, error: null };
+      },
+
       async getUser() {
         return { data: { user: getActiveUser() }, error: null };
       },

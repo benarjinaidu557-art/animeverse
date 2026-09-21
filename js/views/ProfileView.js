@@ -29,6 +29,10 @@ export const ProfileView = {
 
   async render(container) {
     if (!AuthService.isAuthenticated()) {
+      await AuthService.getProfile();
+    }
+
+    if (!AuthService.isAuthenticated()) {
       container.innerHTML = `
         <div class="container" style="padding: 60px 16px; text-align: center;">
           <div class="empty-state" style="max-width: 500px; margin: 0 auto;">
