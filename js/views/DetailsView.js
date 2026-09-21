@@ -208,7 +208,7 @@ export const DetailsView = {
             Browse
           </a>
           <span>/</span>
-          <span style="color: var(--text-secondary); max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(title)}</span>
+          <span style="color: var(--text-secondary); max-width: min(240px, 45vw); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(title)}</span>
         </div>
 
         <!-- Hero Header with Banner -->
@@ -296,11 +296,11 @@ export const DetailsView = {
           </div>
 
           <!-- User Rating Interaction (1 - 10) -->
-          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+          <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; max-width: 400px;">
             <div style="font-size: 0.85rem; color: #cbd5e1; font-weight: 600;">
               ${ratings.userRating ? `Your Rating: <span style="color: #fbbf24; font-weight: 800;">${ratings.userRating} / 10</span>` : 'Rate this anime (1 - 10):'}
             </div>
-            <div class="rating-stars-row" style="display: flex; gap: 4px;">
+            <div class="rating-stars-row" style="display: flex; gap: 4px; flex-wrap: wrap; max-width: 100%;">
               ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(val => `
                 <button 
                   type="button" 

@@ -26,7 +26,7 @@ export const CompareView = {
         </div>
 
         <!-- Pickers Row -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 36px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; margin-bottom: 28px;">
           <!-- Slot 1 Search Picker -->
           <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 18px;">
             <label style="font-size: 0.8rem; font-weight: 700; color: var(--accent-purple-light); text-transform: uppercase; display: block; margin-bottom: 8px;">Anime 1</label>
@@ -106,7 +106,8 @@ export const CompareView = {
     ];
 
     return `
-      <div style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-md);">
+      <div style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl); overflow-x: auto; -webkit-overflow-scrolling: touch; box-shadow: var(--shadow-md);">
+        <div style="min-width: 480px;">
         <!-- Side by Side Posters Header -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border-subtle);">
           <!-- Anime 1 Header -->
@@ -153,6 +154,7 @@ export const CompareView = {
               </div>
             </div>
           `).join('')}
+        </div>
         </div>
       </div>
     `;

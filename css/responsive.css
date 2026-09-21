@@ -1,188 +1,953 @@
 /* ==========================================================================
-   AnimeVerse - Responsive Stylesheet
+   AnimeVerse - Mobile-First Comprehensive Responsive Stylesheet
+   Targets: 320px, 360px, 375px, 390px, 414px, 430px, 768px, 1024px, 1280px, 1440px
+   100% Anti-overflow, Touch-optimized, iOS Safe-Area & Mobile-First Compliant
    ========================================================================== */
 
-/* Large Tablets and Smaller Desktops (<1100px) */
-@media (max-width: 1100px) {
-  .hero-section {
-    height: auto;
-    min-height: 420px;
+/* ==========================================================================
+   1. Global Mobile-First Safeguards (All Screen Sizes)
+   ========================================================================== */
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  max-width: 100%;
+}
+
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Touch-friendly target minimums for interactive elements */
+button, 
+a, 
+input, 
+select, 
+.mobile-nav-item, 
+.btn-icon, 
+.page-btn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================================================
+   2. Large Desktop Displays (≥ 1440px)
+   ========================================================================== */
+@media (min-width: 1440px) {
+  :root {
+    --max-content-width: 1440px;
+    --container-padding: 32px;
   }
-  
-  .details-header-content {
-    gap: 24px;
-    padding: 32px 24px;
+
+  .anime-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 22px;
   }
-  
-  .details-poster-wrap {
-    width: 200px;
+
+  .hero-title {
+    font-size: 2.85rem;
   }
 }
 
-/* Medium Tablets & Mobile Landscape (<900px) */
-@media (max-width: 900px) {
+/* ==========================================================================
+   3. Standard Desktop & Laptops (1280px – 1439px)
+   ========================================================================== */
+@media (min-width: 1280px) and (max-width: 1439px) {
+  .anime-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+}
+
+/* ==========================================================================
+   4. Small Desktop & Landscape Tablets (1024px – 1279px)
+   ========================================================================== */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  :root {
+    --container-padding: 24px;
+    --header-height: 68px;
+  }
+
+  .anime-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+
   .nav-menu {
-    display: none; /* Replaced by bottom nav on smaller screens */
+    gap: 4px;
+  }
+
+  .nav-link {
+    padding: 7px 12px;
+    font-size: 0.88rem;
   }
 
   .search-trigger {
-    min-width: 160px;
+    min-width: 180px;
   }
-  
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-  }
-  
-  .surprise-section {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 28px;
+
+  .hero-section {
+    min-height: 440px;
+    height: 55vh;
   }
 }
 
-/* Mobile Screens (<768px) */
-@media (max-width: 768px) {
+/* ==========================================================================
+   5. Portrait Tablets & Mobile Landscape (769px – 1023px)
+   ========================================================================== */
+@media (max-width: 1023px) {
+  .nav-menu {
+    display: none; /* Transition to mobile bottom nav */
+  }
+
+  .search-trigger {
+    min-width: 150px;
+    padding: 7px 14px;
+  }
+
+  .search-trigger .shortcut-badge {
+    display: none;
+  }
+
+  .anime-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 28px;
+  }
+
+  .surprise-section {
+    padding: 28px;
+    gap: 20px;
+  }
+}
+
+/* Desktop Only: Ensure mobile bottom nav is strictly hidden on desktop */
+@media (min-width: 901px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   6. Mobile & Small Tablet Devices (≤ 900px)
+   ========================================================================== */
+@media (max-width: 900px) {
   :root {
-    --container-padding: 16px;
     --header-height: 60px;
+    --bottom-nav-height: 60px;
   }
 
   body {
-    padding-bottom: var(--bottom-nav-height);
+    padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom));
   }
 
   #app-root {
-    padding-bottom: 80px;
+    padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 24px);
   }
 
-  /* Show Mobile Bottom Navigation */
+  /* Show Bottom Navigation */
   .mobile-bottom-nav {
     display: flex;
   }
 
-  .search-trigger {
-    padding: 6px 12px;
-    font-size: 0.82rem;
-    min-width: auto;
-  }
-  
-  .search-trigger .shortcut-badge {
-    display: none;
-  }
-  
   .btn-profile-nav span {
     display: none;
   }
 
-  /* Hero Section Mobile */
+  .btn-profile-nav {
+    padding: 4px;
+    border-radius: 50%;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+}
+
+/* ==========================================================================
+   7. Mobile Phones Standard Breakpoint (≤ 768px)
+      Covers: 768px (iPad Mini/portrait), 430px, 414px, 390px, 375px, 360px, 320px
+   ========================================================================== */
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 14px;
+    --header-height: 56px;
+  }
+
+  /* Compact Site Header */
+  .site-header {
+    height: var(--header-height);
+  }
+
+  .nav-inner {
+    gap: 10px;
+  }
+
+  .brand-logo {
+    font-size: 1.2rem;
+    gap: 8px;
+  }
+
+  .brand-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  /* Compact Search Trigger button in Header */
+  .search-trigger {
+    min-width: 42px;
+    height: 42px;
+    padding: 0 10px;
+    border-radius: var(--radius-full);
+    justify-content: center;
+  }
+
+  .search-trigger span {
+    display: none;
+  }
+
+  .search-trigger svg {
+    width: 19px;
+    height: 19px;
+    margin: 0;
+  }
+
+  .btn-watchlist-nav {
+    width: 42px;
+    height: 42px;
+  }
+
+  .btn-primary#nav-login-btn {
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    min-height: 38px;
+  }
+
+  /* Hero Banner on Mobile */
   .hero-section {
-    min-height: 380px;
-    margin-bottom: 28px;
-    border-radius: var(--radius-lg);
+    min-height: 280px;
+    max-height: 390px;
+    height: auto;
+    margin-bottom: 22px;
+    border-radius: var(--radius-md);
   }
 
   .hero-container {
-    padding: 24px 20px;
+    padding: 20px 16px;
+    max-width: 100%;
+  }
+
+  .hero-tags {
+    margin-bottom: 8px;
+    gap: 6px;
+  }
+
+  .hero-badge-spotlight {
+    font-size: 0.68rem;
+    padding: 3px 9px;
+  }
+
+  .hero-score-badge {
+    font-size: 0.72rem;
+    padding: 3px 8px;
   }
 
   .hero-title {
-    font-size: 1.65rem;
+    font-size: clamp(1.3rem, 5vw, 1.75rem);
+    line-height: 1.22;
     margin-bottom: 8px;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .hero-synopsis {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
     -webkit-line-clamp: 2;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+  }
+
+  .hero-actions {
+    gap: 8px;
+  }
+
+  .hero-actions .btn-primary {
+    padding: 9px 18px;
+    font-size: 0.86rem;
+    min-height: 42px;
+  }
+
+  .hero-actions .btn-secondary {
+    display: none; /* Save space on mobile */
   }
 
   .hero-controls {
     display: none;
   }
 
-  .hero-actions .btn-secondary {
-    display: none;
+  /* Section Containers & Headers */
+  .section-container {
+    margin-bottom: 28px;
   }
 
-  /* Section Title & Grids */
-  .section-container {
-    margin-bottom: 32px;
+  .section-header {
+    margin-bottom: 14px;
+    gap: 8px;
+  }
+
+  .section-accent-bar {
+    width: 3px;
+    height: 18px;
   }
 
   .section-title {
-    font-size: 1.25rem;
+    font-size: 1.18rem;
   }
 
+  .section-subtitle {
+    font-size: 0.78rem;
+  }
+
+  .btn-view-all {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+
+  /* 2-Column Responsive Anime Grid for Mobile Phones */
   .anime-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
 
-  /* Anime Card Mobile */
-  .anime-card-content {
-    padding: 10px;
+  /* Optimized Mobile Anime Card */
+  .anime-card {
+    border-radius: var(--radius-sm);
   }
 
-  .anime-card-title {
-    font-size: 0.86rem;
+  .anime-card-media {
+    aspect-ratio: 11 / 16;
   }
 
   .card-badge-top {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     padding: 2px 6px;
+    top: 6px;
+    left: 6px;
   }
 
-  /* Details Page Mobile */
+  .card-action-bookmark {
+    width: 30px;
+    height: 30px;
+    top: 6px;
+    right: 6px;
+  }
+
+  .card-action-bookmark svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .card-badge-status {
+    font-size: 0.62rem;
+    padding: 2px 5px;
+    bottom: 6px;
+    left: 6px;
+  }
+
+  .card-badge-episodes {
+    font-size: 0.65rem;
+    padding: 2px 5px;
+    bottom: 6px;
+    right: 6px;
+  }
+
+  .anime-card-content {
+    padding: 8px 10px 10px;
+  }
+
+  .anime-card-title {
+    font-size: 0.84rem;
+    line-height: 1.25;
+    margin-bottom: 4px;
+    -webkit-line-clamp: 2;
+    max-height: 2.5em;
+  }
+
+  .anime-card-meta {
+    font-size: 0.72rem;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .genre-pill {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+  }
+
+  /* Mobile Horizontal Scroll Carousel */
+  .horizontal-scroll-row {
+    gap: 12px;
+    padding-bottom: 8px;
+  }
+
+  .horizontal-scroll-row > * {
+    flex: 0 0 145px;
+  }
+
+  /* ==========================================================================
+     Anime Details Page Mobile Flow:
+     Poster -> Title -> Meta -> Description -> Genres -> Watch Button
+     ========================================================================== */
   .details-hero {
     min-height: auto;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
   }
 
   .details-header-content {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 24px 16px;
+    padding: 20px 14px;
+    gap: 18px;
   }
 
   .details-poster-wrap {
-    width: 170px;
+    width: min(180px, 50vw);
+    margin: 0 auto;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .details-poster-wrap img {
+    aspect-ratio: 11 / 16;
+  }
+
+  .details-poster-actions {
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .details-poster-actions .btn-primary,
+  .details-poster-actions .btn-secondary {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    min-height: 40px;
+    justify-content: center;
+  }
+
+  .details-info-primary {
+    width: 100%;
+    text-align: center;
+  }
+
+  .details-title-romaji {
+    font-size: clamp(1.35rem, 5.5vw, 1.85rem);
+    line-height: 1.22;
+    margin-bottom: 4px;
+  }
+
+  .details-title-native {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
   }
 
   .details-meta-pills {
     justify-content: center;
+    gap: 6px;
+    margin-bottom: 14px;
   }
 
+  .meta-pill {
+    font-size: 0.74rem;
+    padding: 3px 8px;
+  }
+
+  .details-genres {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 16px;
+  }
+
+  .details-synopsis {
+    text-align: left;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .rating-widget-card {
+    padding: 16px !important;
+    border-radius: var(--radius-md) !important;
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+
+  .rating-stars-row {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    justify-content: flex-start;
+  }
+
+  .rating-stars-row .btn-rate-star {
+    min-width: 32px;
+    min-height: 32px;
+    flex-shrink: 0;
+  }
+
+  /* ==========================================================================
+     Watch Page & YouTube Embedded Player (100% Mobile Full-Width 16:9)
+     ========================================================================== */
+  .watch-player-section {
+    margin-bottom: 24px !important;
+  }
+
+  .watch-player-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .watch-player-title {
+    font-size: 1.2rem;
+  }
+
+  .watch-player-subtitle {
+    font-size: 0.78rem;
+  }
+
+  .season-selector-wrap {
+    flex: 1 1 120px;
+  }
+
+  .season-dropdown {
+    width: 100%;
+    min-height: 44px;
+    font-size: 0.88rem;
+    padding: 8px 12px;
+  }
+
+  /* Scrollable Compact Episode Pills Bar */
+  .player-episodes-strip-container {
+    padding: 10px 0;
+  }
+
+  .player-episodes-label {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+  }
+
+  .player-episodes-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 2px 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .btn-player-ep {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    border-radius: var(--radius-sm);
+  }
+
+  /* 16:9 Full Width Player Embed */
+  .player-viewport-container {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .youtube-player-aspect-box {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* Perfect 16:9 */
+    background: #000;
+  }
+
+  .youtube-player-aspect-box iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* Player Control Bar on Mobile */
+  .player-control-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .player-info-meta {
+    width: 100%;
+  }
+
+  .player-current-title {
+    font-size: 0.95rem;
+    white-space: normal;
+    line-height: 1.35;
+  }
+
+  .player-channel-attribution {
+    font-size: 0.75rem;
+    gap: 6px;
+  }
+
+  .player-action-buttons {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .player-action-buttons .btn-player-external,
+  .player-action-buttons .btn-player-nav {
+    flex: 1;
+    min-height: 44px;
+    justify-content: center;
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  /* Authorized Sources Cards */
+  .authorized-sources-card,
+  .watch-officially-card {
+    padding: 18px 14px;
+    margin-bottom: 22px;
+    border-radius: var(--radius-md);
+  }
+
+  .watch-section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .youtube-sources-grid,
+  .sources-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .youtube-source-card,
+  .source-item-btn {
+    padding: 12px 14px;
+    min-height: 48px;
+  }
+
+  /* Characters & Episodes Grids */
   .character-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .character-card {
+    padding: 8px 10px;
+  }
+
+  .character-thumb {
+    width: 44px;
+    height: 44px;
+  }
+
+  .character-name {
+    font-size: 0.86rem;
+  }
+
+  .episode-list-container {
+    padding: 16px 14px;
+    border-radius: var(--radius-md);
+    margin-bottom: 24px;
   }
 
   .episode-grid {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .episode-item {
+    padding: 10px 12px;
+    min-height: 48px;
+  }
+
+  .episode-title {
+    font-size: 0.82rem;
+  }
+
+  .btn-episode-toggle,
+  .btn-watch-stream {
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  /* ==========================================================================
+     Browse & Filter Controls Mobile
+     ========================================================================== */
+  .browse-filter-card {
+    padding: 16px 14px;
+    margin-bottom: 20px;
+    border-radius: var(--radius-md);
+  }
+
+  .browse-search-row {
+    margin-bottom: 12px;
+  }
+
+  .browse-search-input {
+    padding: 12px 14px 12px 42px;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+
+  .filter-controls-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .filter-select {
+    min-height: 44px;
+    font-size: 0.84rem;
+    padding: 8px 10px;
+    width: 100%;
+  }
+
+  .filter-actions-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  /* Mobile Search Modal: Bottom-sheet/Full-screen style */
+  .modal-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal-content.search-modal-dialog {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .search-modal-header {
+    padding: 14px 16px;
+    padding-top: max(14px, var(--safe-area-top));
+    min-height: 56px;
+    gap: 10px;
+  }
+
+  .search-modal-input {
+    font-size: 1rem;
+    min-height: 44px;
+  }
+
+  .search-results-list {
+    flex: 1;
+    max-height: none;
+    padding: 10px 14px;
+  }
+
+  .search-result-item {
+    min-height: 54px;
+    padding: 8px 10px;
+  }
+
+  /* Surprise Me section */
+  .surprise-section {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 22px 18px;
+    border-radius: var(--radius-md);
+    margin-bottom: 28px;
+  }
+
+  .surprise-content h3 {
+    font-size: 1.3rem;
+  }
+
+  .btn-surprise {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
   }
 
   /* Footer Mobile */
+  .site-footer {
+    padding: 32px 0 calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 24px);
+  }
+
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 22px;
+  }
+
+  .footer-col h4 {
+    margin-bottom: 10px;
+    font-size: 0.92rem;
   }
 
   .footer-bottom {
     flex-direction: column;
-    gap: 12px;
     text-align: center;
+    gap: 12px;
   }
 }
 
-/* Extra Small Phones (<480px) */
-@media (max-width: 480px) {
-  .anime-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+/* ==========================================================================
+   8. Extra-Compact Phones (≤ 375px)
+      Covers: 375px, 360px, 320px
+   ========================================================================== */
+@media (max-width: 375px) {
+  :root {
+    --container-padding: 10px;
+    --header-height: 54px;
   }
-  
+
+  .brand-text span {
+    display: inline;
+  }
+
+  .brand-logo {
+    font-size: 1.1rem;
+  }
+
+  .anime-grid {
+    gap: 9px;
+  }
+
+  .anime-card-content {
+    padding: 6px 8px 8px;
+  }
+
+  .anime-card-title {
+    font-size: 0.78rem;
+  }
+
+  .hero-title {
+    font-size: 1.25rem;
+  }
+
+  .hero-container {
+    padding: 16px 12px;
+  }
+
+  .details-poster-wrap {
+    width: 150px;
+  }
+
   .filter-controls-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-nav-item {
+    padding: 5px 8px;
+    min-width: 48px;
+    font-size: 0.68rem;
+  }
+
+  .mobile-nav-item svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .pagination-container {
+    gap: 5px;
+  }
+
+  .page-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    font-size: 0.82rem;
+  }
+}
+
+/* ==========================================================================
+   9. Ultra-Narrow Devices (≤ 320px)
+   ========================================================================== */
+@media (max-width: 320px) {
+  :root {
+    --container-padding: 8px;
+  }
+
+  .brand-text {
+    font-size: 1.05rem;
+  }
+
+  .anime-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .anime-card-title {
+    font-size: 0.74rem;
+  }
+
+  .card-badge-top, 
+  .card-badge-status, 
+  .card-badge-episodes {
+    font-size: 0.58rem;
+    padding: 1px 4px;
+  }
+
+  .mobile-nav-item span {
+    font-size: 0.62rem;
+  }
+}
+
+/* ==========================================================================
+   10. High-DPI & Print/Orientation Edge Cases
+   ========================================================================== */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero-section {
+    min-height: 240px;
+    height: 70vh;
+  }
+
+  .mobile-bottom-nav {
+    height: calc(48px + var(--safe-area-bottom));
+  }
+
+  .mobile-nav-item {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .mobile-nav-item svg {
+    width: 18px;
+    height: 18px;
   }
 }

@@ -291,13 +291,77 @@ export const AnimeService = {
 
     // Resilient fallback default catalog (Muse India, Muse Asia, Ani-One)
     return [
-      { anime_id: 21507, language: 'Telugu', verification_status: 'verified' },
-      { anime_id: 101338, language: 'Telugu', verification_status: 'verified' },
+      // ── Previously verified ──────────────────────────────────────────
+      { anime_id: 21507,  language: 'Telugu / Hindi Dub', verification_status: 'verified' },
+      { anime_id: 101338, language: 'Telugu',             verification_status: 'verified' },
+      { anime_id: 98659,  language: 'Telugu',             verification_status: 'verified' },
+      { anime_id: 145545, language: 'Telugu',             verification_status: 'verified' },
+      { anime_id: 146066, language: 'Telugu',             verification_status: 'verified' },
       { anime_id: 116006, language: 'Hindi Dub / en-Sub', verification_status: 'verified' },
-      { anime_id: 142838, language: 'ja-JP / en-Sub', verification_status: 'verified' },
-      { anime_id: 127230, language: 'ja-JP / en-Sub', verification_status: 'verified' },
-      { anime_id: 154587, language: 'ja-JP / en-Sub', verification_status: 'verified' },
-      { anime_id: 139274, language: 'ja-JP / en-Sub', verification_status: 'verified' }
+      { anime_id: 142838, language: 'ja-JP / en-Sub',     verification_status: 'verified' },
+      { anime_id: 127230, language: 'ja-JP / en-Sub',     verification_status: 'verified' },
+      { anime_id: 154587, language: 'ja-JP / en-Sub',     verification_status: 'verified' },
+      { anime_id: 139274, language: 'ja-JP / en-Sub',     verification_status: 'verified' },
+      // ── Batch 1 – Muse India Hindi Dub ──────────────────────────────
+      { anime_id: 170577, language: 'Hindi Dub', verification_status: 'verified' }, // Campfire Cooking S2
+      { anime_id: 21450,  language: 'Hindi Dub', verification_status: 'verified' }, // JoJo Diamond is Unbreakable
+      { anime_id: 20474,  language: 'Hindi Dub', verification_status: 'verified' }, // JoJo Stardust Crusaders
+      { anime_id: 108465, language: 'Hindi Dub', verification_status: 'verified' }, // Mushoku Tensei S1
+      { anime_id: 116338, language: 'Hindi Dub', verification_status: 'verified' }, // Iruma-kun S2
+      { anime_id: 140960, language: 'Hindi Dub', verification_status: 'verified' }, // SPY×FAMILY S1
+      { anime_id: 177937, language: 'Hindi Dub', verification_status: 'verified' }, // SPY×FAMILY S3
+      { anime_id: 99749,  language: 'Hindi Dub / en-Sub', verification_status: 'verified' }, // Fairy Tail Final
+      { anime_id: 170695, language: 'Hindi Dub', verification_status: 'verified' }, // I Parry Everything
+      // ── Batch 1 – Ani-One India ──────────────────────────────────────
+      { anime_id: 196012, language: 'en-Sub',   verification_status: 'verified' }, // MAO
+      { anime_id: 202269, language: 'en-Sub',   verification_status: 'verified' }, // Love Unseen
+      { anime_id: 210234, language: 'en-Sub',   verification_status: 'verified' }, // Monster Eater
+      { anime_id: 185211, language: 'en-Sub',   verification_status: 'verified' }, // Yowayowa Sensei
+      { anime_id: 113415, language: 'en-Sub / Hindi Dub', verification_status: 'verified' }, // JJK
+      { anime_id: 179950, language: 'en-Sub',   verification_status: 'verified' }, // Petals of Reincarnation
+      { anime_id: 179813, language: 'en-Sub',   verification_status: 'verified' }, // Rooster Fighter
+      { anime_id: 184951, language: 'en-Sub',   verification_status: 'verified' }, // You and I Are Polar Opposites
+      { anime_id: 198561, language: 'en-Sub',   verification_status: 'verified' }, // I Saved Myself with a Potion
+      { anime_id: 918,    language: 'en-Sub',   verification_status: 'verified' }, // Gintama
+      { anime_id: 20832,  language: 'Hindi Dub', verification_status: 'verified' }, // Overlord
+      { anime_id: 137822, language: 'Hindi Dub', verification_status: 'verified' }, // Blue Lock
+      // ── Batch 1 – Muse Asia ──────────────────────────────────────────
+      { anime_id: 110277, language: 'en-Sub', verification_status: 'verified' }, // AoT Final Season
+      { anime_id: 20958,  language: 'en-Sub', verification_status: 'verified' }, // AoT S2
+      // ── Batch 2 – Muse India ─────────────────────────────────────────
+      { anime_id: 6702,   language: 'Hindi Dub / en-Sub', verification_status: 'verified' }, // Fairy Tail
+      { anime_id: 153629, language: 'en-Sub', verification_status: 'verified' }, // Magical Revolution Princess
+      // ── Batch 2 – Muse Asia ──────────────────────────────────────────
+      { anime_id: 21087,  language: 'en-Sub / Hindi Dub', verification_status: 'verified' }, // One-Punch Man S1
+      { anime_id: 97668,  language: 'en-Sub', verification_status: 'verified' }, // One-Punch Man S2
+      { anime_id: 105164, language: 'en-Sub', verification_status: 'verified' }, // Cautious Hero
+      { anime_id: 130586, language: 'en-Sub', verification_status: 'verified' }, // Greatest Demon Lord
+      { anime_id: 97986,  language: 'en-Sub', verification_status: 'verified' }, // Made in Abyss
+      { anime_id: 174288, language: 'en-Sub', verification_status: 'verified' }, // Easygoing Territory Defense
+      { anime_id: 19383,  language: 'en-Sub', verification_status: 'verified' }, // Yamishibai
+      { anime_id: 129190, language: 'en-Sub', verification_status: 'verified' }, // Genius Prince
+      { anime_id: 128828, language: 'en-Sub', verification_status: 'verified' }, // Girls Frontline
+      { anime_id: 154136, language: 'en-Sub', verification_status: 'verified' }, // Sasaki and Peeps
+      { anime_id: 175383, language: 'en-Sub', verification_status: 'verified' }, // Loner Life
+      { anime_id: 175235, language: 'en-Sub', verification_status: 'verified' }, // Let This Grieving Soul
+      { anime_id: 167087, language: 'en-Sub', verification_status: 'verified' }, // Haigakura
+      { anime_id: 179788, language: 'en-Sub', verification_status: 'verified' }, // I Left A-Rank Party
+      { anime_id: 171244, language: 'en-Sub', verification_status: 'verified' }, // From Bureaucrat to Villainess
+      { anime_id: 147774, language: 'en-Sub', verification_status: 'verified' }, // Nights with a Cat
+      { anime_id: 184512, language: 'en-Sub', verification_status: 'verified' }, // Candy Caries
+      // ── Batch 2 – Ani-One Asia ───────────────────────────────────────
+      { anime_id: 134252, language: 'en-Sub', verification_status: 'verified' }, // Life With Ordinary Guy
+      { anime_id: 161309, language: 'en-Sub', verification_status: 'verified' }, // DOG SIGNAL
+      { anime_id: 145070, language: 'en-Sub', verification_status: 'verified' }, // YUREI DECO
+      // ── Batch 2 – Ani-One India ──────────────────────────────────────
+      { anime_id: 179470, language: 'en-Sub', verification_status: 'verified' }, // Fermat Kitchen
+      { anime_id: 170366, language: 'Hindi Dub / ja-JP', verification_status: 'verified' }, // Tamon B-Side
+      // ── Batch 2 – Studio Channels ────────────────────────────────────
+      { anime_id: 1981,   language: 'en-Dub / en-Sub', verification_status: 'verified' }, // Sherlock Hound
+      { anime_id: 440,    language: 'en-Sub',           verification_status: 'verified' }, // Revolutionary Girl Utena
+      { anime_id: 149596, language: 'en-Sub',           verification_status: 'verified' }, // Uma Musume Road to the Top
+      { anime_id: 184512, language: 'en-Sub',           verification_status: 'verified' }, // Candy Caries (dupe prevention handled at query)
+      { anime_id: 1564,   language: 'en-Dub / Hindi Dub', verification_status: 'verified' }, // Pokemon Diamond Pearl
     ];
   },
 

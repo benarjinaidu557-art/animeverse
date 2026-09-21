@@ -555,42 +555,57 @@ button {
   bottom: 0;
   left: 0;
   right: 0;
-  height: var(--bottom-nav-height);
-  background: rgba(11, 13, 20, 0.95);
+  height: calc(var(--bottom-nav-height) + var(--safe-area-bottom));
+  padding-bottom: var(--safe-area-bottom);
+  background: rgba(11, 13, 20, 0.94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border-subtle);
   z-index: 100;
   justify-content: space-around;
   align-items: center;
-  padding: 0 8px;
+  padding-left: max(6px, var(--safe-area-left));
+  padding-right: max(6px, var(--safe-area-right));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .mobile-nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 3px;
   font-size: 0.72rem;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: var(--text-muted);
   position: relative;
   padding: 6px 12px;
+  min-width: 52px;
+  min-height: 44px;
   border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.mobile-nav-item:active {
+  transform: scale(0.92);
 }
 
 .mobile-nav-item svg {
   width: 22px;
   height: 22px;
+  transition: transform var(--transition-fast), filter var(--transition-fast);
 }
 
 .mobile-nav-item.active {
-  color: var(--accent-purple-light);
+  color: #fff;
 }
 
 .mobile-nav-item.active svg {
-  filter: drop-shadow(0 0 6px var(--accent-purple-glow));
+  color: var(--accent-purple-light);
+  filter: drop-shadow(0 0 8px var(--accent-purple-glow));
 }
 
 /* ==========================================================================
@@ -788,13 +803,24 @@ button {
 
 #toast-container {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 16px);
+  right: 16px;
+  left: 16px;
+  max-width: 420px;
+  margin-left: auto;
   z-index: 300;
   display: flex;
   flex-direction: column;
   gap: 10px;
   pointer-events: none;
+}
+
+@media (min-width: 769px) {
+  #toast-container {
+    bottom: 24px;
+    left: auto;
+    right: 24px;
+  }
 }
 
 .toast {

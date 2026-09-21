@@ -66,6 +66,38 @@ const VERIFIED_YOUTUBE_DISTRIBUTORS = {
     description: 'Official Studio Release',
     isIndia: true,
   },
+  'tms-anime': {
+    name: 'TMS Anime Official',
+    badge: 'Watch on TMS Anime',
+    region: 'Official Studio Channel (Global)',
+    channelUrl: 'https://www.youtube.com/@TMSanime',
+    description: 'Official TMS Entertainment (Tokyo Movie Shinsha) Channel',
+    isIndia: true,
+  },
+  'nozomi-ent': {
+    name: 'Nozomi Entertainment',
+    badge: 'Watch on Nozomi Entertainment',
+    region: 'Official Licensed Channel (Global)',
+    channelUrl: 'https://www.youtube.com/@nozomient',
+    description: 'Official Nozomi/Right Stuf Licensed Anime Channel',
+    isIndia: true,
+  },
+  'pakatube': {
+    name: 'PakaTube (Cygames Official)',
+    badge: 'Watch on PakaTube',
+    region: 'Official Cygames Channel (Global)',
+    channelUrl: 'https://www.youtube.com/@pakatube',
+    description: 'Official Cygames Entertainment YouTube Channel',
+    isIndia: true,
+  },
+  'pokemon-official': {
+    name: 'The Official Pokémon Channel',
+    badge: 'Watch on Pokémon Official',
+    region: 'Official Channel (Global)',
+    channelUrl: 'https://www.youtube.com/@Pokemon',
+    description: 'Official The Pokémon Company Channel',
+    isIndia: true,
+  },
 };
 
 // Curated mapping of prominent anime officially published on YouTube for India/Asia
@@ -74,7 +106,7 @@ const OFFICIAL_YOUTUBE_CATALOG = [
   // SPY x FAMILY (Muse India & Muse Asia)
   {
     keywords: ['spy family', 'spy x family'],
-    ids: [140960, 142838, 158870],
+    ids: [140960, 142838, 158870, 158927, 177937],
     distributor: 'muse-india',
     url: 'https://www.youtube.com/playlist?list=PLwLSw1_eDZl1wGMYg5oB3uEns0CZNl6sI',
     title: 'SPY×FAMILY Official Episodes on Muse India / Asia',
@@ -89,11 +121,19 @@ const OFFICIAL_YOUTUBE_CATALOG = [
   },
   // Jujutsu Kaisen (Ani-One Asia & India)
   {
-    keywords: ['jujutsu kaisen'],
-    ids: [113415, 145064],
+    keywords: ['jujutsu kaisen', 'culling game'],
+    ids: [113415, 145064, 209895],
     distributor: 'ani-one-india',
     url: 'https://youtube.com/playlist?list=PLxSscENEp7JisDU6GAJuyNpVwDvCm-f3J',
-    title: 'Jujutsu Kaisen Official Episodes on Ani-One India',
+    title: 'Jujutsu Kaisen Official Episodes on Ani-One India / Asia',
+  },
+  // Attack on Titan (Muse Asia)
+  {
+    keywords: ['attack on titan', 'shingeki no kyojin'],
+    ids: [16498, 20958, 110277, 18397],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/@MuseAsia',
+    title: 'Attack on Titan Official on Muse Asia',
   },
   // Tokyo Revengers (Muse India & Asia)
   {
@@ -138,23 +178,23 @@ const OFFICIAL_YOUTUBE_CATALOG = [
   // Classroom of the Elite (Muse India & Asia)
   {
     keywords: ['classroom of the elite', 'youkoso jitsuryoku'],
-    ids: [98659, 145545, 145546],
+    ids: [98659, 145545, 145546, 146066],
     distributor: 'muse-india',
     url: 'https://www.youtube.com/@MuseIndia',
     title: 'Classroom of the Elite on Muse India',
   },
   // That Time I Got Reincarnated as a Slime (Muse India & Asia)
   {
-    keywords: ['slime datta ken', 'reincarnated as a slime', 'tensei shitara slime'],
-    ids: [101280, 108511, 146065, 156822],
+    keywords: ['slime datta ken', 'reincarnated as a slime', 'tensei shitara slime', 'visions of coleus'],
+    ids: [101280, 108511, 108632, 146065, 146234, 156822, 161802],
     distributor: 'muse-india',
     url: 'https://www.youtube.com/@MuseIndia',
-    title: 'That Time I Got Reincarnated as a Slime on Muse India',
+    title: 'That Time I Got Reincarnated as a Slime on Muse India / Asia',
   },
   // Campfire Cooking in Another World (Muse India)
   {
     keywords: ['campfire cooking in another world', 'tondemo skill de isekai'],
-    ids: [156067],
+    ids: [156067, 170577],
     distributor: 'muse-india',
     url: 'https://www.youtube.com/@MuseIndia',
     title: 'Campfire Cooking in Another World on Muse India',
@@ -170,7 +210,7 @@ const OFFICIAL_YOUTUBE_CATALOG = [
   // JoJo's Bizarre Adventure (Muse India)
   {
     keywords: ['jojo', 'bizarre adventure'],
-    ids: [14719, 20474, 20799, 102283],
+    ids: [14719, 20474, 20799, 21450, 102283],
     distributor: 'muse-india',
     url: 'https://www.youtube.com/@MuseIndia',
     title: 'JoJo\'s Bizarre Adventure on Muse India',
@@ -282,12 +322,298 @@ const OFFICIAL_YOUTUBE_CATALOG = [
   // Pokémon (Pokémon Asia)
   {
     keywords: ['pokemon', 'pocket monsters'],
-    ids: [527, 2121, 111112],
+    ids: [527, 1564, 2121, 111112],
     distributor: 'pokemon-asia',
     url: 'https://www.youtube.com/@PokemonAsiaOfficial',
     title: 'Pokémon Official Channel Asia',
   },
+  // No Guns Life (Muse Asia)
+  {
+    keywords: ["no guns life"],
+    ids: [112479],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=fQYY58cWoLU',
+    title: 'No Guns Life on Muse Asia',
+  },
+  // Welcome to Demon School! Iruma-kun (Muse Asia)
+  {
+    keywords: ["welcome to demon school iruma-kun","mairimashita iruma-kun"],
+    ids: [107693, 116338, 139092],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=e036xcDVqCg',
+    title: 'Welcome to Demon School! Iruma-kun on Muse Asia',
+  },
+  // High School Prodigies Have It Easy Even in Another World! (Muse Asia)
+  {
+    keywords: ["high school prodigies have it easy","choujin koukouseitachi"],
+    ids: [108388],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=-Exy055I760',
+    title: 'High School Prodigies Have It Easy Even in Another World! on Muse Asia',
+  },
+  // The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat (Muse Asia)
+  {
+    keywords: ["world's finest assassin","sekai saikou no ansatsusha"],
+    ids: [129898],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=pxWHOVY4ixM',
+    title: 'The World\'s Finest Assassin Gets Reincarnated in Another World as an Aristocrat on Muse Asia',
+  },
+  // Zom 100: Bucket List of the Dead (Muse Asia)
+  {
+    keywords: ["zom 100","bucket list of the dead"],
+    ids: [159831],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=QKSyhtWIu4E',
+    title: 'Zom 100: Bucket List of the Dead on Muse Asia',
+  },
+  // Black Summoner (Ani-One India)
+  {
+    keywords: ["black summoner","kuro no shoukanshi"],
+    ids: [145260],
+    distributor: 'ani-one-india',
+    url: 'https://www.youtube.com/watch?v=N5u6BGzi6Hc',
+    title: 'Black Summoner on Ani-One India',
+  },
+  // Mao (Ani-One India)
+  {
+    keywords: ["mao"],
+    ids: [174984],
+    distributor: 'ani-one-india',
+    url: 'https://www.youtube.com/watch?v=R9bVYJXvkoA',
+    title: 'Mao on Ani-One India',
+  },
+  // Orange (Ani-One India)
+  {
+    keywords: ["orange"],
+    ids: [21647],
+    distributor: 'ani-one-india',
+    url: 'https://www.youtube.com/watch?v=kSfgo_VS4U4',
+    title: 'Orange on Ani-One India',
+  },
+  // I Have a Crush at Work (Ani-One India)
+  {
+    keywords: ["i have a crush at work","kono kaisha ni suki na hito"],
+    ids: [179469],
+    distributor: 'ani-one-india',
+    url: 'https://www.youtube.com/watch?v=qGxNmvNfYuI',
+    title: 'I Have a Crush at Work on Ani-One India',
+  },
+  // Takopi's Original Sin (Ani-One India)
+  {
+    keywords: ["takopi's original sin","takopi no genzai"],
+    ids: [142167],
+    distributor: 'ani-one-india',
+    url: 'https://www.youtube.com/watch?v=tAryFRAwaiI',
+    title: 'Takopi\'s Original Sin on Ani-One India',
+  },
+  // Bananya (Ani-One India)
+  {
+    keywords: ["bananya"],
+    ids: [21704],
+    distributor: 'ani-one-india',
+    url: 'https://www.youtube.com/playlist?list=PLJXdNaZoFxg4',
+    title: 'Bananya on Ani-One India',
+  },
+  // Mieruko-chan (Muse India)
+  {
+    keywords: ["mieruko-chan","mieruko chan"],
+    ids: [131083],
+    distributor: 'muse-india',
+    url: 'https://www.youtube.com/playlist?list=PLu5Gdt_rQOajtocUx9ADAWEENJbp5tQje',
+    title: 'Mieruko-chan on Muse India',
+  },
+  // Muv-Luv Alternative (Muse India)
+  {
+    keywords: ["muv-luv alternative","muv luv"],
+    ids: [112716],
+    distributor: 'muse-india',
+    url: 'https://www.youtube.com/playlist?list=PLpm1VVK4UL16nFFYSdZL9s_v6s9XMS4Sh',
+    title: 'Muv-Luv Alternative on Muse India',
+  },
+  // Dan Da Dan (Muse India)
+  {
+    keywords: ["dan da dan","dandadan"],
+    ids: [171018],
+    distributor: 'muse-india',
+    url: 'https://www.youtube.com/playlist?list=PL8JcwZhNnDt-FSi4JAfJ0uftL8Rgrl4VE',
+    title: 'Dan Da Dan on Muse India',
+  },
+  // The Seven Deadly Sins (Muse Asia)
+  {
+    keywords: ["the seven deadly sins","nanatsu no taizai"],
+    ids: [20705],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/playlist?list=PLwLSw1_eDZl3572W1HJjIkZyW-0GGVUVq',
+    title: 'The Seven Deadly Sins on Muse Asia',
+  },
+  // Goblin Slayer (Muse Asia)
+  {
+    keywords: ["goblin slayer"],
+    ids: [101165],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/playlist?list=PL-GaNUkRWlEO8SB6EX-3YYoYz1ZbVP-UK',
+    title: 'Goblin Slayer on Muse Asia',
+  },
+  // Hunter x Hunter (2011) (Muse Asia)
+  {
+    keywords: ["hunter x hunter"],
+    ids: [11061],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/playlist?list=PLEBfWuM_iGbI',
+    title: 'Hunter x Hunter (2011) on Muse Asia',
+  },
+  // Tada Never Falls In Love (Muse Asia)
+  {
+    keywords: ["tada never falls in love","tada-kun wa koi wo shinai"],
+    ids: [100179],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/playlist?list=PLwLSw1_eDZl0PC3GwSEfl_Oy2Obxw4H5e',
+    title: 'Tada Never Falls In Love on Muse Asia',
+  },
+  // Kuma Kuma Kuma Bear (Muse Asia)
+  {
+    keywords: ["kuma kuma kuma bear"],
+    ids: [114340],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/playlist?list=PLwLSw1_eDZl0zRE6T4CdrulzxXZgdRGLr',
+    title: 'Kuma Kuma Kuma Bear on Muse Asia',
+  },
+  // The Unwanted Undead Adventurer (Muse Asia)
+  {
+    keywords: ["the unwanted undead adventurer","nozomanu fushi no boukensha"],
+    ids: [147642],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/playlist?list=PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS',
+    title: 'The Unwanted Undead Adventurer on Muse Asia',
+  },
+  // Berserk of Gluttony (Muse Asia)
+  {
+    keywords: ["berserk of gluttony","boushoku no berserk"],
+    ids: [156039],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/playlist?list=PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS',
+    title: 'Berserk of Gluttony on Muse Asia',
+  },
+  // The Familiar of Zero (Muse India)
+  {
+    keywords: ["the familiar of zero","zero no tsukaima"],
+    ids: [1195],
+    distributor: 'muse-india',
+    url: 'https://www.youtube.com/playlist?list=PLpm1VVK4UL14oNTr6vx9KieQ6-YkKn0qt',
+    title: 'The Familiar of Zero on Muse India',
+  },
+  // Is the Order a Rabbit? (Muse India)
+  {
+    keywords: ["is the order a rabbit","gochuumon wa usagi desu ka"],
+    ids: [20517],
+    distributor: 'muse-india',
+    url: 'https://www.youtube.com/playlist?list=PLpm1VVK4UL14aFCVvKtSODEQclbYeEpfL',
+    title: 'Is the Order a Rabbit? on Muse India',
+  },
+  // Chained Soldier (Muse Asia)
+  {
+    keywords: ["chained soldier","matoi seihei no slave"],
+    ids: [141821],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/playlist?list=PLwLSw1_eDZl0PC3GwSEfl_Oy2Obxw4H5e',
+    title: 'Chained Soldier on Muse Asia',
+  },
+  // Tadaima, Okaeri (Ani-One Asia)
+  {
+    keywords: ["tadaima, okaeri","tadaima okaeri"],
+    ids: [169698],
+    distributor: 'ani-one-asia',
+    url: 'https://www.youtube.com/playlist?list=PLrC7aRkKhpGNqrVSM8mpTLP7KWyFnx6Es',
+    title: 'Tadaima, Okaeri on Ani-One Asia',
+  },
+
+  // ── BATCH 1 + BATCH 2 NEW ENTRIES ──────────────────────────────────────────
+
+  // Fairy Tail (Muse India Hindi + Muse Asia English Sub)
+  { keywords: ['fairy tail'], ids: [6702, 20626, 99749], distributor: 'muse-india', url: 'https://www.youtube.com/@MuseIndia', title: 'Fairy Tail on Muse India' },
+  // I Parry Everything (Muse India)
+  { keywords: ['i parry everything', 'kawaisugi crisis', 'nozomanu fushi'], ids: [170695], distributor: 'muse-india', url: 'https://www.youtube.com/@MuseIndia', title: 'I Parry Everything on Muse India' },
+  // Jujutsu Kaisen – Ani-One India (alternate to existing Ani-One Asia entry)
+  { keywords: ['jujutsu kaisen hindi', 'jujutsu kaisen india'], ids: [113415, 145064], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'Jujutsu Kaisen Hindi Dub on Ani-One India' },
+  // MAO 2024 (Ani-One India)
+  { keywords: ['mao 2024', 'mao rumiko'], ids: [196012], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'MAO on Ani-One India' },
+  // Love Unseen Beneath the Clear Night Sky (Ani-One India)
+  { keywords: ['love unseen beneath', 'clear night sky'], ids: [202269], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'Love Unseen Beneath the Clear Night Sky on Ani-One India' },
+  // Monster Eater (Ani-One India)
+  { keywords: ['monster eater'], ids: [210234], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'Monster Eater on Ani-One India' },
+  // Yowayowa Sensei (Ani-One India)
+  { keywords: ['yowayowa sensei'], ids: [185211], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'Yowayowa Sensei on Ani-One India' },
+  // Petals of Reincarnation (Ani-One India)
+  { keywords: ['petals of reincarnation'], ids: [179950], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'Petals of Reincarnation on Ani-One India' },
+  // Rooster Fighter (Ani-One India)
+  { keywords: ['rooster fighter', 'niwatori fighter'], ids: [179813], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'Rooster Fighter on Ani-One India' },
+  // You and I Are Polar Opposites (Ani-One India)
+  { keywords: ['you and i are polar opposites', 'kyouran kazoku nikki'], ids: [184951], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'You and I Are Polar Opposites on Ani-One India' },
+  // I Saved Myself with a Potion! (Ani-One India)
+  { keywords: ['i saved myself with a potion', 'potion danomi'], ids: [198561], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'I Saved Myself with a Potion! on Ani-One India' },
+  // Gintama: Mr. Ginpachi's Zany Class (Ani-One India)
+  { keywords: ['gintama', 'ginpachi', 'gintoki'], ids: [918, 15417, 16498], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: "Gintama on Ani-One India" },
+  // Fermat Kitchen (Ani-One India)
+  { keywords: ['fermat kitchen', 'fermat no ryouri'], ids: [179470], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: 'Fermat Kitchen on Ani-One India' },
+  // Tamon's B-Side (Ani-One India – Hindi Dub)
+  { keywords: ["tamon's b-side", 'tamon no b men'], ids: [170366], distributor: 'ani-one-india', url: 'https://www.youtube.com/@AniOneIndia', title: "Tamon's B-Side (Hindi Dub) on Ani-One India" },
+
+  // ── Muse Asia – English Sub (new additions) ────────────────────────────────
+  // One-Punch Man (Muse Asia – seasons 1+2)
+  { keywords: ['one-punch man', 'one punch man', 'onepunchman'], ids: [21087, 97668], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'One-Punch Man on Muse Asia' },
+  // Cautious Hero (Muse Asia)
+  { keywords: ['cautious hero', 'shinchou yuusha'], ids: [105164], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Cautious Hero on Muse Asia' },
+  // The Greatest Demon Lord Is Reborn as a Typical Nobody (Muse Asia)
+  { keywords: ['greatest demon lord', 'shijou saikyou no daimaou'], ids: [130586], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'The Greatest Demon Lord Is Reborn on Muse Asia' },
+  // The Magical Revolution of the Reincarnated Princess (Muse India)
+  { keywords: ['magical revolution', 'reincarnated princess', 'tensei oujo'], ids: [153629], distributor: 'muse-india', url: 'https://www.youtube.com/@MuseIndia', title: 'The Magical Revolution of the Reincarnated Princess on Muse India' },
+  // Made in Abyss (Muse Asia)
+  { keywords: ['made in abyss', 'meid in abisu'], ids: [97986, 113926, 131567], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Made in Abyss on Muse Asia' },
+  // Easygoing Territory Defense by the Optimistic Lord (Muse Asia)
+  { keywords: ['easygoing territory defense', 'optimistic lord', 'nonbiri nouka'], ids: [174288], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Easygoing Territory Defense on Muse Asia' },
+  // Theatre of Darkness (Yamishibai) (Muse Asia)
+  { keywords: ['theatre of darkness', 'yamishibai', 'yami shibai'], ids: [19383], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Theatre of Darkness: Yamishibai on Muse Asia' },
+  // The Genius Prince's Guide to Raising a Nation Out of Debt (Muse Asia)
+  { keywords: ["genius prince's guide", 'tensai ouji', 'prince debt'], ids: [129190], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: "The Genius Prince's Guide on Muse Asia" },
+  // Girls' Frontline (Muse Asia)
+  { keywords: ["girls' frontline", 'girls frontline', 'dolls frontline'], ids: [128828], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: "Girls' Frontline on Muse Asia" },
+  // Sasaki and Peeps (Muse Asia)
+  { keywords: ['sasaki and peeps', 'sasaki to pi-chan'], ids: [154136], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Sasaki and Peeps on Muse Asia' },
+  // Loner Life in Another World (Muse Asia)
+  { keywords: ['loner life in another world', 'hitoribocchi no isekai kouryaku'], ids: [175383], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Loner Life in Another World on Muse Asia' },
+  // Let This Grieving Soul Retire (Muse Asia)
+  { keywords: ['let this grieving soul retire', 'tsurune'], ids: [175235], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Let This Grieving Soul Retire on Muse Asia' },
+  // Haigakura (Muse Asia)
+  { keywords: ['haigakura'], ids: [167087], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Haigakura on Muse Asia' },
+  // I Left My A-Rank Party (Muse Asia)
+  { keywords: ['i left my a-rank party', 'a rank party wo ridatsu shita'], ids: [179788], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'I Left My A-Rank Party on Muse Asia' },
+  // From Bureaucrat to Villainess (Muse Asia)
+  { keywords: ['from bureaucrat to villainess', 'kanryou ni natta ore', 'villainess dad'], ids: [171244], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'From Bureaucrat to Villainess on Muse Asia' },
+  // Nights with a Cat (Muse Asia)
+  { keywords: ['nights with a cat', 'uchi no neko no ko'], ids: [147774], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Nights with a Cat on Muse Asia' },
+  // Candy Caries (Muse Asia / Bandai Namco)
+  { keywords: ['candy caries'], ids: [184512], distributor: 'muse-asia', url: 'https://www.youtube.com/@MuseAsia', title: 'Candy Caries on Muse Asia' },
+
+  // ── Ani-One Asia – English Sub (new additions) ─────────────────────────────
+  // Life With an Ordinary Guy Who Reincarnated Into a Total Fantasy Knockout (Ani-One Asia)
+  { keywords: ['life with an ordinary guy', 'total fantasy knockout', 'isekai de choropoi'], ids: [134252], distributor: 'ani-one-asia', url: 'https://www.youtube.com/@AniOneAsia', title: 'Life With an Ordinary Guy on Ani-One Asia' },
+  // DOG SIGNAL (Ani-One Asia)
+  { keywords: ['dog signal'], ids: [161309], distributor: 'ani-one-asia', url: 'https://www.youtube.com/@AniOneAsia', title: 'DOG SIGNAL on Ani-One Asia' },
+  // YUREI DECO (Ani-One Asia)
+  { keywords: ['yurei deco', 'yurei deco anime'], ids: [145070], distributor: 'ani-one-asia', url: 'https://www.youtube.com/@AniOneAsia', title: 'YUREI DECO on Ani-One Asia' },
+
+  // ── Official Studio Channels ───────────────────────────────────────────────
+  // Sherlock Hound (TMS Anime)
+  { keywords: ['sherlock hound', 'meitantei holmes'], ids: [1981], distributor: 'tms-anime', url: 'https://www.youtube.com/@TMSanime', title: 'Sherlock Hound on TMS Anime Official' },
+  // Revolutionary Girl Utena (Nozomi Entertainment)
+  { keywords: ['revolutionary girl utena', 'shoujo kakumei utena'], ids: [440], distributor: 'nozomi-ent', url: 'https://www.youtube.com/@nozomient', title: 'Revolutionary Girl Utena on Nozomi Entertainment' },
+  // Uma Musume: Pretty Derby – Road to the Top (PakaTube/Cygames)
+  { keywords: ['uma musume', 'pretty derby', 'road to the top'], ids: [149596, 103047, 120852], distributor: 'pakatube', url: 'https://www.youtube.com/@pakatube', title: 'Uma Musume: Pretty Derby on PakaTube (Cygames Official)' },
+  // Pokémon Diamond and Pearl (Pokemon Official)
+  { keywords: ['pokemon diamond and pearl', 'pocket monsters diamond and pearl'], ids: [1564], distributor: 'pokemon-official', url: 'https://www.youtube.com/@Pokemon', title: 'Pokémon: Diamond and Pearl on The Official Pokémon Channel' },
 ];
+
 
 export const OfficialWatchService = {
   /**
