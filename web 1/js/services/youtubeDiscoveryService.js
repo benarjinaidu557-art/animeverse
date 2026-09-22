@@ -18,6 +18,75 @@ import { StorageService } from './storageService.js';
 // Pre-verified official YouTube episode catalog for instant playback & offline resilience
 // (Verified licensed uploads from Muse Asia, Muse India, Ani-One Asia, Ani-One India, GundamInfo)
 const VERIFIED_OFFICIAL_CATALOG = {
+// === VERIFIED TELUGU YOUTUBE DATA BATCH ===
+  // A Gatherer's Adventure in Isekai (AniList ID: 187663) - Official Telugu Dub
+  187663: [
+    { episode_number: 1, season_number: 1, video_id: 's0Dmgxw2EbQ', video_title: "[Telugu Dub] A Gatherer's Adventure in Isekai - Episode 01 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=s0Dmgxw2EbQ', thumbnail_url: 'https://img.youtube.com/vi/s0Dmgxw2EbQ/hqdefault.jpg' },
+    { episode_number: 7, season_number: 1, video_id: 'F9uFHszLq5U', video_title: "[Telugu Dub] A Gatherer's Adventure in Isekai - Episode 07 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=F9uFHszLq5U', thumbnail_url: 'https://img.youtube.com/vi/F9uFHszLq5U/hqdefault.jpg' },
+    { episode_number: 9, season_number: 1, video_id: 'iORgdzUCO2A', video_title: "[Telugu Dub] A Gatherer's Adventure in Isekai - Episode 09 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=iORgdzUCO2A', thumbnail_url: 'https://img.youtube.com/vi/iORgdzUCO2A/hqdefault.jpg' },
+    { episode_number: 11, season_number: 1, video_id: 'HLqoO3YvBes', video_title: "[Telugu Dub] A Gatherer's Adventure in Isekai - Episode 11 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=HLqoO3YvBes', thumbnail_url: 'https://img.youtube.com/vi/HLqoO3YvBes/hqdefault.jpg' }
+  ],
+
+  // Skeleton Knight in Another World | Episode 01 (S1E01) | Muse IN (AniList ID: 132474) - Official Telugu Dub
+  132474: [
+    { episode_number: 1, season_number: 1, video_id: 'r7W8XBaSFbY', video_title: "[Telugu Dub] Skeleton Knight in Another World | Episode 01 (S1E01) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=r7W8XBaSFbY', thumbnail_url: 'https://img.youtube.com/vi/r7W8XBaSFbY/hqdefault.jpg' },
+    { episode_number: 2, season_number: 1, video_id: 'Sv-IoqC2-6g', video_title: "[Telugu Dub] Skeleton Knight in Another World | Episode 02 (S1E02) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=Sv-IoqC2-6g', thumbnail_url: 'https://img.youtube.com/vi/Sv-IoqC2-6g/hqdefault.jpg' },
+    { episode_number: 6, season_number: 1, video_id: '2wfXdY0CGJQ', video_title: "[Telugu Dub] Skeleton Knight in Another World | Episode 06 (S1E06) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=2wfXdY0CGJQ', thumbnail_url: 'https://img.youtube.com/vi/2wfXdY0CGJQ/hqdefault.jpg' },
+    { episode_number: 7, season_number: 1, video_id: 'ihL4_G-RETI', video_title: "[Telugu Dub] Skeleton Knight in Another World | Episode 07 (S1E07) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=ihL4_G-RETI', thumbnail_url: 'https://img.youtube.com/vi/ihL4_G-RETI/hqdefault.jpg' },
+    { episode_number: 10, season_number: 1, video_id: 'DudH1w8aUyM', video_title: "[Telugu Dub] Skeleton Knight in Another World | Episode 10 (S1E10) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=DudH1w8aUyM', thumbnail_url: 'https://img.youtube.com/vi/DudH1w8aUyM/hqdefault.jpg' },
+    { episode_number: 12, season_number: 1, video_id: '-_VCkVezUkA', video_title: "[Telugu Dub] Skeleton Knight in Another World | Episode 12 (S1E12) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=-_VCkVezUkA', thumbnail_url: 'https://img.youtube.com/vi/-_VCkVezUkA/hqdefault.jpg' }
+  ],
+
+  // Campfire Cooking in Another World (AniList ID: 156067) - Official Telugu Dub
+  156067: [
+    { episode_number: 3, season_number: 1, video_id: '21sCfzLOeeg', video_title: "[Telugu Dub] Campfire Cooking in Another World - Episode 03 (S1E03) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=21sCfzLOeeg', thumbnail_url: 'https://img.youtube.com/vi/21sCfzLOeeg/hqdefault.jpg' },
+    { episode_number: 7, season_number: 1, video_id: 'K8XSK3HvmhM', video_title: "[Telugu Dub] Campfire Cooking in Another World - Episode 07 (S1E07) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=K8XSK3HvmhM', thumbnail_url: 'https://img.youtube.com/vi/K8XSK3HvmhM/hqdefault.jpg' },
+    { episode_number: 8, season_number: 1, video_id: 'ob89Omm1FBQ', video_title: "[Telugu Dub] Campfire Cooking in Another World - Episode 08 (S1E08) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=ob89Omm1FBQ', thumbnail_url: 'https://img.youtube.com/vi/ob89Omm1FBQ/hqdefault.jpg' }
+  ],
+
+  // Pokémon: Diamond and Pearl: Battle Dimension | ఎపిసోడ్ 7 | Pokémon Asia Official (Telugu) (AniList ID: 1565) - Official Telugu Dub
+  1565: [
+    { episode_number: 7, season_number: 11, video_id: 'qDeAYUbFw10', video_title: "Pokémon: Diamond and Pearl: Battle Dimension | ఎపిసోడ్ 7 | Pokémon Asia Official (Telugu)", channel_name: 'Pokémon Asia Official (Telugu)', channel_id: 'UC_jZH5w5iZDk3lWhrHigMZw', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'The Pokémon Company', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=qDeAYUbFw10', thumbnail_url: 'https://img.youtube.com/vi/qDeAYUbFw10/hqdefault.jpg' }
+  ],
+
+  // Pokémon the Series: XY భాగం 7 | Giving Chase At The Rhyhorn Race! | Pokémon Asia Official (Telugu) (AniList ID: 19291) - Official Telugu Dub
+  19291: [
+    { episode_number: 7, season_number: 17, video_id: 'JaHTm7c7lsE', video_title: "Pokémon the Series: XY భాగం 7 | Giving Chase At The Rhyhorn Race! | Pokémon Asia Official (Telugu)", channel_name: 'Pokémon Asia Official (Telugu)', channel_id: 'UC_jZH5w5iZDk3lWhrHigMZw', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'The Pokémon Company', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=JaHTm7c7lsE', thumbnail_url: 'https://img.youtube.com/vi/JaHTm7c7lsE/hqdefault.jpg' }
+  ],
+
+  // Pokémon Ultimate Journeys | భాగం 27 | Pokémon Asia Official (Telugu) (AniList ID: 112153) - Official Telugu Dub
+  112153: [
+    { episode_number: 27, season_number: 25, video_id: 't41KDkKaaqU', video_title: "Pokémon Ultimate Journeys | భాగం 27 | Pokémon Asia Official (Telugu)", channel_name: 'Pokémon Asia Official (Telugu)', channel_id: 'UC_jZH5w5iZDk3lWhrHigMZw', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'The Pokémon Company', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=t41KDkKaaqU', thumbnail_url: 'https://img.youtube.com/vi/t41KDkKaaqU/hqdefault.jpg' }
+  ],
+
+  // Attack on Titan (AniList ID: 20958) - Official Telugu Dub
+  20958: [
+    { episode_number: 5, season_number: 2, video_id: 'ahcDPggJPIw', video_title: "[Telugu Dub] Attack on Titan - Episode 30 (S2E05) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=ahcDPggJPIw', thumbnail_url: 'https://img.youtube.com/vi/ahcDPggJPIw/hqdefault.jpg' },
+    { episode_number: 9, season_number: 2, video_id: 'eAtRTjaBRIw', video_title: "[Telugu Dub] Attack on Titan - Episode 34 (S2E09) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=eAtRTjaBRIw', thumbnail_url: 'https://img.youtube.com/vi/eAtRTjaBRIw/hqdefault.jpg' },
+    { episode_number: 12, season_number: 2, video_id: 'J74gJeDFyDc', video_title: "[Telugu Dub] Attack on Titan - Episode 37 (S2E12) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=J74gJeDFyDc', thumbnail_url: 'https://img.youtube.com/vi/J74gJeDFyDc/hqdefault.jpg' }
+  ],
+
+  // One (AniList ID: 102194) - Official Telugu Dub
+  102194: [
+    { episode_number: 5, season_number: 2, video_id: 'jlih0z0qq28', video_title: "[Telugu Dub] One-Punch Man - Episode 17 (S2E05) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=jlih0z0qq28', thumbnail_url: 'https://img.youtube.com/vi/jlih0z0qq28/hqdefault.jpg' },
+    { episode_number: 7, season_number: 2, video_id: 'mA5c0xReUJw', video_title: "[Telugu Dub] One-Punch Man - Episode 19 (S2E07) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=mA5c0xReUJw', thumbnail_url: 'https://img.youtube.com/vi/mA5c0xReUJw/hqdefault.jpg' }
+  ],
+
+  // One (AniList ID: 153800) - Official Telugu Dub
+  153800: [
+    { episode_number: 2, season_number: 3, video_id: 'JsF3A7wudkE', video_title: "[Telugu Dub] One-Punch Man - Episode 26 (S3E02) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=JsF3A7wudkE', thumbnail_url: 'https://img.youtube.com/vi/JsF3A7wudkE/hqdefault.jpg' },
+    { episode_number: 10, season_number: 3, video_id: 'nCCMcOEgEPk', video_title: "[Telugu Dub] One-Punch Man - Episode 34 (S3E10) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=nCCMcOEgEPk', thumbnail_url: 'https://img.youtube.com/vi/nCCMcOEgEPk/hqdefault.jpg' }
+  ],
+
+  // Mob Psycho 100 III (AniList ID: 140439) - Official Telugu Dub
+  140439: [
+    { episode_number: 6, season_number: 3, video_id: 'rPUgHpqIgag', video_title: "[Telugu Dub] Mob Psycho 100 III - Episode 06 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=rPUgHpqIgag', thumbnail_url: 'https://img.youtube.com/vi/rPUgHpqIgag/hqdefault.jpg' },
+    { episode_number: 11, season_number: 3, video_id: 'J0gXVrKiwfg', video_title: "[Telugu Dub] Mob Psycho 100 III - Episode 11 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=J0gXVrKiwfg', thumbnail_url: 'https://img.youtube.com/vi/J0gXVrKiwfg/hqdefault.jpg' }
+  ],
+
+// === END VERIFIED TELUGU BATCH ===
+
+
   // SPY x FAMILY Cour 2 (ID: 142838) - Muse Asia / Muse India
   142838: [
     {
@@ -155,336 +224,18 @@ const VERIFIED_OFFICIAL_CATALOG = {
     }
   ],
 
-  // Mob Psycho 100 (AniList ID: 21507) - Muse India Telugu Dub
+    // Mob Psycho 100 (AniList ID: 21507) - Official Muse India Telugu Dub
   21507: [
-    // Season 1 (Episodes 1–12)
-    {
-      episode_number: 1,
-      season_number: 1,
-      video_id: 'Q8gS7x4hBs0',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 01 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/Q8gS7x4hBs0/hqdefault.jpg'
-    },
-    {
-      episode_number: 2,
-      season_number: 1,
-      video_id: 'Xy2mCmNnc_c',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 02 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/Xy2mCmNnc_c/hqdefault.jpg'
-    },
-    {
-      episode_number: 3,
-      season_number: 1,
-      video_id: 'Dbv5q8XqYyY',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 03 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/Dbv5q8XqYyY/hqdefault.jpg'
-    },
-    {
-      episode_number: 4,
-      season_number: 1,
-      video_id: 'MGxJNWfu3sI',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 04 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/MGxJNWfu3sI/hqdefault.jpg'
-    },
-    {
-      episode_number: 5,
-      season_number: 1,
-      video_id: 'cSvLTwtqo2M',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 05 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/cSvLTwtqo2M/hqdefault.jpg'
-    },
-    {
-      episode_number: 6,
-      season_number: 1,
-      video_id: 'ovRy8Gcp3Yc',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 06 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/ovRy8Gcp3Yc/hqdefault.jpg'
-    },
-    {
-      episode_number: 7,
-      season_number: 1,
-      video_id: 'ZSeEnalOK0k',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 07 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/ZSeEnalOK0k/hqdefault.jpg'
-    },
-    {
-      episode_number: 8,
-      season_number: 1,
-      video_id: '8A8fgLyW8Ok',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 08 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/8A8fgLyW8Ok/hqdefault.jpg'
-    },
-    {
-      episode_number: 9,
-      season_number: 1,
-      video_id: 'GlprPDmq6bM',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 09 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/GlprPDmq6bM/hqdefault.jpg'
-    },
-    {
-      episode_number: 10,
-      season_number: 1,
-      video_id: '1kU7x-ow1CA',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 10 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/1kU7x-ow1CA/hqdefault.jpg'
-    },
-    {
-      episode_number: 11,
-      season_number: 1,
-      video_id: '-LT1Xoj0r6U',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 11 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/-LT1Xoj0r6U/hqdefault.jpg'
-    },
-    {
-      episode_number: 12,
-      season_number: 1,
-      video_id: 'Ph3AG6UCiy4',
-      video_title: '[Telugu Dub] Mob Psycho 100 - Episode 12 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/Ph3AG6UCiy4/hqdefault.jpg'
-    },
-
-    // Season 2 (Episodes 1–13)
-    {
-      episode_number: 1,
-      season_number: 2,
-      video_id: 'w9YqCWhlPR8',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 01 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/w9YqCWhlPR8/hqdefault.jpg'
-    },
-    {
-      episode_number: 2,
-      season_number: 2,
-      video_id: 'KAV9Xfss240',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 02 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/KAV9Xfss240/hqdefault.jpg'
-    },
-    {
-      episode_number: 3,
-      season_number: 2,
-      video_id: 'yGL74jzQapE',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 03 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/yGL74jzQapE/hqdefault.jpg'
-    },
-    {
-      episode_number: 4,
-      season_number: 2,
-      video_id: 'lZgEV0jZCy8',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 04 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/lZgEV0jZCy8/hqdefault.jpg'
-    },
-    {
-      episode_number: 5,
-      season_number: 2,
-      video_id: 'Mb3n60vuGIA',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 05 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/Mb3n60vuGIA/hqdefault.jpg'
-    },
-    {
-      episode_number: 6,
-      season_number: 2,
-      video_id: 'nmCCja33Vwc',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 06 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/nmCCja33Vwc/hqdefault.jpg'
-    },
-    {
-      episode_number: 7,
-      season_number: 2,
-      video_id: 'QngweKy2a_Q',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 07 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/QngweKy2a_Q/hqdefault.jpg'
-    },
-    {
-      episode_number: 8,
-      season_number: 2,
-      video_id: 'gorOJT0qUg4',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 08 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/gorOJT0qUg4/hqdefault.jpg'
-    },
-    {
-      episode_number: 9,
-      season_number: 2,
-      video_id: 'OsMcTrmYyvU',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 09 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/OsMcTrmYyvU/hqdefault.jpg'
-    },
-    {
-      episode_number: 10,
-      season_number: 2,
-      video_id: 'RgFUiXBF96Y',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 10 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/RgFUiXBF96Y/hqdefault.jpg'
-    },
-    {
-      episode_number: 11,
-      season_number: 2,
-      video_id: '7CiqjJ4XEOQ',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 11 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/7CiqjJ4XEOQ/hqdefault.jpg'
-    },
-    {
-      episode_number: 12,
-      season_number: 2,
-      video_id: '8WvHTA9NkkQ',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 12 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/8WvHTA9NkkQ/hqdefault.jpg'
-    },
-    {
-      episode_number: 13,
-      season_number: 2,
-      video_id: 'wWK4lsLwtUg',
-      video_title: '[Telugu Dub] Mob Psycho 100 II - Episode 13 | Muse IN',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Telugu',
-      thumbnail_url: 'https://img.youtube.com/vi/wWK4lsLwtUg/hqdefault.jpg'
-    }
+    { episode_number: 1, season_number: 1, video_id: 'Q8gS7x4hBs0', video_title: "[Telugu Dub] Mob Psycho 100 - Episode 01 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=Q8gS7x4hBs0', thumbnail_url: 'https://img.youtube.com/vi/Q8gS7x4hBs0/hqdefault.jpg' },
+    { episode_number: 3, season_number: 1, video_id: 'Dbv5q8XqYyY', video_title: "[Telugu Dub] Mob Psycho 100 - Episode 03 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=Dbv5q8XqYyY', thumbnail_url: 'https://img.youtube.com/vi/Dbv5q8XqYyY/hqdefault.jpg' },
+    { episode_number: 5, season_number: 1, video_id: 'cSvLTwtqo2M', video_title: "[Telugu Dub] Mob Psycho 100 - Episode 05 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=cSvLTwtqo2M', thumbnail_url: 'https://img.youtube.com/vi/cSvLTwtqo2M/hqdefault.jpg' },
+    { episode_number: 7, season_number: 1, video_id: 'ZSeEnalOK0k', video_title: "[Telugu Dub] Mob Psycho 100 - Episode 07 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=ZSeEnalOK0k', thumbnail_url: 'https://img.youtube.com/vi/ZSeEnalOK0k/hqdefault.jpg' },
+    { episode_number: 3, season_number: 2, video_id: 'yGL74jzQapE', video_title: "[Telugu Dub] Mob Psycho 100 II - Episode 03 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=yGL74jzQapE', thumbnail_url: 'https://img.youtube.com/vi/yGL74jzQapE/hqdefault.jpg' },
+    { episode_number: 5, season_number: 2, video_id: 'Mb3n60vuGIA', video_title: "[Telugu Dub] Mob Psycho 100 II - Episode 05 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=Mb3n60vuGIA', thumbnail_url: 'https://img.youtube.com/vi/Mb3n60vuGIA/hqdefault.jpg' },
+    { episode_number: 6, season_number: 2, video_id: 'nmCCja33Vwc', video_title: "[Telugu Dub] Mob Psycho 100 II - Episode 06 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=nmCCja33Vwc', thumbnail_url: 'https://img.youtube.com/vi/nmCCja33Vwc/hqdefault.jpg' },
+    { episode_number: 12, season_number: 2, video_id: '8WvHTA9NkkQ', video_title: "[Telugu Dub] Mob Psycho 100 II - Episode 12 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=8WvHTA9NkkQ', thumbnail_url: 'https://img.youtube.com/vi/8WvHTA9NkkQ/hqdefault.jpg' },
+    { episode_number: 6, season_number: 3, video_id: 'rPUgHpqIgag', video_title: "[Telugu Dub] Mob Psycho 100 III - Episode 06 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=rPUgHpqIgag', thumbnail_url: 'https://img.youtube.com/vi/rPUgHpqIgag/hqdefault.jpg' },
+    { episode_number: 11, season_number: 3, video_id: 'J0gXVrKiwfg', video_title: "[Telugu Dub] Mob Psycho 100 III - Episode 11 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=J0gXVrKiwfg', thumbnail_url: 'https://img.youtube.com/vi/J0gXVrKiwfg/hqdefault.jpg' }
   ],
 
   // Mob Psycho 100 II (AniList ID: 101338) - Season 2 Direct Mapping
@@ -660,65 +411,22 @@ const VERIFIED_OFFICIAL_CATALOG = {
     }
   ],
 
-  // Classroom of the Elite (AniList ID: 98659)
+    // Classroom of the Elite (AniList ID: 98659) - Official Muse India Telugu Dub
   98659: [
-    {
-      episode_number: 1,
-      season_number: 1,
-      video_id: 'UQLqvjHvrwc',
-      video_title: 'Classroom of the Elite Season 1 - Complete Series [English Sub] | Muse Asia',
-      channel_name: 'Muse Asia',
-      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'English Sub',
-      source_url: 'https://www.youtube.com/watch?v=UQLqvjHvrwc',
-      thumbnail_url: 'https://img.youtube.com/vi/UQLqvjHvrwc/hqdefault.jpg'
-    },
-    // Season 1 (Episodes 1–12)
-    { episode_number: 1, season_number: 1, video_id: 'QbEoZexESDs', video_title: '[Telugu Dub] Classroom of the Elite - Episode 01 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/QbEoZexESDs/hqdefault.jpg' },
-    { episode_number: 2, season_number: 1, video_id: '4_Vumu_418c', video_title: '[Telugu Dub] Classroom of the Elite - Episode 02 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/4_Vumu_418c/hqdefault.jpg' },
-    { episode_number: 3, season_number: 1, video_id: 'GsiZwUXsRHE', video_title: '[Telugu Dub] Classroom of the Elite - Episode 03 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/GsiZwUXsRHE/hqdefault.jpg' },
-    { episode_number: 4, season_number: 1, video_id: '8Pm5E2jgZ8c', video_title: '[Telugu Dub] Classroom of the Elite - Episode 04 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/8Pm5E2jgZ8c/hqdefault.jpg' },
-    { episode_number: 5, season_number: 1, video_id: '7ISj1vIzepE', video_title: '[Telugu Dub] Classroom of the Elite - Episode 05 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/7ISj1vIzepE/hqdefault.jpg' },
-    { episode_number: 6, season_number: 1, video_id: 'i5xBc-uyMxQ', video_title: '[Telugu Dub] Classroom of the Elite - Episode 06 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/i5xBc-uyMxQ/hqdefault.jpg' },
-    { episode_number: 7, season_number: 1, video_id: 'ZthaFVaevd8', video_title: '[Telugu Dub] Classroom of the Elite - Episode 07 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/ZthaFVaevd8/hqdefault.jpg' },
-    { episode_number: 8, season_number: 1, video_id: 'NRELz5z3t2U', video_title: '[Telugu Dub] Classroom of the Elite - Episode 08 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/NRELz5z3t2U/hqdefault.jpg' },
-    { episode_number: 9, season_number: 1, video_id: 'qrkaUnbHzHA', video_title: '[Telugu Dub] Classroom of the Elite - Episode 09 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/qrkaUnbHzHA/hqdefault.jpg' },
-    { episode_number: 10, season_number: 1, video_id: 'gU24L5IFJ3c', video_title: '[Telugu Dub] Classroom of the Elite - Episode 10 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/gU24L5IFJ3c/hqdefault.jpg' },
-    { episode_number: 11, season_number: 1, video_id: 'hUqm7vUXHSc', video_title: '[Telugu Dub] Classroom of the Elite - Episode 11 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/hUqm7vUXHSc/hqdefault.jpg' },
-    { episode_number: 12, season_number: 1, video_id: 'CjQ6DQiMfM0', video_title: '[Telugu Dub] Classroom of the Elite - Episode 12 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/CjQ6DQiMfM0/hqdefault.jpg' },
-
-    // Season 2 (Episodes 1–13)
-    { episode_number: 1, season_number: 2, video_id: '7rjglJxtyHk', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 01 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/7rjglJxtyHk/hqdefault.jpg' },
-    { episode_number: 2, season_number: 2, video_id: 'Oq-FBwiXCjQ', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 02 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/Oq-FBwiXCjQ/hqdefault.jpg' },
-    { episode_number: 3, season_number: 2, video_id: 'vNITI_aPWJs', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 03 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/vNITI_aPWJs/hqdefault.jpg' },
-    { episode_number: 4, season_number: 2, video_id: 'FE-eHl8QEI0', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 04 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/FE-eHl8QEI0/hqdefault.jpg' },
-    { episode_number: 5, season_number: 2, video_id: 'hK70OIqRABk', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 05 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/hK70OIqRABk/hqdefault.jpg' },
-    { episode_number: 6, season_number: 2, video_id: 'VDyo1ujH1BY', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 06 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/VDyo1ujH1BY/hqdefault.jpg' },
-    { episode_number: 7, season_number: 2, video_id: 't_3pPFBdu9Y', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 07 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/t_3pPFBdu9Y/hqdefault.jpg' },
-    { episode_number: 8, season_number: 2, video_id: '5AlKZkK12Vg', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 08 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/5AlKZkK12Vg/hqdefault.jpg' },
-    { episode_number: 9, season_number: 2, video_id: 'cc4BMOnupSU', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 09 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/cc4BMOnupSU/hqdefault.jpg' },
-    { episode_number: 10, season_number: 2, video_id: '05QnYKBDggw', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 10 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/05QnYKBDggw/hqdefault.jpg' },
-    { episode_number: 11, season_number: 2, video_id: 'k6-R1GFbprY', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 11 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/k6-R1GFbprY/hqdefault.jpg' },
-    { episode_number: 12, season_number: 2, video_id: '5tuh9rNWPWU', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 12 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/5tuh9rNWPWU/hqdefault.jpg' },
-    { episode_number: 13, season_number: 2, video_id: 'vBt22eQLwIk', video_title: '[Telugu Dub] Classroom of the Elite Season 2 - Episode 13 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/vBt22eQLwIk/hqdefault.jpg' },
-
-    // Season 3 (Episodes 1–13)
-    { episode_number: 1, season_number: 3, video_id: '6c9qyEZ-OZA', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 01 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/6c9qyEZ-OZA/hqdefault.jpg' },
-    { episode_number: 2, season_number: 3, video_id: 'GAa3E2_CSOo', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 02 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/GAa3E2_CSOo/hqdefault.jpg' },
-    { episode_number: 3, season_number: 3, video_id: 'KESuIGZtivM', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 03 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/KESuIGZtivM/hqdefault.jpg' },
-    { episode_number: 4, season_number: 3, video_id: 'XW63UzZ9C5c', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 04 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/XW63UzZ9C5c/hqdefault.jpg' },
-    { episode_number: 5, season_number: 3, video_id: 'he8pzJTFJ5Y', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 05 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/he8pzJTFJ5Y/hqdefault.jpg' },
-    { episode_number: 6, season_number: 3, video_id: '2YltBNwWXSI', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 06 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/2YltBNwWXSI/hqdefault.jpg' },
-    { episode_number: 7, season_number: 3, video_id: 'vA9Gi78vSeI', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 07 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/vA9Gi78vSeI/hqdefault.jpg' },
-    { episode_number: 8, season_number: 3, video_id: '5NgBWIsXGec', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 08 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/5NgBWIsXGec/hqdefault.jpg' },
-    { episode_number: 9, season_number: 3, video_id: 'gp75yk7vnOo', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 09 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/gp75yk7vnOo/hqdefault.jpg' },
-    { episode_number: 10, season_number: 3, video_id: '8diL300WGmA', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 10 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/8diL300WGmA/hqdefault.jpg' },
-    { episode_number: 11, season_number: 3, video_id: 'JxknpSNMyeI', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 11 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/JxknpSNMyeI/hqdefault.jpg' },
-    { episode_number: 12, season_number: 3, video_id: '5q1ObyClTt0', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 12 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/5q1ObyClTt0/hqdefault.jpg' },
-    { episode_number: 13, season_number: 3, video_id: 'tgvZMyNMoE4', video_title: '[Telugu Dub] Classroom of the Elite Season 3 - Episode 13 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/tgvZMyNMoE4/hqdefault.jpg' }
+    { episode_number: 1, season_number: 1, video_id: 'QbEoZexESDs', video_title: "[Telugu Dub] Classroom of the Elite - Episode 01 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=QbEoZexESDs', thumbnail_url: 'https://img.youtube.com/vi/QbEoZexESDs/hqdefault.jpg' },
+    { episode_number: 10, season_number: 1, video_id: 'gU24L5IFJ3c', video_title: "[Telugu Dub] Classroom of the Elite - Episode 10 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=gU24L5IFJ3c', thumbnail_url: 'https://img.youtube.com/vi/gU24L5IFJ3c/hqdefault.jpg' },
+    { episode_number: 3, season_number: 2, video_id: 'vNITI_aPWJs', video_title: "[Telugu Dub] Classroom of the Elite Season 2 - Episode 03 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=vNITI_aPWJs', thumbnail_url: 'https://img.youtube.com/vi/vNITI_aPWJs/hqdefault.jpg' },
+    { episode_number: 6, season_number: 2, video_id: 'VDyo1ujH1BY', video_title: "[Telugu Dub] Classroom of the Elite Season 2 - Episode 06 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=VDyo1ujH1BY', thumbnail_url: 'https://img.youtube.com/vi/VDyo1ujH1BY/hqdefault.jpg' },
+    { episode_number: 7, season_number: 2, video_id: 't_3pPFBdu9Y', video_title: "[Telugu Dub] Classroom of the Elite Season 2 - Episode 07 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=t_3pPFBdu9Y', thumbnail_url: 'https://img.youtube.com/vi/t_3pPFBdu9Y/hqdefault.jpg' },
+    { episode_number: 10, season_number: 2, video_id: '05QnYKBDggw', video_title: "[Telugu Dub] Classroom of the Elite Season 2 - Episode 10 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=05QnYKBDggw', thumbnail_url: 'https://img.youtube.com/vi/05QnYKBDggw/hqdefault.jpg' },
+    { episode_number: 12, season_number: 2, video_id: '5tuh9rNWPWU', video_title: "[Telugu Dub] Classroom of the Elite Season 2 - Episode 12 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=5tuh9rNWPWU', thumbnail_url: 'https://img.youtube.com/vi/5tuh9rNWPWU/hqdefault.jpg' },
+    { episode_number: 13, season_number: 2, video_id: 'vBt22eQLwIk', video_title: "[Telugu Dub] Classroom of the Elite Season 2 - Episode 13 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=vBt22eQLwIk', thumbnail_url: 'https://img.youtube.com/vi/vBt22eQLwIk/hqdefault.jpg' },
+    { episode_number: 5, season_number: 3, video_id: 'he8pzJTFJ5Y', video_title: "[Telugu Dub] Classroom of the Elite Season 3 - Episode 05 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=he8pzJTFJ5Y', thumbnail_url: 'https://img.youtube.com/vi/he8pzJTFJ5Y/hqdefault.jpg' },
+    { episode_number: 6, season_number: 3, video_id: '2YltBNwWXSI', video_title: "[Telugu Dub] Classroom of the Elite Season 3 - Episode 06 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=2YltBNwWXSI', thumbnail_url: 'https://img.youtube.com/vi/2YltBNwWXSI/hqdefault.jpg' },
+    { episode_number: 7, season_number: 3, video_id: 'vA9Gi78vSeI', video_title: "[Telugu Dub] Classroom of the Elite Season 3 - Episode 07 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=vA9Gi78vSeI', thumbnail_url: 'https://img.youtube.com/vi/vA9Gi78vSeI/hqdefault.jpg' },
+    { episode_number: 10, season_number: 3, video_id: '8diL300WGmA', video_title: "[Telugu Dub] Classroom of the Elite Season 3 - Episode 10 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=8diL300WGmA', thumbnail_url: 'https://img.youtube.com/vi/8diL300WGmA/hqdefault.jpg' },
+    { episode_number: 12, season_number: 3, video_id: '5q1ObyClTt0', video_title: "[Telugu Dub] Classroom of the Elite Season 3 - Episode 12 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=5q1ObyClTt0', thumbnail_url: 'https://img.youtube.com/vi/5q1ObyClTt0/hqdefault.jpg' },
+    { episode_number: 13, season_number: 3, video_id: 'tgvZMyNMoE4', video_title: "[Telugu Dub] Classroom of the Elite Season 3 - Episode 13 | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=tgvZMyNMoE4', thumbnail_url: 'https://img.youtube.com/vi/tgvZMyNMoE4/hqdefault.jpg' }
   ],
 
   // Classroom of the Elite Season 2 (AniList ID: 145545)
@@ -994,9 +702,18 @@ const VERIFIED_OFFICIAL_CATALOG = {
     { episode_number:1, season_number:10, video_id:'niR483he2kg', video_title:'Pokémon: Diamond and Pearl - Ep 01 | The Official Pokémon Channel', channel_name:'The Official Pokémon Channel', channel_id:'UCFctji4JExS8D577WV3aWpA', region:'GLOBAL', is_official:true, is_embeddable:true, language:'English Dub', source_url:'https://www.youtube.com/watch?v=niR483he2kg', thumbnail_url:'https://img.youtube.com/vi/niR483he2kg/hqdefault.jpg' }
   ],
 
-  // ── Batch 2 – Muse Asia playlists ─────────────────────────────────────────
-  21087: [ // One-Punch Man S1 – Muse Asia
-    { episode_number:1, season_number:1, video_id:'PLwLSw1_eDZl0PC3GwSEfl_Oy2Obxw4H5e', video_title:'One-Punch Man Seasons 1-2 Official Playlist | Muse Asia', channel_name:'Muse Asia', channel_id:'UCGbshtvS9t-8CW11W7TooQg', region:'IN', is_official:true, is_embeddable:true, language:'Japanese Audio / English Sub', source_url:'https://www.youtube.com/playlist?list=PLwLSw1_eDZl0PC3GwSEfl_Oy2Obxw4H5e', thumbnail_url:'https://img.youtube.com/vi/PLwLSw1_eDZl0PC3GwSEfl_Oy2Obxw4H5e/hqdefault.jpg', playlist_id:'PLwLSw1_eDZl0PC3GwSEfl_Oy2Obxw4H5e' }
+    // One-Punch Man (AniList ID: 21087) - Official Muse India Telugu Dub
+  21087: [
+    { episode_number: 1, season_number: 1, video_id: '0gVu7IsXEoE', video_title: "[Telugu Dub] One-Punch Man - Episode 01 (S1E01) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=0gVu7IsXEoE', thumbnail_url: 'https://img.youtube.com/vi/0gVu7IsXEoE/hqdefault.jpg' },
+    { episode_number: 4, season_number: 1, video_id: 'foN6WBElXOo', video_title: "[Telugu Dub] One-Punch Man - Episode 04 (S1E04) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=foN6WBElXOo', thumbnail_url: 'https://img.youtube.com/vi/foN6WBElXOo/hqdefault.jpg' },
+    { episode_number: 5, season_number: 1, video_id: 'igZzqhSV5RY', video_title: "[Telugu Dub] One-Punch Man - Episode 05 (S1E05) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=igZzqhSV5RY', thumbnail_url: 'https://img.youtube.com/vi/igZzqhSV5RY/hqdefault.jpg' },
+    { episode_number: 8, season_number: 1, video_id: '5ngBmY6e2_M', video_title: "[Telugu Dub] One-Punch Man - Episode 08 (S1E08) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=5ngBmY6e2_M', thumbnail_url: 'https://img.youtube.com/vi/5ngBmY6e2_M/hqdefault.jpg' },
+    { episode_number: 11, season_number: 1, video_id: 'NwdOWwhig2A', video_title: "[Telugu Dub] One-Punch Man - Episode 11 (S1E11) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=NwdOWwhig2A', thumbnail_url: 'https://img.youtube.com/vi/NwdOWwhig2A/hqdefault.jpg' },
+    { episode_number: 12, season_number: 1, video_id: 'uKTVWXnpIxg', video_title: "[Telugu Dub] One-Punch Man - Episode 12 (S1E12) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=uKTVWXnpIxg', thumbnail_url: 'https://img.youtube.com/vi/uKTVWXnpIxg/hqdefault.jpg' },
+    { episode_number: 5, season_number: 2, video_id: 'jlih0z0qq28', video_title: "[Telugu Dub] One-Punch Man - Episode 17 (S2E05) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=jlih0z0qq28', thumbnail_url: 'https://img.youtube.com/vi/jlih0z0qq28/hqdefault.jpg' },
+    { episode_number: 7, season_number: 2, video_id: 'mA5c0xReUJw', video_title: "[Telugu Dub] One-Punch Man - Episode 19 (S2E07) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=mA5c0xReUJw', thumbnail_url: 'https://img.youtube.com/vi/mA5c0xReUJw/hqdefault.jpg' },
+    { episode_number: 2, season_number: 3, video_id: 'JsF3A7wudkE', video_title: "[Telugu Dub] One-Punch Man - Episode 26 (S3E02) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=JsF3A7wudkE', thumbnail_url: 'https://img.youtube.com/vi/JsF3A7wudkE/hqdefault.jpg' },
+    { episode_number: 10, season_number: 3, video_id: 'nCCMcOEgEPk', video_title: "[Telugu Dub] One-Punch Man - Episode 34 (S3E10) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=nCCMcOEgEPk', thumbnail_url: 'https://img.youtube.com/vi/nCCMcOEgEPk/hqdefault.jpg' }
   ],
   6702: [ // Fairy Tail – Muse India Hindi Dub
     { episode_number:1, season_number:1, video_id:'PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS', video_title:'Fairy Tail Hindi Dub Official Playlist | Muse India', channel_name:'Muse India', channel_id:'UCYYhAzgWuxPauRXdPpLAX3Q', region:'IN', is_official:true, is_embeddable:true, language:'Hindi Dub / Japanese Audio / English Sub', source_url:'https://www.youtube.com/playlist?list=PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS', thumbnail_url:'https://img.youtube.com/vi/0Vi_p1u_hz4/hqdefault.jpg', playlist_id:'PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS' }
@@ -1070,22 +787,18 @@ const VERIFIED_OFFICIAL_CATALOG = {
   149596: [ // Uma Musume Road to the Top – PakaTube/Cygames
     { episode_number:1, season_number:1, video_id:'pakatube_umamusume_rtt', video_title:'Uma Musume: Pretty Derby - Road to the Top | PakaTube (Cygames Official)', channel_name:'PakaTube (Cygames)', channel_id:'UCv16eiWgGuNew172238jE4w', region:'GLOBAL', is_official:true, is_embeddable:true, language:'Japanese Audio / English Sub', source_url:'https://www.youtube.com/@pakatube', thumbnail_url:'https://img.youtube.com/vi/0Vi_p1u_hz4/hqdefault.jpg' }
   ],
-  // ── Attack on Titan – Muse India (Hindi Dub) ───
+    // Attack on Titan (AniList ID: 16498) - Official Muse India Telugu Dub
   16498: [
-    {
-      episode_number: 1,
-      season_number: 1,
-      video_id: 'QjJ4iPOQF_Y',
-      video_title: 'Attack on Titan - Episode 01 [Hindi Dub] | Muse India',
-      channel_name: 'Muse India',
-      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
-      region: 'IN',
-      is_official: true,
-      is_embeddable: true,
-      language: 'Hindi Dub',
-      source_url: 'https://www.youtube.com/watch?v=QjJ4iPOQF_Y',
-      thumbnail_url: 'https://img.youtube.com/vi/QjJ4iPOQF_Y/hqdefault.jpg'
-    }
+    { episode_number: 1, season_number: 1, video_id: 'g4KsydBnM7s', video_title: "[Telugu Dub] Attack on Titan - Episode 01 (S1E01) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=g4KsydBnM7s', thumbnail_url: 'https://img.youtube.com/vi/g4KsydBnM7s/hqdefault.jpg' },
+    { episode_number: 2, season_number: 1, video_id: '4fc2F--lF5A', video_title: "[Telugu Dub] Attack on Titan - Episode 02 (S1E02) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=4fc2F--lF5A', thumbnail_url: 'https://img.youtube.com/vi/4fc2F--lF5A/hqdefault.jpg' },
+    { episode_number: 13, season_number: 1, video_id: '8OsbXTOzeWM', video_title: "[Telugu Dub] Attack on Titan - Episode 13 (S1E13) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=8OsbXTOzeWM', thumbnail_url: 'https://img.youtube.com/vi/8OsbXTOzeWM/hqdefault.jpg' },
+    { episode_number: 17, season_number: 1, video_id: 'GrmMrkLgP4k', video_title: "[Telugu Dub] Attack on Titan - Episode 17 (S1E17) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=GrmMrkLgP4k', thumbnail_url: 'https://img.youtube.com/vi/GrmMrkLgP4k/hqdefault.jpg' },
+    { episode_number: 21, season_number: 1, video_id: 'bd10QvYdrtI', video_title: "[Telugu Dub] Attack on Titan - Episode 21 (S1E21) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=bd10QvYdrtI', thumbnail_url: 'https://img.youtube.com/vi/bd10QvYdrtI/hqdefault.jpg' },
+    { episode_number: 22, season_number: 1, video_id: 't2ZC25bFpI8', video_title: "[Telugu Dub] Attack on Titan - Episode 22 (S1E22) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=t2ZC25bFpI8', thumbnail_url: 'https://img.youtube.com/vi/t2ZC25bFpI8/hqdefault.jpg' },
+    { episode_number: 25, season_number: 1, video_id: 'O6cujyFoPNI', video_title: "[Telugu Dub] Attack on Titan - Episode 25 (S1E25) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=O6cujyFoPNI', thumbnail_url: 'https://img.youtube.com/vi/O6cujyFoPNI/hqdefault.jpg' },
+    { episode_number: 5, season_number: 2, video_id: 'ahcDPggJPIw', video_title: "[Telugu Dub] Attack on Titan - Episode 30 (S2E05) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=ahcDPggJPIw', thumbnail_url: 'https://img.youtube.com/vi/ahcDPggJPIw/hqdefault.jpg' },
+    { episode_number: 9, season_number: 2, video_id: 'eAtRTjaBRIw', video_title: "[Telugu Dub] Attack on Titan - Episode 34 (S2E09) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=eAtRTjaBRIw', thumbnail_url: 'https://img.youtube.com/vi/eAtRTjaBRIw/hqdefault.jpg' },
+    { episode_number: 12, season_number: 2, video_id: 'J74gJeDFyDc', video_title: "[Telugu Dub] Attack on Titan - Episode 37 (S2E12) | Muse IN", channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', dub_type: 'Official', distributor: 'Muse India', verification_status: 'verified', source_url: 'https://www.youtube.com/watch?v=J74gJeDFyDc', thumbnail_url: 'https://img.youtube.com/vi/J74gJeDFyDc/hqdefault.jpg' }
   ],
   // ── Parallel World Pharmacy – Muse Asia (English Sub) ───
   145815: [

@@ -58,6 +58,14 @@ const VERIFIED_YOUTUBE_DISTRIBUTORS = {
     description: 'Official Pokémon Company Streaming Channel',
     isIndia: true,
   },
+  'pokemon-telugu': {
+    name: 'Pokémon Asia Official (Telugu)',
+    badge: 'Watch on Pokémon Telugu',
+    region: 'Official Channel (India - Telugu)',
+    channelUrl: 'https://www.youtube.com/@PokemonTeluguOfficial',
+    description: 'Official Pokémon Company Telugu Streaming Channel',
+    isIndia: true,
+  },
   'toei-animation': {
     name: 'Toei Animation Official',
     badge: 'Watch on Toei Animation',
@@ -127,13 +135,21 @@ const OFFICIAL_YOUTUBE_CATALOG = [
     url: 'https://youtube.com/playlist?list=PLxSscENEp7JisDU6GAJuyNpVwDvCm-f3J',
     title: 'Jujutsu Kaisen Official Episodes on Ani-One India / Asia',
   },
-  // Attack on Titan (Muse Asia)
+  // A Gatherer's Adventure in Isekai (Muse India)
+  {
+    keywords: ["gatherer's adventure in isekai", 'gatherer', 'sozai saishuka'],
+    ids: [187663],
+    distributor: 'muse-india',
+    url: 'https://www.youtube.com/@MuseIndiaChannel',
+    title: "A Gatherer's Adventure in Isekai Official Telugu Dub on Muse India",
+  },
+  // Attack on Titan (Muse India)
   {
     keywords: ['attack on titan', 'shingeki no kyojin'],
     ids: [16498, 20958, 110277, 18397],
-    distributor: 'muse-asia',
-    url: 'https://www.youtube.com/@MuseAsia',
-    title: 'Attack on Titan Official on Muse Asia',
+    distributor: 'muse-india',
+    url: 'https://www.youtube.com/playlist?list=PLpm1VVK4UL14MMCxjG_faT0drrCINtjDo',
+    title: 'Attack on Titan Official Telugu Dub on Muse India',
   },
   // Tokyo Revengers (Muse India & Asia)
   {
@@ -143,21 +159,21 @@ const OFFICIAL_YOUTUBE_CATALOG = [
     url: 'https://www.youtube.com/@MuseIndia',
     title: 'Tokyo Revengers on Muse India',
   },
-  // One Punch Man (Muse India & Asia)
+  // One Punch Man (Muse India)
   {
-    keywords: ['one punch man'],
-    ids: [21087, 102194],
+    keywords: ['one punch man', 'one-punch man'],
+    ids: [21087, 102194, 153800],
     distributor: 'muse-india',
-    url: 'https://www.youtube.com/@MuseIndia',
-    title: 'One-Punch Man on Muse India',
+    url: 'https://www.youtube.com/@MuseIndiaChannel',
+    title: 'One-Punch Man Official Telugu Dub on Muse India',
   },
-  // Mob Psycho 100 (Muse India & Asia)
+  // Mob Psycho 100 (Muse India)
   {
     keywords: ['mob psycho 100'],
     ids: [21507, 101338, 140439],
     distributor: 'muse-india',
-    url: 'https://www.youtube.com/@MuseIndia',
-    title: 'Mob Psycho 100 on Muse India',
+    url: 'https://www.youtube.com/@MuseIndiaChannel',
+    title: 'Mob Psycho 100 Official Telugu Dub on Muse India',
   },
   // Frieren: Beyond Journey's End (Muse Asia)
   {
@@ -196,8 +212,40 @@ const OFFICIAL_YOUTUBE_CATALOG = [
     keywords: ['campfire cooking in another world', 'tondemo skill de isekai'],
     ids: [156067, 170577],
     distributor: 'muse-india',
-    url: 'https://www.youtube.com/@MuseIndia',
-    title: 'Campfire Cooking in Another World on Muse India',
+    url: 'https://www.youtube.com/@MuseIndiaChannel',
+    title: 'Campfire Cooking in Another World Official Telugu Dub on Muse India',
+  },
+  // Skeleton Knight in Another World (Muse India)
+  {
+    keywords: ['skeleton knight in another world', 'gaikotsu kishi'],
+    ids: [132474],
+    distributor: 'muse-india',
+    url: 'https://www.youtube.com/@MuseIndiaChannel',
+    title: 'Skeleton Knight in Another World Official Telugu Dub on Muse India',
+  },
+  // Pokémon: Diamond and Pearl: Battle Dimension (Pokémon Asia Official Telugu)
+  {
+    keywords: ['pokemon diamond and pearl', 'battle dimension', 'pocket monsters diamond & pearl'],
+    ids: [1565],
+    distributor: 'pokemon-telugu',
+    url: 'https://www.youtube.com/@PokemonTeluguOfficial',
+    title: 'Pokémon: Diamond and Pearl: Battle Dimension Official Telugu on Pokémon Asia Official (Telugu)',
+  },
+  // Pokémon the Series: XY (Pokémon Asia Official Telugu)
+  {
+    keywords: ['pokemon the series xy', 'pokemon xy', 'pocket monsters xy'],
+    ids: [19291],
+    distributor: 'pokemon-telugu',
+    url: 'https://www.youtube.com/@PokemonTeluguOfficial',
+    title: 'Pokémon the Series: XY Official Telugu on Pokémon Asia Official (Telugu)',
+  },
+  // Pokémon Ultimate Journeys (Pokémon Asia Official Telugu)
+  {
+    keywords: ['pokemon ultimate journeys', 'pokemon journeys', 'pocket monsters (2019)'],
+    ids: [112153, 158870],
+    distributor: 'pokemon-telugu',
+    url: 'https://www.youtube.com/@PokemonTeluguOfficial',
+    title: 'Pokémon Ultimate Journeys Official Telugu on Pokémon Asia Official (Telugu)',
   },
   // Hyouka (Muse India & Asia)
   {

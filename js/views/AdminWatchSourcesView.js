@@ -455,6 +455,26 @@ export const AdminWatchSourcesView = {
   },
 
   resolveAnimeId(inputStr, season) {
+
+    if (clean.includes("gatherer's adventure") || clean.includes("gatherer") || clean.includes("sozai saishuka")) return 187663;
+    if (clean.includes("skeleton knight") || clean.includes("gaikotsu kishi")) return 132474;
+    if (clean.includes("campfire cooking") || clean.includes("tondemo skill")) return 156067;
+    if (clean.includes("pokemon") || clean.includes("pokémon") || clean.includes("pocket monsters")) {
+      if (clean.includes("diamond") || clean.includes("pearl") || clean.includes("battle dimension") || season === 11) return 1565;
+      if (clean.includes("xy") || season === 17) return 19291;
+      if (clean.includes("journeys") || clean.includes("ultimate") || season === 25) return 112153;
+      return 1565;
+    }
+    if (clean.includes("attack on titan") || clean.includes("shingeki")) {
+      if (season === 2) return 20958;
+      return 16498;
+    }
+    if (clean.includes("one punch") || clean.includes("one-punch")) {
+      if (season === 2) return 102194;
+      if (season === 3) return 153800;
+      return 21087;
+    }
+
     if (!inputStr) return 0;
     const clean = inputStr.trim().toLowerCase();
     const num = parseInt(clean, 10);
