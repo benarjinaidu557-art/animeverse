@@ -31,6 +31,40 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+function extractYouTubeVideoId(input) {
+  if (!input) return null;
+  const str = String(input).trim();
+  if (/^[a-zA-Z0-9_-]{11}$/.test(str)) return str;
+  if (str.startsWith('PL') || str.startsWith('UU') || str.startsWith('RD') || str.startsWith('OLAK5uy_')) return null;
+  try {
+    const url = new URL(str, 'https://www.youtube.com');
+    if (url.hostname.includes('youtu.be')) {
+      const id = url.pathname.replace(/^\/+/, '').split('/')[0];
+      if (/^[a-zA-Z0-9_-]{11}$/.test(id)) return id;
+    }
+    const vParam = url.searchParams.get('v');
+    if (vParam && /^[a-zA-Z0-9_-]{11}$/.test(vParam)) return vParam;
+    const embedMatch = url.pathname.match(/\/(?:embed|v|shorts)\/([a-zA-Z0-9_-]{11})/);
+    if (embedMatch) return embedMatch[1];
+  } catch {}
+  const match = str.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
+
+function extractPlaylistId(input) {
+  if (!input) return null;
+  const str = String(input).trim();
+  if (str.startsWith('PL') || str.startsWith('UU') || str.startsWith('RD') || str.startsWith('OLAK5uy_')) {
+    return str;
+  }
+  try {
+    const url = new URL(str, 'https://www.youtube.com');
+    const listParam = url.searchParams.get('list');
+    if (listParam) return listParam;
+  } catch {}
+  return null;
+}
+
 function buildWatchUrl(ep) {
   if (!ep) return '#';
   if (ep.source_url) return ep.source_url;
@@ -50,6 +84,7 @@ export const YouTubePlayer = {
   currentSeason: 1,
   selectedLanguage: null,
   onEpisodeChange: null,
+  isPlaying: false,
 
   /**
    * Generates the HTML for the WATCH ANIME player section
@@ -61,6 +96,7 @@ export const YouTubePlayer = {
     this.currentSeason = options.season || 1;
     this.selectedLanguage = options.language || null;
     this.onEpisodeChange = options.onEpisodeChange || null;
+    this.isPlaying = false;
 
     // Collect available languages
     const availableLangs = [...new Set(
@@ -201,15 +237,15 @@ export const YouTubePlayer = {
           </div>
         </div>
 
-        <!-- Large Anime Poster Card with Clean AnimeVerse Play Button -->
-        <div class="player-viewport-container player-poster-card-wrap">
-          <a 
-            id="animeverse-main-watch-btn" 
-            href="${watchUrl}" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+        <!-- Large Anime Preview / Embedded YouTube Player Viewport -->
+        <div class="player-viewport-container player-poster-card-wrap" id="player-viewport-wrap">
+          <!-- Initial Thumbnail State (Before playback) -->
+          <div 
+            id="player-preview-card" 
             class="player-poster-card" 
-            title="Watch ${escapeHtml(currentEp.video_title || `Episode ${currentEp.episode_number}`)} on YouTube"
+            role="button"
+            tabindex="0"
+            title="Watch ${escapeHtml(currentEp.video_title || `Episode ${currentEp.episode_number}`)} inside AnimeVerse"
           >
             <img 
               id="player-preview-image" 
@@ -235,7 +271,10 @@ export const YouTubePlayer = {
                 ${currentEp.video_id?.startsWith('PL') || currentEp.playlist_id ? 'Full Series Playlist' : `Episode ${currentEp.episode_number}`}
               </span>
             </div>
-          </a>
+          </div>
+
+          <!-- Embedded Player Container (Appears when Watch Episode is clicked) -->
+          <div id="player-embed-container" class="youtube-player-aspect-box" style="display: none;"></div>
         </div>
 
         <!-- Episode Info & Navigation Controls Bar Below Poster Card -->
@@ -266,19 +305,16 @@ export const YouTubePlayer = {
           </div>
 
           <div class="player-action-buttons">
-            <!-- External Watch Link directly to verified YouTube Video -->
-            <a 
-              href="${watchUrl}" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="btn-player-external" 
+            <!-- Watch Episode Button (Plays inside AnimeVerse) -->
+            <button 
+              type="button" 
+              class="btn-player-external btn-player-play-trigger" 
               id="btn-player-external-link"
-              title="Watch Episode on official YouTube channel"
+              title="Watch Episode inside AnimeVerse"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               <span>Watch Episode</span>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </a>
+            </button>
 
             <button 
               type="button" 
@@ -428,22 +464,99 @@ export const YouTubePlayer = {
     const channelNameElem = root.querySelector('#player-channel-name');
     const prevBtn = root.querySelector('#btn-player-prev');
     const nextBtn = root.querySelector('#btn-player-next');
-    const extLink = root.querySelector('#btn-player-external-link');
-    const mainWatchBtn = root.querySelector('#animeverse-main-watch-btn');
+    const playTriggerBtn = root.querySelector('#btn-player-external-link');
+    const previewCard = root.querySelector('#player-preview-card');
+    const embedContainer = root.querySelector('#player-embed-container');
     const cardEpBadge = root.querySelector('#player-card-ep-badge');
     const langSelect = root.querySelector('#yt-lang-select');
 
-    // Bind click to auto-save watch progress on main poster button
-    if (mainWatchBtn) {
-      mainWatchBtn.addEventListener('click', async () => {
-        const ep = this.episodes[this.currentIndex];
-        if (this.currentAnime?.id && ep?.episode_number) {
-          try {
-            await StorageService.toggleEpisodeWatched(this.currentAnime.id, ep.episode_number);
-          } catch (e) {
-            console.warn('[YouTubePlayer] Progress save notice:', e);
+    const startPlayback = (ep) => {
+      if (!ep || !previewCard || !embedContainer) return;
+      const videoId = extractYouTubeVideoId(ep.video_id) || extractYouTubeVideoId(ep.source_url);
+      const playlistId = ep.playlist_id || extractPlaylistId(ep.video_id) || extractPlaylistId(ep.source_url);
+
+      if (ep.is_embeddable === false || (!videoId && !playlistId)) {
+        const officialUrl = buildWatchUrl(ep);
+        previewCard.style.display = 'none';
+        embedContainer.style.display = 'block';
+        embedContainer.innerHTML = `
+          <div class="player-embed-unavail-notice" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0b0b14; text-align: center; padding: 24px; color: #fff;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" style="margin-bottom: 12px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 14px; max-width: 480px; line-height: 1.45;">
+              This official video cannot be embedded. Watch it on the official distributor's YouTube channel.
+            </p>
+            <a href="${officialUrl}" target="_blank" rel="noopener noreferrer" class="btn-player-watch-fallback" style="background: var(--accent-purple); color: #fff; padding: 10px 22px; border-radius: 9999px; text-decoration: none; font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px;">
+              <span>Watch on Official YouTube Channel</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        `;
+        this.isPlaying = true;
+        return;
+      }
+
+      let embedUrl = '';
+      if (playlistId) {
+        const baseParam = videoId ? videoId : 'videoseries';
+        embedUrl = `https://www.youtube.com/embed/${baseParam}?list=${encodeURIComponent(playlistId)}&autoplay=1&enablejsapi=1&rel=0`;
+      } else {
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0`;
+      }
+
+      previewCard.style.display = 'none';
+      embedContainer.style.display = 'block';
+      embedContainer.innerHTML = `
+        <iframe 
+          id="animeverse-active-yt-iframe"
+          src="${embedUrl}" 
+          title="${escapeHtml(ep.video_title || 'Official Anime Episode')}" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          referrerpolicy="strict-origin-when-cross-origin" 
+          allowfullscreen
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+        ></iframe>
+      `;
+      this.isPlaying = true;
+
+      // Automatically sync watch progress with Supabase / StorageService
+      if (this.currentAnime?.id && ep.episode_number) {
+        try {
+          StorageService.toggleEpisodeWatched(this.currentAnime.id, ep.episode_number);
+          const epGuideCheckbox = root.querySelector(`.btn-episode-toggle[data-episode="${ep.episode_number}"]`);
+          if (epGuideCheckbox && !epGuideCheckbox.classList.contains('watched')) {
+            epGuideCheckbox.classList.add('watched');
+            const span = epGuideCheckbox.querySelector('span');
+            if (span) span.textContent = 'Watched';
           }
+        } catch (e) {
+          console.warn('[YouTubePlayer] Progress save notice:', e);
         }
+      }
+    };
+
+    // User clicks thumbnail card to start in-app playback
+    if (previewCard) {
+      previewCard.addEventListener('click', (e) => {
+        e.preventDefault();
+        const ep = this.episodes[this.currentIndex];
+        startPlayback(ep);
+      });
+      previewCard.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const ep = this.episodes[this.currentIndex];
+          startPlayback(ep);
+        }
+      });
+    }
+
+    // User clicks Watch Episode button to start in-app playback
+    if (playTriggerBtn) {
+      playTriggerBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const ep = this.episodes[this.currentIndex];
+        startPlayback(ep);
       });
     }
 
@@ -478,15 +591,6 @@ export const YouTubePlayer = {
         langText.textContent = ep.language || 'English Sub';
       }
 
-      // Update watch link to exact verified YouTube URL
-      const watchUrl = buildWatchUrl(ep);
-      if (extLink) {
-        extLink.href = watchUrl;
-      }
-      if (mainWatchBtn) {
-        mainWatchBtn.href = watchUrl;
-        mainWatchBtn.title = `Watch ${ep.video_title || `Episode ${ep.episode_number}`} on YouTube`;
-      }
       if (cardEpBadge) {
         cardEpBadge.textContent = ep.video_id?.startsWith('PL') || ep.playlist_id ? 'Full Series Playlist' : `Episode ${ep.episode_number}`;
       }
@@ -507,19 +611,9 @@ export const YouTubePlayer = {
       if (prevBtn) prevBtn.disabled = index === 0;
       if (nextBtn) nextBtn.disabled = index >= this.episodes.length - 1;
 
-      // Automatically sync watch progress with Supabase / StorageService
-      if (this.currentAnime?.id && ep.episode_number) {
-        try {
-          await StorageService.toggleEpisodeWatched(this.currentAnime.id, ep.episode_number);
-          const epGuideCheckbox = root.querySelector(`.btn-episode-toggle[data-episode="${ep.episode_number}"]`);
-          if (epGuideCheckbox && !epGuideCheckbox.classList.contains('watched')) {
-            epGuideCheckbox.classList.add('watched');
-            const span = epGuideCheckbox.querySelector('span');
-            if (span) span.textContent = 'Watched';
-          }
-        } catch (e) {
-          console.warn('[YouTubePlayer] Progress save notice:', e);
-        }
+      // If already playing, seamlessly play the selected episode
+      if (this.isPlaying) {
+        startPlayback(ep);
       }
 
       if (typeof this.onEpisodeChange === 'function') {
