@@ -29,12 +29,15 @@ export const AnimeCard = {
     const isFavorite = StorageService.isFavorite(id);
     const genres = (anime.genres || []).slice(0, 2);
 
-    const vs = anime.verifiedSource || null;
+    const vs = anime.verifiedSource || options?.watchSource || anime.watchSource || null;
     const isWatchable = Boolean(options?.isWatchable || anime.isWatchable || anime.hasWatchSource || vs);
-    const language = vs?.language || (options?.hasHindi ? 'Hindi Dub' : (anime.hasHindiDub ? 'Hindi Dub' : 'Official'));
+    const language = vs?.language || options?.language || anime.language || (options?.hasHindi ? 'Hindi Dub' : (anime.hasHindiDub ? 'Hindi Dub' : (isWatchable ? 'Official' : '')));
     const episodeLabel = vs?.episode_label || (anime.episodes ? `${anime.episodes} eps` : 'Full Episodes');
     const channelName = vs?.channel_name || 'YouTube Official';
     const watchUrl = vs?.source_url || (vs?.video_id ? `https://www.youtube.com/watch?v=${vs.video_id}` : null);
+
+    const langLower = (language || '').toLowerCase();
+    const langClass = langLower.includes('telugu') ? 'lang-telugu' : (langLower.includes('hindi') ? 'lang-hindi' : (langLower.includes('english') || langLower.includes('en-sub') ? 'lang-english' : ''));
 
     return `
       <article class="anime-card ${vs ? 'anime-card-verified' : ''}" data-anime-id="${id}">
@@ -68,7 +71,7 @@ export const AnimeCard = {
             ` : ''}
             
             ${language ? `
-              <span class="badge-lang-pill ${language.toLowerCase().includes('hindi') ? 'lang-hindi' : ''}">
+              <span class="badge-lang-pill ${langClass}">
                 ${escapeHtml(language)}
               </span>
             ` : ''}

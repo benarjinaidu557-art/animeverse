@@ -8,6 +8,7 @@ import { AnimeService } from '../services/animeService.js';
 import { AnimeCard } from '../components/AnimeCard.js';
 import { Skeletons } from '../components/Skeletons.js';
 import { AdSlot } from '../components/AdSlot.js';
+import { LanguageFilterService, SUPPORTED_LANGUAGES } from '../services/languageFilterService.js';
 
 export const BrowseView = {
   debounceTimer: null,
@@ -40,6 +41,13 @@ export const BrowseView = {
     const country = queryParams.country || 'ALL';
     const watchableOnly = queryParams.watchableOnly === 'true' || queryParams.watchableOnly === true;
     const sort = queryParams.sort || 'POPULARITY_DESC';
+
+    const globalLang = LanguageFilterService.getActiveLanguage();
+    const language = queryParams.language !== undefined ? queryParams.language : (globalLang !== 'ALL' ? globalLang : 'ALL');
+    if (queryParams.language && queryParams.language !== globalLang) {
+      LanguageFilterService.setActiveLanguage(queryParams.language);
+    }
+    this.currentParams.language = language;
 
     // Load available genres & verified watch sources in parallel
     const [genresList, verifiedSources] = await Promise.all([
@@ -159,6 +167,21 @@ export const BrowseView = {
               </select>
             </div>
 
+            <!-- Language Filter -->
+            <div class="filter-group">
+              <label class="filter-label" for="filter-language">
+                <span style="display: inline-flex; align-items: center; gap: 4px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  Language
+                </span>
+              </label>
+              <select id="filter-language" class="filter-select">
+                ${SUPPORTED_LANGUAGES.map(l => `
+                  <option value="${l.id}" ${language === l.id ? 'selected' : ''}>${l.label}</option>
+                `).join('')}
+              </select>
+            </div>
+
             <!-- Watch Source Filter -->
             <div class="filter-group">
               <label class="filter-label" for="filter-watchable">Watch Source</label>
@@ -192,9 +215,10 @@ export const BrowseView = {
               ${genre ? `<span class="filter-tag">Genre: ${escapeHtml(genre)}</span>` : ''}
               ${year ? `<span class="filter-tag">Year: ${year}</span>` : ''}
               ${era !== 'ALL' ? `<span class="filter-tag">Era: ${era}</span>` : ''}
+              ${language && language !== 'ALL' ? `<span class="filter-tag" style="background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.4);">Language: ${escapeHtml(language)}</span>` : ''}
               ${watchableOnly ? `<span class="filter-tag" style="background: rgba(220,38,38,0.2); color:#f87171; border-color: rgba(220,38,38,0.4);">Official YouTube Only</span>` : ''}
             </div>
-            ${(search || format !== 'ALL' || status !== 'ALL' || country !== 'ALL' || genre || year || era !== 'ALL' || watchableOnly || sort !== 'POPULARITY_DESC') ? `
+            ${(search || format !== 'ALL' || status !== 'ALL' || country !== 'ALL' || genre || year || era !== 'ALL' || watchableOnly || (language && language !== 'ALL') || sort !== 'POPULARITY_DESC') ? `
               <button type="button" class="btn-reset-filters" id="btn-reset-filters">Reset all filters</button>
             ` : ''}
           </div>
@@ -292,13 +316,22 @@ export const BrowseView = {
       watchableSelect.addEventListener('change', (e) => updateParamsAndNavigate({ watchableOnly: e.target.value === 'true' }));
     }
 
+    const langSelect = document.getElementById('filter-language');
+    if (langSelect) {
+      langSelect.addEventListener('change', (e) => {
+        LanguageFilterService.setActiveLanguage(e.target.value);
+        updateParamsAndNavigate({ language: e.target.value });
+      });
+    }
+
     if (sortSelect) {
       sortSelect.addEventListener('change', (e) => updateParamsAndNavigate({ sort: e.target.value }));
     }
 
     if (resetBtn) {
       resetBtn.addEventListener('click', () => {
-        window.router.navigate('/browse');
+        LanguageFilterService.setActiveLanguage('ALL');
+        window.router.navigate('/browse?language=ALL');
       });
     }
   },
@@ -312,8 +345,10 @@ export const BrowseView = {
 
     try {
       const pageToFetch = this.currentPage || 1;
+      const activeLang = queryParams.language || this.currentParams.language || LanguageFilterService.getActiveLanguage();
       const { media, pageInfo } = await AnimeService.searchAndFilter({
         ...queryParams,
+        language: activeLang,
         countryOfOrigin: queryParams.country,
         page: pageToFetch,
         perPage: 50 // 50 items per API page
@@ -325,19 +360,25 @@ export const BrowseView = {
       // Handle Empty State
       if (!this.loadedMedia || this.loadedMedia.length === 0) {
         if (counterText) counterText.textContent = 'No matching anime found.';
+        const isLangFiltered = activeLang && activeLang !== 'ALL';
+        const emptyHeading = isLangFiltered ? 'No verified anime available in this language yet.' : 'No Anime Found';
+        const emptyDesc = isLangFiltered 
+          ? `We strictly index official licensed anime streams. There are currently no verified streams available for ${escapeHtml(activeLang)} in our database.`
+          : `We couldn't find any anime matching your current search or filter combination. Try clearing some filters or searching with different keywords.`;
+
         resultsArea.innerHTML = `
           <div class="empty-state" style="padding: 48px 24px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px;">
             <div class="state-icon" style="width: 56px; height: 56px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; background: rgba(139, 92, 246, 0.1); border-radius: 50%; color: var(--accent-purple-light);">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
               </svg>
             </div>
-            <h3 class="state-title" style="color: #fff; font-size: 1.25rem; margin-bottom: 8px;">No Anime Found</h3>
+            <h3 class="state-title" style="color: #fff; font-size: 1.25rem; margin-bottom: 8px;">${emptyHeading}</h3>
             <p class="state-desc" style="color: var(--text-muted); font-size: 0.9rem; max-width: 440px; margin: 0 auto 20px;">
-              We couldn't find any anime matching your current search or filter combination. Try clearing some filters or searching with different keywords.
+              ${emptyDesc}
             </p>
-            <button type="button" class="btn-primary" onclick="window.router.navigate('/browse')">
-              Clear All Filters
+            <button type="button" class="btn-primary" onclick="window.router.navigate('/browse?language=ALL')">
+              Show All Languages
             </button>
           </div>
         `;
@@ -388,8 +429,11 @@ export const BrowseView = {
   renderCard(anime) {
     const watchSource = this.verifiedMap.get(Number(anime.id));
     const isWatchable = Boolean(watchSource);
-    const hasHindi = (watchSource?.language || '').toLowerCase().includes('hindi');
-    return AnimeCard.render(anime, { isWatchable, hasHindi });
+    return AnimeCard.render(anime, { 
+      isWatchable,
+      watchSource,
+      language: watchSource?.language
+    });
   },
 
   updateCounterUI() {
