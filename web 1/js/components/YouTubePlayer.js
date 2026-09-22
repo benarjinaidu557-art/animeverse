@@ -20,16 +20,7 @@ import { Toast } from './Toast.js';
 import { AdminService } from '../services/adminService.js';
 import { AdminWatchSourceModal } from './AdminWatchSourceModal.js';
 import { YouTubeDiscoveryService } from '../services/youtubeDiscoveryService.js';
-
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
+import { escapeHtml } from '../utils/stringUtils.js';
 
 function extractYouTubeVideoId(input) {
   if (!input) return null;

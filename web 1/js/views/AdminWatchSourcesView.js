@@ -13,16 +13,7 @@
 import { AdminService } from '../services/adminService.js';
 import { Toast } from '../components/Toast.js';
 import { AnalyticsService } from '../services/analyticsService.js';
-
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
+import { escapeHtml } from '../utils/stringUtils.js';
 
 export const AdminWatchSourcesView = {
   sources: [],

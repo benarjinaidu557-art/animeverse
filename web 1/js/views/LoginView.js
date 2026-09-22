@@ -4,16 +4,7 @@
 
 import { AuthService } from '../services/authService.js';
 import { Toast } from '../components/Toast.js';
-
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
+import { escapeHtml } from '../utils/stringUtils.js';
 
 export const LoginView = {
   render(container, queryParams = {}) {

@@ -10,6 +10,7 @@ import { CommunityService } from '../services/communityService.js';
 import { AnimeCard } from '../components/AnimeCard.js';
 import { Toast } from '../components/Toast.js';
 import { SUPABASE_CONFIG } from '../config/supabaseConfig.js';
+import { escapeHtml } from '../utils/stringUtils.js';
 
 const CURATED_AVATARS = [
   'https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Goku',
@@ -635,12 +636,3 @@ export const ProfileView = {
   }
 };
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}

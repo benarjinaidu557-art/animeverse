@@ -13,6 +13,7 @@ import { HeroSection } from '../components/HeroSection.js';
 import { Skeletons } from '../components/Skeletons.js';
 import { AdSlot } from '../components/AdSlot.js';
 import { LanguageFilterService, SUPPORTED_LANGUAGES } from '../services/languageFilterService.js';
+import { escapeHtml } from '../utils/stringUtils.js';
 
 export const HomeView = {
   verifiedData: null,

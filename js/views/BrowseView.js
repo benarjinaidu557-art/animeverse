@@ -9,6 +9,7 @@ import { AnimeCard } from '../components/AnimeCard.js';
 import { Skeletons } from '../components/Skeletons.js';
 import { AdSlot } from '../components/AdSlot.js';
 import { LanguageFilterService, SUPPORTED_LANGUAGES } from '../services/languageFilterService.js';
+import { escapeHtml } from '../utils/stringUtils.js';
 
 export const BrowseView = {
   debounceTimer: null,
@@ -591,12 +592,3 @@ export const BrowseView = {
   }
 };
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}

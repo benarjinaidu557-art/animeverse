@@ -17,6 +17,7 @@ import { SeoService } from '../services/seoService.js';
 import { OfficialWatchService } from '../services/officialWatchService.js';
 import { YouTubeDiscoveryService } from '../services/youtubeDiscoveryService.js';
 import { YouTubePlayer } from '../components/YouTubePlayer.js';
+import { escapeHtml } from '../utils/stringUtils.js';
 
 export const DetailsView = {
   activeAnime: null,
@@ -1304,12 +1305,3 @@ export const DetailsView = {
   }
 };
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}

@@ -8,6 +8,7 @@ import { AnimeService } from '../services/animeService.js';
 import { AnimeCard } from '../components/AnimeCard.js';
 import { Skeletons } from '../components/Skeletons.js';
 import { Toast } from '../components/Toast.js';
+import { escapeHtml } from '../utils/stringUtils.js';
 
 export const DiscoverView = {
   activeMode: 'ai', // 'ai' | 'matrix'
@@ -444,12 +445,3 @@ export const DiscoverView = {
   }
 };
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}

@@ -5,6 +5,7 @@
  */
 
 import { StorageService } from './services/storageService.js';
+import { escapeHtml } from './utils/stringUtils.js';
 import { AnimeService } from './services/animeService.js';
 import { AuthService } from './services/authService.js';
 import { HomeView } from './views/HomeView.js';
@@ -659,16 +660,6 @@ function setupGlobalInteractions() {
 
   // Initial counter set
   updateWatchlistCounters();
-}
-
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
 }
 
 // Application Boot

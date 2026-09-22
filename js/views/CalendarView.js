@@ -7,6 +7,7 @@
 import { AnimeService } from '../services/animeService.js';
 import { StorageService } from '../services/storageService.js';
 import { Skeletons } from '../components/Skeletons.js';
+import { escapeHtml } from '../utils/stringUtils.js';
 
 export const CalendarView = {
   currentTab: 'today', // 'yesterday' | 'today' | 'tomorrow' | 'this_week' | 'next_week'
@@ -250,12 +251,3 @@ export const CalendarView = {
   }
 };
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}

@@ -10,6 +10,7 @@ import { StorageService } from '../services/storageService.js';
 import { AnimeService } from '../services/animeService.js';
 import { AnimeCard } from '../components/AnimeCard.js';
 import { Skeletons } from '../components/Skeletons.js';
+import { escapeHtml } from '../utils/stringUtils.js';
 
 export const DashboardView = {
   async render(container) {
@@ -263,12 +264,3 @@ export const DashboardView = {
   }
 };
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}

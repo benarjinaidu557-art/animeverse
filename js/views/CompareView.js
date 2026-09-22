@@ -5,6 +5,7 @@
 
 import { AnimeService } from '../services/animeService.js';
 import { Skeletons } from '../components/Skeletons.js';
+import { escapeHtml } from '../utils/stringUtils.js';
 
 export const CompareView = {
   anime1: null,
@@ -229,12 +230,3 @@ export const CompareView = {
   }
 };
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
