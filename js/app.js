@@ -27,6 +27,7 @@ import { AdminWatchSourcesView } from './views/AdminWatchSourcesView.js';
 import { SeoService } from './services/seoService.js';
 import { CommunityService } from './services/communityService.js';
 import { Toast } from './components/Toast.js';
+import { AnalyticsService } from './services/analyticsService.js';
 
 const ROUTE_SEO = {
   '/': { title: 'Home - Discover & Track Anime', description: 'Explore trending, popular, and seasonal anime simulcasts with AnimeVerse.' },
@@ -676,6 +677,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupDropdownAndAuth();
   setupNotificationsDropdown();
   setupGlobalInteractions();
+
+  // Record daily unique visitor asynchronously (deduplicated per calendar day)
+  AnalyticsService.recordDailyVisit().catch(err => {
+    console.warn('[AnimeVerse] Analytics tracking notice:', err);
+  });
 
   // Initialize Auth Service & update Navbar
   await AuthService.init();

@@ -12,6 +12,7 @@
 
 import { AdminService } from '../services/adminService.js';
 import { Toast } from '../components/Toast.js';
+import { AnalyticsService } from '../services/analyticsService.js';
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -90,6 +91,84 @@ export const AdminWatchSourcesView = {
           <div style="background: var(--bg-card); border: 1px solid rgba(139,92,246,0.25); border-radius: 12px; padding: 18px 20px;">
             <div style="font-size: 0.75rem; font-weight: 700; color: #c4b5fd; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">API Quota Today</div>
             <div id="stat-quota" style="font-size: 1.8rem; font-weight: 800; color: #c4b5fd;">-- / 90</div>
+          </div>
+
+        </div>
+
+        <!-- Daily Unique Visitors Analytics Section -->
+        <div class="admin-analytics-card" style="background: var(--bg-card); border: 1px solid rgba(139, 92, 246, 0.35); border-radius: 14px; padding: 22px; margin-bottom: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(139, 92, 246, 0.2); display: flex; align-items: center; justify-content: center; color: var(--accent-purple-light);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <h2 style="font-size: 1.2rem; font-weight: 800; color: #fff; margin: 0;">Daily Unique Visitor Analytics</h2>
+                  <span style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); color: #22c55e; font-size: 0.70rem; font-weight: 700; padding: 2px 7px; border-radius: 999px;">
+                    1 Visit / Day Strict
+                  </span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.8rem; margin: 2px 0 0 0;">
+                  Anonymous privacy-first tracking. Counts each visitor exactly once per calendar day regardless of refreshes or reopens.
+                </p>
+              </div>
+            </div>
+
+            <button type="button" id="btn-refresh-analytics" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span>Refresh Stats</span>
+            </button>
+          </div>
+
+          <!-- 5 Requested Analytics Metric Cards -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 22px;">
+            
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 10px; padding: 16px 18px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--accent-purple-light); text-transform: uppercase;">Today</span>
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e;"></span>
+              </div>
+              <div id="stat-visitor-today" style="font-size: 1.75rem; font-weight: 800; color: #fff;">--</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">Today's unique visitors</div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px 18px;">
+              <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px;">Yesterday</div>
+              <div id="stat-visitor-yesterday" style="font-size: 1.75rem; font-weight: 800; color: #fff;">--</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">Yesterday's unique count</div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 16px 18px;">
+              <div style="font-size: 0.72rem; font-weight: 700; color: #60a5fa; text-transform: uppercase; margin-bottom: 4px;">Last 7 Days</div>
+              <div id="stat-visitor-7days" style="font-size: 1.75rem; font-weight: 800; color: #60a5fa;">--</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">Unique visitor-days</div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px; padding: 16px 18px;">
+              <div style="font-size: 0.72rem; font-weight: 700; color: #fbbf24; text-transform: uppercase; margin-bottom: 4px;">Last 30 Days</div>
+              <div id="stat-visitor-30days" style="font-size: 1.75rem; font-weight: 800; color: #fbbf24;">--</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">Unique visitor-days</div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 16px 18px;">
+              <div style="font-size: 0.72rem; font-weight: 700; color: #34d178; text-transform: uppercase; margin-bottom: 4px;">Total Visitor-Days</div>
+              <div id="stat-visitor-total" style="font-size: 1.75rem; font-weight: 800; color: #34d178;">--</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">Total unique records</div>
+            </div>
+
+          </div>
+
+          <!-- 7-Day Trend Visual Breakdown -->
+          <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px 18px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #cbd5e1; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+              <span>Past 7 Days Daily Trend</span>
+              <span style="font-size: 0.7rem; color: var(--text-dim);">Strict 1 / day metric</span>
+            </div>
+            <div id="visitor-chart-bars" style="display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; height: 110px; padding: 8px 4px 0;">
+              <div style="color: var(--text-dim); font-size: 0.8rem; margin: auto;">Loading visitor trend...</div>
+            </div>
           </div>
 
         </div>
@@ -287,6 +366,12 @@ export const AdminWatchSourcesView = {
     document.getElementById('btn-refresh-dashboard')?.addEventListener('click', () => {
       this.loadDashboardData();
       Toast.show('Dashboard refreshed', 'info');
+    });
+
+    // Refresh Visitor Analytics button
+    document.getElementById('btn-refresh-analytics')?.addEventListener('click', async () => {
+      await this.loadVisitorAnalytics();
+      Toast.show('Visitor analytics refreshed', 'info');
     });
 
     // On-demand scan trigger button
@@ -628,6 +713,56 @@ export const AdminWatchSourcesView = {
       const tbody = document.getElementById('admin-sources-tbody');
       if (tbody) {
         tbody.innerHTML = `<tr><td colspan="8" style="padding: 30px; text-align: center; color: #f87171;">Failed to load data: ${err.message}</td></tr>`;
+      }
+    }
+
+    // Also refresh visitor analytics alongside dashboard load
+    this.loadVisitorAnalytics();
+  },
+
+  async loadVisitorAnalytics() {
+    const elToday = document.getElementById('stat-visitor-today');
+    const elYesterday = document.getElementById('stat-visitor-yesterday');
+    const el7Days = document.getElementById('stat-visitor-7days');
+    const el30Days = document.getElementById('stat-visitor-30days');
+    const elTotal = document.getElementById('stat-visitor-total');
+    const elBars = document.getElementById('visitor-chart-bars');
+
+    try {
+      const stats = await AnalyticsService.getVisitorAnalytics();
+
+      if (elToday) elToday.textContent = stats.today.toLocaleString();
+      if (elYesterday) elYesterday.textContent = stats.yesterday.toLocaleString();
+      if (el7Days) el7Days.textContent = stats.last7Days.toLocaleString();
+      if (el30Days) el30Days.textContent = stats.last30Days.toLocaleString();
+      if (elTotal) elTotal.textContent = stats.totalUniqueVisitorDays.toLocaleString();
+
+      if (elBars && Array.isArray(stats.dailyBreakdown7d)) {
+        const maxCount = Math.max(...stats.dailyBreakdown7d.map(d => d.count), 1);
+        elBars.innerHTML = stats.dailyBreakdown7d.map(day => {
+          const heightPercent = Math.max(Math.round((day.count / maxCount) * 100), 10);
+          const isToday = day.date === stats.todayDateStr;
+          const barColor = isToday ? '#6366f1' : '#3b82f6';
+          const labelParts = day.date.split('-');
+          const shortDate = labelParts.length === 3 ? `${labelParts[1]}/${labelParts[2]}` : day.date;
+
+          return `
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 6px;">
+              <span style="font-size: 0.72rem; font-weight: 700; color: ${isToday ? '#818cf8' : '#94a3b8'};">
+                ${day.count}
+              </span>
+              <div style="width: 100%; max-width: 38px; height: ${heightPercent}%; background: ${barColor}; border-radius: 4px 4px 0 0; transition: height 0.3s ease; box-shadow: 0 0 10px ${isToday ? 'rgba(99,102,241,0.4)' : 'rgba(59,130,246,0.2)'};" title="${day.date}: ${day.count} unique visitors"></div>
+              <span style="font-size: 0.68rem; color: var(--text-dim); margin-top: 2px;">
+                ${shortDate}
+              </span>
+            </div>
+          `;
+        }).join('');
+      }
+    } catch (err) {
+      console.error('[AdminWatchSourcesView] Failed to load visitor analytics:', err);
+      if (elBars) {
+        elBars.innerHTML = `<div style="color: #f87171; font-size: 0.8rem; margin: auto;">Unable to load visitor analytics: ${err.message}</div>`;
       }
     }
   },

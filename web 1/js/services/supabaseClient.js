@@ -240,6 +240,7 @@ function createLocalSupabaseSimulator() {
         'comment_likes',
         'watch_sources',
         'approved_youtube_channels',
+        'daily_visitors',
       ]);
 
       const key = 'animeverse_sim_' + tableName;
@@ -256,7 +257,17 @@ function createLocalSupabaseSimulator() {
         },
 
         eq(column, value) {
-          this._filters.push({ column, value });
+          this._filters.push({ column, value, op: 'eq' });
+          return this;
+        },
+
+        gte(column, value) {
+          this._filters.push({ column, value, op: 'gte' });
+          return this;
+        },
+
+        lte(column, value) {
+          this._filters.push({ column, value, op: 'lte' });
           return this;
         },
 
@@ -277,11 +288,32 @@ function createLocalSupabaseSimulator() {
         },
 
         async insert(records) {
-          if (!activeUser) return { data: null, error: { message: 'Row Level Security: authenticated user required.' } };
+          if (!activeUser && tableName !== 'daily_visitors' && tableName !== 'watch_sources') {
+            return { data: null, error: { message: 'Row Level Security: authenticated user required.' } };
+          }
           const items = Array.isArray(records) ? records : [records];
           const stored = getStored(key, []);
 
-          items.forEach(item => {
+          for (const item of items) {
+            if (tableName === 'daily_visitors') {
+              // Enforce unique (visitor_id, visit_date) constraint
+              const isDuplicate = stored.some(s => s.visitor_id === item.visitor_id && s.visit_date === item.visit_date);
+              if (isDuplicate) {
+                return {
+                  data: null,
+                  error: { code: '23505', message: 'duplicate key value violates unique constraint "unique_visitor_per_day"' }
+                };
+              }
+              const entry = {
+                id: stored.length + 1,
+                visitor_id: item.visitor_id,
+                visit_date: item.visit_date || new Date().toISOString().split('T')[0],
+                created_at: item.created_at || new Date().toISOString()
+              };
+              stored.push(entry);
+              continue;
+            }
+
             const idKey = tableName === 'profiles' ? 'id' : 'user_id';
             if (tableName !== 'notifications' || !item.user_id) {
               item[idKey] = activeUser.id;
@@ -323,7 +355,7 @@ function createLocalSupabaseSimulator() {
             } else {
               stored.push(item);
             }
-          });
+          }
 
           setStored(key, stored);
           return { data: items, error: null };
@@ -453,7 +485,13 @@ function createLocalSupabaseSimulator() {
 
           // Apply filters
           this._filters.forEach(f => {
-            data = data.filter(d => String(d[f.column]) === String(f.value));
+            if (f.op === 'gte') {
+              data = data.filter(d => d[f.column] >= f.value);
+            } else if (f.op === 'lte') {
+              data = data.filter(d => d[f.column] <= f.value);
+            } else {
+              data = data.filter(d => String(d[f.column]) === String(f.value));
+            }
           });
 
           // Apply ordering

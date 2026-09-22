@@ -519,3 +519,31 @@ create policy "Anyone can update discovery queue"
 create index if not exists idx_discovery_queue_status on public.discovery_queue(status, priority);
 
 
+-- 17. DAILY UNIQUE VISITORS ANALYTICS
+create table if not exists public.daily_visitors (
+  id bigserial primary key,
+  visitor_id text not null,
+  visit_date date not null default current_date,
+  created_at timestamptz default timezone('utc'::text, now()) not null,
+  constraint unique_visitor_per_day unique (visitor_id, visit_date)
+);
+
+alter table public.daily_visitors enable row level security;
+
+-- Allow anonymous visitors to record their daily visit
+create policy "Allow anonymous insert for daily_visitors"
+  on public.daily_visitors for insert
+  to anon, authenticated
+  with check (true);
+
+-- Allow reading daily visitor metrics for analytics
+create policy "Allow read daily_visitors"
+  on public.daily_visitors for select
+  to anon, authenticated
+  using (true);
+
+create index if not exists idx_daily_visitors_date on public.daily_visitors(visit_date);
+create index if not exists idx_daily_visitors_visitor on public.daily_visitors(visitor_id);
+
+
+
