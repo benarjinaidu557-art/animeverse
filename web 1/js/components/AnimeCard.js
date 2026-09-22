@@ -1,6 +1,7 @@
 /**
  * AnimeCard Component
- * Reusable card rendering with hover interactions, watchlist toggling, favorite toggling, and routing.
+ * Reusable card rendering with hover interactions, watchlist toggling, favorite toggling,
+ * routing, and dedicated Verified YouTube streaming badges/actions.
  */
 
 import { StorageService } from '../services/storageService.js';
@@ -9,7 +10,8 @@ import { AnimeService } from '../services/animeService.js';
 export const AnimeCard = {
   /**
    * Generates HTML string for an Anime Card
-   * @param {Object} anime - AniList Media object
+   * @param {Object} anime - AniList Media object with optional verifiedSource
+   * @param {Object} options - { isWatchable, hasHindi, showWatchBtn }
    */
   render(anime, options = {}) {
     if (!anime) return '';
@@ -21,18 +23,21 @@ export const AnimeCard = {
     const statusClass = (anime.status || '').toLowerCase();
     const year = anime.seasonYear || '';
     const format = anime.format ? anime.format.replace('_', ' ') : 'TV';
-    const episodes = anime.episodes ? `${anime.episodes} eps` : 'Ongoing';
-    const poster = anime.coverImage?.large || anime.coverImage?.medium || 'https://placehold.co/300x450/1e1b2e/c4b5fd?text=No+Poster';
+    const poster = anime.coverImage?.large || anime.coverImage?.medium || anime.coverImage?.extraLarge || 'https://placehold.co/300x450/1e1b2e/c4b5fd?text=No+Poster';
     
     const isWatchlisted = StorageService.isInWatchlist(id);
     const isFavorite = StorageService.isFavorite(id);
     const genres = (anime.genres || []).slice(0, 2);
 
-    const isWatchable = Boolean(options?.isWatchable || anime.isWatchable || anime.hasWatchSource);
-    const hasHindi = Boolean(options?.hasHindi || anime.hasHindiDub);
+    const vs = anime.verifiedSource || null;
+    const isWatchable = Boolean(options?.isWatchable || anime.isWatchable || anime.hasWatchSource || vs);
+    const language = vs?.language || (options?.hasHindi ? 'Hindi Dub' : (anime.hasHindiDub ? 'Hindi Dub' : 'Official'));
+    const episodeLabel = vs?.episode_label || (anime.episodes ? `${anime.episodes} eps` : 'Full Episodes');
+    const channelName = vs?.channel_name || 'YouTube Official';
+    const watchUrl = vs?.source_url || (vs?.video_id ? `https://www.youtube.com/watch?v=${vs.video_id}` : null);
 
     return `
-      <article class="anime-card" data-anime-id="${id}">
+      <article class="anime-card ${vs ? 'anime-card-verified' : ''}" data-anime-id="${id}">
         <div class="anime-card-media" onclick="window.router.navigate('/anime/${id}')">
           <img 
             class="anime-card-poster" 
@@ -51,23 +56,26 @@ export const AnimeCard = {
             </div>
           ` : ''}
 
-          <!-- Watchable & Hindi Dub Badge (Phase 17) -->
-          ${isWatchable ? `
-            <div style="position: absolute; bottom: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 3;">
-              <span style="background: rgba(220, 38, 38, 0.95); color: #fff; font-size: 0.66rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                YouTube Free
+          <!-- Verified Badges -->
+          <div class="card-verified-badges-wrap">
+            ${isWatchable ? `
+              <span class="badge-yt-pill">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="#ff0000">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                <span>${escapeHtml(channelName)}</span>
               </span>
-              ${hasHindi ? `
-                <span style="background: rgba(245, 158, 11, 0.95); color: #000; font-size: 0.60rem; font-weight: 800; padding: 1px 6px; border-radius: 3px; letter-spacing: 0.3px; width: fit-content; box-shadow: 0 2px 6px rgba(0,0,0,0.4);">
-                  HINDI DUB
-                </span>
-              ` : ''}
-            </div>
-          ` : ''}
+            ` : ''}
+            
+            ${language ? `
+              <span class="badge-lang-pill ${language.toLowerCase().includes('hindi') ? 'lang-hindi' : ''}">
+                ${escapeHtml(language)}
+              </span>
+            ` : ''}
+          </div>
 
           <!-- Quick Actions Bar (Top Right) -->
-          <div style="position: absolute; top: 8px; right: 8px; display: flex; flex-direction: column; gap: 6px; z-index: 3;" onclick="event.stopPropagation()">
+          <div class="card-actions-quick" onclick="event.stopPropagation()">
             <!-- Watchlist Bookmark Button -->
             <button 
               type="button" 
@@ -98,9 +106,8 @@ export const AnimeCard = {
             </button>
           </div>
 
-          <!-- Status Badge -->
-          <span class="card-badge-status ${statusClass}">${status}</span>
-          <span class="card-badge-episodes">${episodes}</span>
+          <!-- Episode Available Indicator -->
+          <span class="card-badge-episodes-available">${escapeHtml(episodeLabel)}</span>
         </div>
 
         <div class="anime-card-content" onclick="window.router.navigate('/anime/${id}')">
@@ -109,11 +116,31 @@ export const AnimeCard = {
           <div class="anime-card-meta">
             <span>${format}</span>
             ${year ? `<span>•</span><span>${year}</span>` : ''}
+            <span>•</span>
+            <span class="meta-status ${statusClass}">${status}</span>
           </div>
 
           <div class="anime-card-genres">
             ${genres.map(g => `<span class="genre-pill">${escapeHtml(g)}</span>`).join('')}
           </div>
+
+          <!-- Watch on YouTube Button -->
+          ${watchUrl ? `
+            <div class="card-watch-footer" onclick="event.stopPropagation()">
+              <a 
+                href="${escapeHtml(watchUrl)}" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="btn-card-watch-yt"
+                title="Watch on YouTube (${escapeHtml(channelName)})"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span>Watch on YouTube</span>
+              </a>
+            </div>
+          ` : ''}
         </div>
       </article>
     `;

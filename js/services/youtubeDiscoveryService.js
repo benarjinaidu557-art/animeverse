@@ -660,10 +660,8 @@ const VERIFIED_OFFICIAL_CATALOG = {
     }
   ],
 
-  // Classroom of the Elite (AniList ID: 98659) - Muse India Telugu Dub
+  // Classroom of the Elite (AniList ID: 98659)
   98659: [
-    // Season 1 (Episodes 1–12)
-    { episode_number: 1, season_number: 1, video_id: 'QbEoZexESDs', video_title: '[Telugu Dub,
     {
       episode_number: 1,
       season_number: 1,
@@ -677,8 +675,9 @@ const VERIFIED_OFFICIAL_CATALOG = {
       language: 'English Sub',
       source_url: 'https://www.youtube.com/watch?v=UQLqvjHvrwc',
       thumbnail_url: 'https://img.youtube.com/vi/UQLqvjHvrwc/hqdefault.jpg'
-    }
-  ] Classroom of the Elite - Episode 01 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/QbEoZexESDs/hqdefault.jpg' },
+    },
+    // Season 1 (Episodes 1–12)
+    { episode_number: 1, season_number: 1, video_id: 'QbEoZexESDs', video_title: '[Telugu Dub] Classroom of the Elite - Episode 01 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/QbEoZexESDs/hqdefault.jpg' },
     { episode_number: 2, season_number: 1, video_id: '4_Vumu_418c', video_title: '[Telugu Dub] Classroom of the Elite - Episode 02 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/4_Vumu_418c/hqdefault.jpg' },
     { episode_number: 3, season_number: 1, video_id: 'GsiZwUXsRHE', video_title: '[Telugu Dub] Classroom of the Elite - Episode 03 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/GsiZwUXsRHE/hqdefault.jpg' },
     { episode_number: 4, season_number: 1, video_id: '8Pm5E2jgZ8c', video_title: '[Telugu Dub] Classroom of the Elite - Episode 04 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/8Pm5E2jgZ8c/hqdefault.jpg' },
@@ -1247,6 +1246,58 @@ const VERIFIED_OFFICIAL_CATALOG = {
 const sessionCache = new Map();
 
 export const YouTubeDiscoveryService = {
+  /**
+   * Returns all verified official YouTube sources from the pre-verified catalog.
+   * Strictly enforces real video IDs, official status, embeddable status, and valid YouTube URLs.
+   */
+  getAllVerifiedCatalog() {
+    const list = [];
+    const seenIds = new Set();
+
+    for (const [idStr, episodes] of Object.entries(VERIFIED_OFFICIAL_CATALOG)) {
+      const animeId = Number(idStr);
+      if (isNaN(animeId) || animeId <= 0 || seenIds.has(animeId)) continue;
+      if (!Array.isArray(episodes) || episodes.length === 0) continue;
+
+      // Filter strictly for valid verified episodes
+      const validEps = episodes.filter(ep => {
+        if (!ep) return false;
+        const vid = (ep.video_id || '').trim();
+        if (!vid || vid.length < 5) return false;
+        if (ep.is_official === false || ep.is_embeddable === false) return false;
+        return true;
+      });
+
+      if (validEps.length === 0) continue;
+      seenIds.add(animeId);
+
+      const primary = validEps[0];
+      const sourceUrl = primary.source_url || (primary.playlist_id ? `https://www.youtube.com/playlist?list=${primary.playlist_id}` : `https://www.youtube.com/watch?v=${primary.video_id}`);
+      const isCompleteSeries = (primary.video_title || '').toLowerCase().includes('complete series') || (primary.video_title || '').toLowerCase().includes('marathon');
+      const epLabel = isCompleteSeries ? 'Complete Series' : `Ep ${String(primary.episode_number || 1).padStart(2, '0')} Available`;
+
+      list.push({
+        anime_id: animeId,
+        video_id: primary.video_id,
+        video_title: primary.video_title || '',
+        channel_name: primary.channel_name || 'Official Channel',
+        language: primary.language || 'Sub / Dub',
+        region: primary.region || 'IN',
+        is_official: true,
+        is_embeddable: true,
+        verification_status: 'verified',
+        source_url: sourceUrl,
+        thumbnail_url: primary.thumbnail_url || `https://img.youtube.com/vi/${primary.video_id}/hqdefault.jpg`,
+        episode_number: primary.episode_number || 1,
+        season_number: primary.season_number || 1,
+        episode_label: epLabel,
+        all_episodes: validEps
+      });
+    }
+
+    return list;
+  },
+
   /**
    * Retrieves verified official YouTube episodes for an anime
    * Flow:

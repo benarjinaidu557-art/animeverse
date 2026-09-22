@@ -6,6 +6,7 @@
 
 import { fetchAniListGraphQL, QUERIES } from './anilistApi.js';
 import { getSupabaseClient } from './supabaseClient.js';
+import { YouTubeDiscoveryService } from './youtubeDiscoveryService.js';
 
 export const AnimeService = {
   /**
@@ -400,6 +401,170 @@ export const AnimeService = {
       console.warn('[AnimeService] getWatchableAnime error:', err);
       return { media: [], pageInfo: { total: 0, currentPage: 1, lastPage: 1, hasNextPage: false } };
     }
+  },
+
+  _verifiedHomeCache: null,
+  _verifiedHomePromise: null,
+
+  /**
+   * Home Page Verified YouTube Anime Source Provider
+   * Retrieves strictly verified YouTube anime and enriches with AniList metadata.
+   * Partitions into: { all, trending, recentlyAdded, popular, total }
+   */
+  async getVerifiedHomeAnime() {
+    if (this._verifiedHomeCache) {
+      return this._verifiedHomeCache;
+    }
+    if (this._verifiedHomePromise) {
+      return this._verifiedHomePromise;
+    }
+
+    this._verifiedHomePromise = (async () => {
+      try {
+        const baseCatalog = YouTubeDiscoveryService.getAllVerifiedCatalog();
+        const sourcesMap = new Map();
+
+        // 1. Add all from pre-verified catalog
+        for (const item of baseCatalog) {
+          if (item && item.anime_id) {
+            sourcesMap.set(item.anime_id, item);
+          }
+        }
+
+        // 2. Query admin API or Supabase for any additional live verified sources
+        try {
+          const res = await fetch('/api/admin/watch-sources?status=verified');
+          if (res.ok) {
+            const d = await res.json();
+            if (Array.isArray(d.sources)) {
+              for (const s of d.sources) {
+                if (s.anime_id && s.video_id && s.is_official && s.is_embeddable) {
+                  const id = Number(s.anime_id);
+                  if (!sourcesMap.has(id)) {
+                    const sourceUrl = s.source_url || (s.playlist_id ? `https://www.youtube.com/playlist?list=${s.playlist_id}` : `https://www.youtube.com/watch?v=${s.video_id}`);
+                    const isCompleteSeries = (s.video_title || '').toLowerCase().includes('complete series') || (s.video_title || '').toLowerCase().includes('marathon');
+                    const epLabel = isCompleteSeries ? 'Complete Series' : `Ep ${String(s.episode_number || 1).padStart(2, '0')} Available`;
+
+                    sourcesMap.set(id, {
+                      anime_id: id,
+                      video_id: s.video_id,
+                      video_title: s.video_title || '',
+                      channel_name: s.channel_name || 'Official Channel',
+                      language: s.language || 'Sub / Dub',
+                      region: s.region || 'IN',
+                      is_official: true,
+                      is_embeddable: true,
+                      verification_status: 'verified',
+                      source_url: sourceUrl,
+                      thumbnail_url: s.thumbnail_url || `https://img.youtube.com/vi/${s.video_id}/hqdefault.jpg`,
+                      episode_number: s.episode_number || 1,
+                      season_number: s.season_number || 1,
+                      episode_label: epLabel
+                    });
+                  }
+                }
+              }
+            }
+          }
+        } catch (apiErr) {
+          // Backend offline or running standalone static
+        }
+
+        // 3. Strict verification filter
+        const validSources = Array.from(sourcesMap.values()).filter(s => {
+          if (!s.video_id || typeof s.video_id !== 'string' || s.video_id.trim().length < 5) return false;
+          if (!s.source_url || !s.source_url.startsWith('https://')) return false;
+          if (s.is_official === false || s.is_embeddable === false) return false;
+          return true;
+        });
+
+        if (validSources.length === 0) {
+          return { all: [], trending: [], recentlyAdded: [], popular: [], total: 0 };
+        }
+
+        const uniqueIds = validSources.map(s => s.anime_id);
+
+        // 4. Batch query AniList for rich media details (covers, genres, scores)
+        const mediaMap = new Map();
+        const chunkSize = 50;
+        for (let i = 0; i < uniqueIds.length; i += chunkSize) {
+          const chunk = uniqueIds.slice(i, i + chunkSize);
+          try {
+            const aniData = await this.getAnimeByIds(chunk, 1, chunkSize);
+            if (aniData?.media) {
+              for (const m of aniData.media) {
+                if (m && m.id) {
+                  mediaMap.set(m.id, m);
+                }
+              }
+            }
+          } catch (aniErr) {
+            console.warn('[AnimeService] AniList chunk warning:', aniErr);
+          }
+        }
+
+        // 5. Combine AniList media with verified YouTube sources
+        const enrichedList = [];
+        for (const src of validSources) {
+          const m = mediaMap.get(src.anime_id);
+          const fallbackTitle = src.video_title.replace(/\[.*?\]|\(.*?\)|\|.*$/g, '').trim() || `Anime ${src.anime_id}`;
+
+          const titleObj = m?.title || { english: fallbackTitle, romaji: fallbackTitle };
+          const coverObj = m?.coverImage || {
+            extraLarge: src.thumbnail_url,
+            large: src.thumbnail_url,
+            medium: src.thumbnail_url
+          };
+
+          const enriched = {
+            ...(m || {}),
+            id: src.anime_id,
+            title: titleObj,
+            coverImage: coverObj,
+            bannerImage: m?.bannerImage || src.thumbnail_url,
+            averageScore: m?.averageScore || 80,
+            popularity: m?.popularity || 5000,
+            trending: m?.trending || 100,
+            genres: m?.genres || ['Anime'],
+            status: m?.status || 'RELEASING',
+            format: m?.format || 'TV',
+            isWatchable: true,
+            hasWatchSource: true,
+            verifiedSource: src
+          };
+
+          enrichedList.push(enriched);
+        }
+
+        // 6. Partition sections:
+        // - All verified anime
+        // - Trending: sorted by AniList trending descending
+        // - Recently Added: newest entries in catalog first
+        // - Popular: sorted by AniList popularity descending
+        const all = [...enrichedList];
+        const trending = [...enrichedList].sort((a, b) => (b.trending || 0) - (a.trending || 0));
+        const recentlyAdded = [...enrichedList].reverse();
+        const popular = [...enrichedList].sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+
+        const result = {
+          all,
+          trending,
+          recentlyAdded,
+          popular,
+          total: all.length
+        };
+
+        this._verifiedHomeCache = result;
+        return result;
+      } catch (err) {
+        console.error('[AnimeService] getVerifiedHomeAnime error:', err);
+        return { all: [], trending: [], recentlyAdded: [], popular: [], total: 0 };
+      } finally {
+        this._verifiedHomePromise = null;
+      }
+    })();
+
+    return this._verifiedHomePromise;
   },
 
   /**

@@ -298,6 +298,88 @@ select,
     display: none;
   }
 
+  /* Verified YouTube Hero on Mobile */
+  .verified-hero {
+    padding: 24px 16px;
+    margin-bottom: 20px;
+    border-radius: var(--radius-md, 12px);
+  }
+
+  .verified-hero-title {
+    font-size: clamp(1.6rem, 6.5vw, 2.2rem);
+    margin-bottom: 6px;
+  }
+
+  .verified-hero-tagline {
+    font-size: 1.05rem;
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+
+  .verified-hero-desc {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+
+  .hero-search-form {
+    margin-bottom: 18px;
+    max-width: 100%;
+  }
+
+  .hero-search-input-wrap {
+    padding: 3px 4px 3px 10px;
+  }
+
+  .hero-search-input {
+    font-size: 0.86rem;
+    padding: 8px 0;
+  }
+
+  .hero-search-btn {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+  }
+
+  .verified-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .btn-browse-verified {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+
+  .verified-hero-stat {
+    width: 100%;
+    text-align: center;
+    font-size: 0.78rem;
+    padding: 6px 12px;
+  }
+
+  .verified-tabs {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+
+  .verified-tabs .tab-btn {
+    white-space: nowrap;
+    font-size: 0.76rem;
+    padding: 6px 10px;
+  }
+
+  .btn-card-watch-yt {
+    font-size: 0.72rem;
+    padding: 6px 8px;
+  }
+
   /* Section Containers & Headers */
   .section-container {
     margin-bottom: 28px;

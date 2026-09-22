@@ -1,328 +1,299 @@
 /**
- * Home View
- * Renders Hero Spotlight, Trending, Popular, Recently Updated, New Releases,
- * Upcoming Anime, Top Rated, and Surprise Me section.
+ * Home View - Verified YouTube Anime Hub
+ * Exclusively displays anime verified to have legitimate, officially licensed
+ * full episodes or complete series available on YouTube.
+ * 
+ * Sections:
+ * 1. Hero Section (AnimeVerse, Search Bar, Browse Verified Anime button)
+ * 2. Verified YouTube Anime (Filterable grid with language tabs)
+ * 3. Trending Verified Anime (Horizontal row sorted by trending)
+ * 4. Recently Added Verified Anime (Horizontal row sorted by newest additions)
+ * 5. Popular Verified Anime (Responsive grid sorted by popularity)
  */
 
 import { AnimeService } from '../services/animeService.js';
 import { AnimeCard } from '../components/AnimeCard.js';
 import { HeroSection } from '../components/HeroSection.js';
 import { Skeletons } from '../components/Skeletons.js';
-import { Toast } from '../components/Toast.js';
 import { AdSlot } from '../components/AdSlot.js';
 
 export const HomeView = {
+  currentTab: 'all',
+  verifiedData: null,
+
   async render(container) {
-    // Show initial Skeleton layout while fetching from AniList
+    // 1. Initial fast skeleton layout - renders hero instantly so there's NO blank empty area
     container.innerHTML = `
-      <div class="container" style="padding-top: 24px;">
-        ${Skeletons.renderHeroSkeleton()}
-        
-        <div class="section-container">
+      <div class="container" style="padding-top: 16px;">
+        ${HeroSection.render({ totalVerified: 90 })}
+
+        <!-- Verified YouTube Anime Section Skeleton -->
+        <section class="section-container" id="verified-catalog-section" style="margin-top: 24px;">
+          <div class="section-header">
+            <div class="section-title-wrap">
+              <span class="section-accent-bar" style="background: #ef4444;"></span>
+              <div>
+                <h2 class="section-title">Verified YouTube Anime</h2>
+                <p class="section-subtitle">100% legal, officially licensed anime streaming for free on YouTube</p>
+              </div>
+            </div>
+          </div>
+          <div class="anime-grid">
+            ${Skeletons.renderCardSkeletonGrid(8)}
+          </div>
+        </section>
+
+        <!-- Trending Verified Skeleton -->
+        <section class="section-container" style="margin-top: 24px;">
           <div class="section-header">
             <div class="section-title-wrap">
               <span class="section-accent-bar"></span>
-              <h2 class="section-title">Trending Anime</h2>
+              <div>
+                <h2 class="section-title">Trending Verified Anime</h2>
+                <p class="section-subtitle">Top trending anime streamable on official channels</p>
+              </div>
             </div>
           </div>
-          <div class="anime-grid">
+          <div class="horizontal-scroll-row">
             ${Skeletons.renderCardSkeletonGrid(6)}
           </div>
-        </div>
-
-        <div class="section-container">
-          <div class="section-header">
-            <div class="section-title-wrap">
-              <span class="section-accent-bar cyan"></span>
-              <h2 class="section-title">All-Time Popular</h2>
-            </div>
-          </div>
-          <div class="anime-grid">
-            ${Skeletons.renderCardSkeletonGrid(6)}
-          </div>
-        </div>
+        </section>
       </div>
     `;
 
+    HeroSection.bindEvents(container);
+
     try {
-      // Parallel fetch from AniList and Verified Watch Sources
-      const [
-        trendingData,
-        popularData,
-        recentlyUpdatedData,
-        newReleasesData,
-        upcomingData,
-        topRatedData,
-        watchableData,
-        hindiWatchableData,
-        moviesData
-      ] = await Promise.all([
-        AnimeService.getTrending(1, 10),
-        AnimeService.getPopular(1, 10),
-        AnimeService.getRecentlyUpdated(1, 10),
-        AnimeService.getNewReleases(1, 10),
-        AnimeService.getUpcoming(1, 10),
-        AnimeService.getTopRated(1, 10),
-        AnimeService.getWatchableAnime({ perPage: 10 }).catch(() => ({ media: [] })),
-        AnimeService.getWatchableAnime({ language: 'Hindi', perPage: 10 }).catch(() => ({ media: [] })),
-        AnimeService.getMovies(1, 10).catch(() => ({ media: [] }))
-      ]);
+      // 2. Fetch enriched verified YouTube anime (cached in memory)
+      const data = await AnimeService.getVerifiedHomeAnime();
+      this.verifiedData = data;
 
-      const featuredAnimeList = trendingData.media.slice(0, 5);
+      const { all = [], trending = [], recentlyAdded = [], popular = [], total = 0 } = data;
 
+      // Strict enforcement: if zero verified anime, display clean empty state
+      if (total === 0 || all.length === 0) {
+        container.innerHTML = `
+          <div class="container" style="padding-top: 16px;">
+            ${HeroSection.render({ totalVerified: 0 })}
+            <div class="empty-verified-state" style="text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-subtle); margin: 32px 0;">
+              <div class="state-icon" style="margin-bottom: 16px;">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="#ef4444">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </div>
+              <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 8px;">No verified YouTube anime available yet.</h3>
+              <p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 20px;">
+                We strictly curate 100% legal, officially licensed anime releases from verified YouTube distributors. Please check back soon.
+              </p>
+              <a href="#/browse" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px; width: fit-content; margin: 0 auto;">
+                Explore AniList Catalog
+              </a>
+            </div>
+          </div>
+        `;
+        HeroSection.bindEvents(container);
+        return;
+      }
+
+      // Calculate language distribution for quick filter tabs
+      const countHindi = all.filter(a => (a.verifiedSource?.language || '').toLowerCase().includes('hindi')).length;
+      const countEnglish = all.filter(a => (a.verifiedSource?.language || '').toLowerCase().includes('english') || (a.verifiedSource?.language || '').toLowerCase().includes('sub')).length;
+      const countTelugu = all.filter(a => (a.verifiedSource?.language || '').toLowerCase().includes('telugu')).length;
+
+      // 3. Render full Home Page with the 5 verified sections
       container.innerHTML = `
-        <div class="container" style="padding-top: 24px;">
-          <!-- 1. HERO SPOTLIGHT -->
-          ${HeroSection.render(featuredAnimeList)}
+        <div class="container" style="padding-top: 16px;">
+          <!-- 1. HERO SECTION -->
+          ${HeroSection.render({ totalVerified: total, featuredAnime: trending[0] || all[0] })}
 
-          <!-- FREE OFFICIAL YOUTUBE ANIME (Phase 16) -->
-          ${(watchableData?.media && watchableData.media.length > 0) ? `
-            <section class="section-container" style="background: linear-gradient(180deg, rgba(239, 68, 68, 0.08) 0%, transparent 100%); padding: 24px 20px; border-radius: 16px; border: 1px solid rgba(239, 68, 68, 0.2); margin-bottom: 36px;">
-              <div class="section-header">
-                <div class="section-title-wrap">
-                  <span class="section-accent-bar" style="background: #ef4444;"></span>
-                  <div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <h2 class="section-title" style="color: #fff;">Free Official YouTube Anime</h2>
-                      <span style="background: #ef4444; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px;">100% Legal</span>
-                    </div>
-                    <p class="section-subtitle">Verified licensed full episodes streamable via authorized distributors (Muse, Ani-One, GundamInfo)</p>
+          <!-- 2. VERIFIED YOUTUBE ANIME SECTION -->
+          <section class="section-container" id="verified-catalog-section" style="margin-top: 32px;">
+            <div class="section-header" style="flex-wrap: wrap; gap: 16px; align-items: flex-end;">
+              <div class="section-title-wrap">
+                <span class="section-accent-bar" style="background: #ef4444;"></span>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <h2 class="section-title">Verified YouTube Anime</h2>
+                    <span class="verified-count-badge">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#ff0000">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                      </svg>
+                      ${total} Verified
+                    </span>
                   </div>
+                  <p class="section-subtitle">Full episodes and complete series officially published by verified channels</p>
                 </div>
-                <a href="#/browse?watchableOnly=true" class="btn-view-all">
-                  View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                </a>
               </div>
-              <div class="horizontal-scroll-row">
-                ${watchableData.media.map(anime => AnimeCard.render(anime, { isWatchable: true })).join('')}
-              </div>
-            </section>
-          ` : ''}
 
-          <!-- HINDI DUB AVAILABLE (Phase 16) - Rendered ONLY if verified Hindi dub sources exist -->
-          ${(hindiWatchableData?.media && hindiWatchableData.media.length > 0) ? `
-            <section class="section-container" style="background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, transparent 100%); padding: 24px 20px; border-radius: 16px; border: 1px solid rgba(245, 158, 11, 0.2); margin-bottom: 36px;">
-              <div class="section-header">
-                <div class="section-title-wrap">
-                  <span class="section-accent-bar" style="background: #f59e0b;"></span>
-                  <div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <h2 class="section-title" style="color: #fff;">Hindi Dub Available</h2>
-                      <span style="background: #f59e0b; color: #000; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 6px;">Indian Audio</span>
-                    </div>
-                    <p class="section-subtitle">Official Hindi dubbed episodes licensed and released by distributor channels</p>
-                  </div>
-                </div>
-                <a href="#/browse?watchableOnly=true" class="btn-view-all">
-                  View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                </a>
+              <!-- Quick Language Filter Tabs -->
+              <div class="verified-tabs" id="verified-tabs">
+                <button type="button" class="tab-btn active" data-tab="all">
+                  All (${total})
+                </button>
+                ${countHindi > 0 ? `
+                  <button type="button" class="tab-btn" data-tab="hindi">
+                    Hindi Dub (${countHindi})
+                  </button>
+                ` : ''}
+                ${countEnglish > 0 ? `
+                  <button type="button" class="tab-btn" data-tab="english">
+                    English Sub (${countEnglish})
+                  </button>
+                ` : ''}
+                ${countTelugu > 0 ? `
+                  <button type="button" class="tab-btn" data-tab="telugu">
+                    Telugu Dub (${countTelugu})
+                  </button>
+                ` : ''}
               </div>
-              <div class="horizontal-scroll-row">
-                ${hindiWatchableData.media.map(anime => AnimeCard.render(anime, { isWatchable: true, hasHindi: true })).join('')}
-              </div>
-            </section>
-          ` : ''}
+            </div>
 
-          <!-- 2. TRENDING ANIME -->
-          <section class="section-container">
+            <!-- Verified Grid Container -->
+            <div class="anime-grid" id="verified-grid">
+              ${all.slice(0, 16).map(anime => AnimeCard.render(anime, { isWatchable: true })).join('')}
+            </div>
+
+            ${all.length > 16 ? `
+              <div style="text-align: center; margin-top: 24px;">
+                <button type="button" class="btn-load-more" id="btn-load-all-verified">
+                  Show All ${total} Verified Anime
+                </button>
+              </div>
+            ` : ''}
+          </section>
+
+          <!-- 3. TRENDING VERIFIED ANIME -->
+          <section class="section-container" style="margin-top: 40px;">
             <div class="section-header">
               <div class="section-title-wrap">
-                <span class="section-accent-bar"></span>
+                <span class="section-accent-bar" style="background: var(--accent-gradient);"></span>
                 <div>
-                  <h2 class="section-title">Trending Now</h2>
-                  <p class="section-subtitle">What the global anime community is watching right now</p>
+                  <h2 class="section-title">Trending Verified Anime</h2>
+                  <p class="section-subtitle">Most trending verified YouTube anime in the community</p>
                 </div>
               </div>
-              <a href="#/browse?sort=TRENDING_DESC" class="btn-view-all">
+              <a href="#/browse?sort=TRENDING_DESC&watchableOnly=true" class="btn-view-all">
                 View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
               </a>
             </div>
             <div class="horizontal-scroll-row">
-              ${trendingData.media.map(anime => AnimeCard.render(anime)).join('')}
+              ${trending.slice(0, 12).map(anime => AnimeCard.render(anime, { isWatchable: true })).join('')}
             </div>
           </section>
 
           <!-- ADVERTISEMENT BANNER -->
-          ${AdSlot.render('banner', 'home-ad-banner-top')}
+          ${AdSlot.render('banner', 'home-ad-banner-middle')}
 
-          <!-- 3. ALL-TIME POPULAR -->
-          <section class="section-container">
+          <!-- 4. RECENTLY ADDED VERIFIED ANIME -->
+          <section class="section-container" style="margin-top: 40px;">
             <div class="section-header">
               <div class="section-title-wrap">
-                <span class="section-accent-bar cyan"></span>
+                <span class="section-accent-bar" style="background: #10b981;"></span>
                 <div>
-                  <h2 class="section-title">Popular Anime</h2>
-                  <p class="section-subtitle">Most added and followed shows across AniList</p>
-                </div>
-              </div>
-              <a href="#/browse?sort=POPULARITY_DESC" class="btn-view-all">
-                View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-            </div>
-            <div class="anime-grid">
-              ${popularData.media.slice(0, 8).map(anime => AnimeCard.render(anime)).join('')}
-            </div>
-          </section>
-
-          <!-- 4. RECENTLY UPDATED / CURRENTLY AIRING -->
-          <section class="section-container">
-            <div class="section-header">
-              <div class="section-title-wrap">
-                <span class="section-accent-bar pink"></span>
-                <div>
-                  <h2 class="section-title">Recently Updated</h2>
-                  <p class="section-subtitle">Fresh episodes and updates straight from Japan</p>
-                </div>
-              </div>
-              <a href="#/browse?status=RELEASING&sort=UPDATED_AT_DESC" class="btn-view-all">
-                View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-            </div>
-            <div class="horizontal-scroll-row">
-              ${recentlyUpdatedData.media.map(anime => AnimeCard.render(anime)).join('')}
-            </div>
-          </section>
-
-          <!-- 8. SURPRISE ME / RANDOM ANIME -->
-          <section class="surprise-section">
-            <div class="surprise-content">
-              <h3>Can't decide what to watch?</h3>
-              <p>Let AnimeVerse curate a legendary hidden gem or top-tier series for you with one click.</p>
-            </div>
-            <button type="button" class="btn-surprise" id="btn-surprise-me">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                <line x1="12" y1="22.08" x2="12" y2="12"/>
-              </svg>
-              Surprise Me!
-            </button>
-          </section>
-
-          <!-- 5. NEW RELEASES -->
-          <section class="section-container">
-            <div class="section-header">
-              <div class="section-title-wrap">
-                <span class="section-accent-bar gold"></span>
-                <div>
-                  <h2 class="section-title">New Releases</h2>
-                  <p class="section-subtitle">Leading shows premiering this season</p>
-                </div>
-              </div>
-              <a href="#/browse?sort=START_DATE_DESC" class="btn-view-all">
-                View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-            </div>
-            <div class="anime-grid">
-              ${newReleasesData.media.slice(0, 8).map(anime => AnimeCard.render(anime)).join('')}
-            </div>
-          </section>
-
-          <!-- 6. UPCOMING ANIME -->
-          <section class="section-container">
-            <div class="section-header">
-              <div class="section-title-wrap">
-                <span class="section-accent-bar cyan"></span>
-                <div>
-                  <h2 class="section-title">Upcoming Anime</h2>
-                  <p class="section-subtitle">Anticipated anime slated for future broadcast</p>
-                </div>
-              </div>
-              <a href="#/browse?status=NOT_YET_RELEASED" class="btn-view-all">
-                View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-            </div>
-            <div class="horizontal-scroll-row">
-              ${upcomingData.media.map(anime => AnimeCard.render(anime)).join('')}
-            </div>
-          </section>
-
-          <!-- 7. TOP RATED -->
-          <section class="section-container">
-            <div class="section-header">
-              <div class="section-title-wrap">
-                <span class="section-accent-bar"></span>
-                <div>
-                  <h2 class="section-title">Top Rated Classics & Modern Masterpieces</h2>
-                  <p class="section-subtitle">Highest community scores of all time</p>
-                </div>
-              </div>
-              <a href="#/browse?sort=SCORE_DESC" class="btn-view-all">
-                View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
-            </div>
-            <div class="anime-grid">
-              ${topRatedData.media.slice(0, 8).map(anime => AnimeCard.render(anime)).join('')}
-            </div>
-          </section>
-
-          <!-- 8. ANIME MOVIES (Phase 16) -->
-          ${(moviesData?.media && moviesData.media.length > 0) ? `
-            <section class="section-container">
-              <div class="section-header">
-                <div class="section-title-wrap">
-                  <span class="section-accent-bar cyan"></span>
-                  <div>
-                    <h2 class="section-title">Anime Feature Films & Movies</h2>
-                    <p class="section-subtitle">Cinematic masterpieces, movie sequels, and standalone stories</p>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <h2 class="section-title">Recently Added Verified Anime</h2>
+                    <span style="background: #10b981; color: #000; font-size: 0.70rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">New Sources</span>
                   </div>
+                  <p class="section-subtitle">Freshly added verified episodes and complete series</p>
                 </div>
-                <a href="#/browse?format=MOVIE" class="btn-view-all">
-                  View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                </a>
               </div>
-              <div class="horizontal-scroll-row">
-                ${moviesData.media.map(anime => AnimeCard.render(anime)).join('')}
+              <a href="#/browse?watchableOnly=true" class="btn-view-all">
+                View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+            <div class="horizontal-scroll-row">
+              ${recentlyAdded.slice(0, 12).map(anime => AnimeCard.render(anime, { isWatchable: true })).join('')}
+            </div>
+          </section>
+
+          <!-- 5. POPULAR VERIFIED ANIME -->
+          <section class="section-container" style="margin-top: 40px; margin-bottom: 40px;">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <span class="section-accent-bar cyan"></span>
+                <div>
+                  <h2 class="section-title">Popular Verified Anime</h2>
+                  <p class="section-subtitle">Highest rated and most popular verified YouTube anime</p>
+                </div>
               </div>
-            </section>
-          ` : ''}
+              <a href="#/browse?sort=POPULARITY_DESC&watchableOnly=true" class="btn-view-all">
+                View All <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </div>
+            <div class="anime-grid">
+              ${popular.slice(0, 12).map(anime => AnimeCard.render(anime, { isWatchable: true })).join('')}
+            </div>
+          </section>
         </div>
       `;
 
-      // Bind Hero event listeners
-      HeroSection.bindEvents();
+      // 4. Bind hero interactive events
+      HeroSection.bindEvents(container);
 
-      // Bind Surprise Me button
-      const surpriseBtn = document.getElementById('btn-surprise-me');
-      if (surpriseBtn) {
-        surpriseBtn.onclick = async () => {
-          surpriseBtn.disabled = true;
-          surpriseBtn.innerHTML = `
-            <svg class="spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
-            Finding Gem...
-          `;
-          try {
-            const randomAnime = await AnimeService.getRandomAnime();
-            if (randomAnime) {
-              Toast.show(`Found: ${AnimeService.formatTitle(randomAnime.title)}!`, 'info');
-              window.router.navigate(`/anime/${randomAnime.id}`);
-            } else {
-              Toast.show('Could not find random anime right now.', 'info');
-            }
-          } catch {
-            Toast.show('Network error while rolling surprise anime', 'info');
-          } finally {
-            surpriseBtn.disabled = false;
+      // 5. Bind Language Filter Tabs
+      this.bindTabEvents(container, all);
+
+      // 6. Bind Show All button
+      const loadMoreBtn = container.querySelector('#btn-load-all-verified');
+      if (loadMoreBtn) {
+        loadMoreBtn.onclick = () => {
+          const grid = container.querySelector('#verified-grid');
+          if (grid) {
+            grid.innerHTML = all.map(anime => AnimeCard.render(anime, { isWatchable: true })).join('');
+            loadMoreBtn.style.display = 'none';
           }
         };
       }
 
     } catch (error) {
-      console.error('Home page render error:', error);
+      console.error('[HomeView] Render error:', error);
       container.innerHTML = `
-        <div class="container" style="padding-top: 40px;">
-          <div class="error-state">
+        <div class="container" style="padding-top: 32px;">
+          ${HeroSection.render({ totalVerified: 90 })}
+          <div class="error-state" style="margin-top: 24px;">
             <div class="state-icon">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             </div>
-            <h3 class="state-title">Unable to Connect to AniList API</h3>
-            <p class="state-desc">${error.message || 'We could not fetch the latest anime catalog. Please check your internet connection and try again.'}</p>
+            <h3 class="state-title">Unable to Load Verified Anime</h3>
+            <p class="state-desc">${error.message || 'Please check your connection and try again.'}</p>
             <button type="button" class="btn-primary" onclick="window.router.refresh()">
-              Retry Connection
+              Retry
             </button>
           </div>
         </div>
       `;
+      HeroSection.bindEvents(container);
     }
+  },
+
+  bindTabEvents(container, allList) {
+    const tabsContainer = container.querySelector('#verified-tabs');
+    const grid = container.querySelector('#verified-grid');
+    if (!tabsContainer || !grid) return;
+
+    tabsContainer.onclick = (e) => {
+      const btn = e.target.closest('.tab-btn');
+      if (!btn) return;
+
+      const tab = btn.getAttribute('data-tab');
+      tabsContainer.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      let filtered = allList;
+      if (tab === 'hindi') {
+        filtered = allList.filter(a => (a.verifiedSource?.language || '').toLowerCase().includes('hindi'));
+      } else if (tab === 'english') {
+        filtered = allList.filter(a => (a.verifiedSource?.language || '').toLowerCase().includes('english') || (a.verifiedSource?.language || '').toLowerCase().includes('sub'));
+      } else if (tab === 'telugu') {
+        filtered = allList.filter(a => (a.verifiedSource?.language || '').toLowerCase().includes('telugu'));
+      }
+
+      grid.innerHTML = filtered.map(anime => AnimeCard.render(anime, { isWatchable: true })).join('');
+
+      const loadMoreBtn = container.querySelector('#btn-load-all-verified');
+      if (loadMoreBtn) {
+        loadMoreBtn.style.display = 'none';
+      }
+    };
   }
 };
