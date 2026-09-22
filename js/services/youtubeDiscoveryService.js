@@ -663,7 +663,22 @@ const VERIFIED_OFFICIAL_CATALOG = {
   // Classroom of the Elite (AniList ID: 98659) - Muse India Telugu Dub
   98659: [
     // Season 1 (Episodes 1–12)
-    { episode_number: 1, season_number: 1, video_id: 'QbEoZexESDs', video_title: '[Telugu Dub] Classroom of the Elite - Episode 01 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/QbEoZexESDs/hqdefault.jpg' },
+    { episode_number: 1, season_number: 1, video_id: 'QbEoZexESDs', video_title: '[Telugu Dub,
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: 'UQLqvjHvrwc',
+      video_title: 'Classroom of the Elite Season 1 - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=UQLqvjHvrwc',
+      thumbnail_url: 'https://img.youtube.com/vi/UQLqvjHvrwc/hqdefault.jpg'
+    }
+  ] Classroom of the Elite - Episode 01 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/QbEoZexESDs/hqdefault.jpg' },
     { episode_number: 2, season_number: 1, video_id: '4_Vumu_418c', video_title: '[Telugu Dub] Classroom of the Elite - Episode 02 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/4_Vumu_418c/hqdefault.jpg' },
     { episode_number: 3, season_number: 1, video_id: 'GsiZwUXsRHE', video_title: '[Telugu Dub] Classroom of the Elite - Episode 03 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/GsiZwUXsRHE/hqdefault.jpg' },
     { episode_number: 4, season_number: 1, video_id: '8Pm5E2jgZ8c', video_title: '[Telugu Dub] Classroom of the Elite - Episode 04 | Muse IN', channel_name: 'Muse India', channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q', region: 'IN', is_official: true, is_embeddable: true, language: 'Telugu', thumbnail_url: 'https://img.youtube.com/vi/8Pm5E2jgZ8c/hqdefault.jpg' },
@@ -905,6 +920,21 @@ const VERIFIED_OFFICIAL_CATALOG = {
   ],
   131083: [ // Mieruko-chan
     {"episode_number":1,"season_number":1,"video_id":"PLu5Gdt_rQOajtocUx9ADAWEENJbp5tQje","video_title":"Mieruko-chan - Episodes 1-12 Official Playlist | Muse India","channel_name":"Muse India","channel_id":"UCYYhAzgWuxPauRXdPpLAX3Q","region":"IN","is_official":true,"is_embeddable":true,"language":"Japanese (Audio) / English (Subs)","source_url":"https://www.youtube.com/playlist?list=PLu5Gdt_rQOajtocUx9ADAWEENJbp5tQje","thumbnail_url":"https://img.youtube.com/vi/0Vi_p1u_hz4/hqdefault.jpg","playlist_id":"PLu5Gdt_rQOajtocUx9ADAWEENJbp5tQje"}
+  ,
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: 'WLcSxxV3uug',
+      video_title: 'Mieruko-chan - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=WLcSxxV3uug',
+      thumbnail_url: 'https://img.youtube.com/vi/WLcSxxV3uug/hqdefault.jpg'
+    }
   ],
   112716: [ // Muv-Luv Alternative
     {"episode_number":1,"season_number":1,"video_id":"PLpm1VVK4UL16nFFYSdZL9s_v6s9XMS4Sh","video_title":"Muv-Luv Alternative Official Series Playlist | Muse India","channel_name":"Muse India","channel_id":"UCYYhAzgWuxPauRXdPpLAX3Q","region":"IN","is_official":true,"is_embeddable":true,"language":"Japanese (Audio) / English (Subs)","source_url":"https://www.youtube.com/playlist?list=PLpm1VVK4UL16nFFYSdZL9s_v6s9XMS4Sh","thumbnail_url":"https://img.youtube.com/vi/0Vi_p1u_hz4/hqdefault.jpg","playlist_id":"PLpm1VVK4UL16nFFYSdZL9s_v6s9XMS4Sh"}
@@ -971,6 +1001,21 @@ const VERIFIED_OFFICIAL_CATALOG = {
   ],
   6702: [ // Fairy Tail – Muse India Hindi Dub
     { episode_number:1, season_number:1, video_id:'PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS', video_title:'Fairy Tail Hindi Dub Official Playlist | Muse India', channel_name:'Muse India', channel_id:'UCYYhAzgWuxPauRXdPpLAX3Q', region:'IN', is_official:true, is_embeddable:true, language:'Hindi Dub / Japanese Audio / English Sub', source_url:'https://www.youtube.com/playlist?list=PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS', thumbnail_url:'https://img.youtube.com/vi/0Vi_p1u_hz4/hqdefault.jpg', playlist_id:'PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS' }
+  ,
+    {
+      episode_number: 220,
+      season_number: 1,
+      video_id: 'jKrujeN3C9I',
+      video_title: 'Fairy Tail – Episode 220 [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=jKrujeN3C9I',
+      thumbnail_url: 'https://img.youtube.com/vi/jKrujeN3C9I/hqdefault.jpg'
+    }
   ],
   105164: [ // Cautious Hero – Muse Asia
     { episode_number:1, season_number:1, video_id:'PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS', video_title:'Cautious Hero - Episodes 1-12 Official Playlist | Muse Asia', channel_name:'Muse Asia', channel_id:'UCGbshtvS9t-8CW11W7TooQg', region:'IN', is_official:true, is_embeddable:true, language:'Japanese Audio / English Sub', source_url:'https://www.youtube.com/playlist?list=PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS', thumbnail_url:'https://img.youtube.com/vi/0Vi_p1u_hz4/hqdefault.jpg', playlist_id:'PLq2uEFKyngMwpQOpq53RNRCW6VWo-yqbS' }
@@ -1025,6 +1070,176 @@ const VERIFIED_OFFICIAL_CATALOG = {
   ],
   149596: [ // Uma Musume Road to the Top – PakaTube/Cygames
     { episode_number:1, season_number:1, video_id:'pakatube_umamusume_rtt', video_title:'Uma Musume: Pretty Derby - Road to the Top | PakaTube (Cygames Official)', channel_name:'PakaTube (Cygames)', channel_id:'UCv16eiWgGuNew172238jE4w', region:'GLOBAL', is_official:true, is_embeddable:true, language:'Japanese Audio / English Sub', source_url:'https://www.youtube.com/@pakatube', thumbnail_url:'https://img.youtube.com/vi/0Vi_p1u_hz4/hqdefault.jpg' }
+  ],
+  // ── Attack on Titan – Muse India (Hindi Dub) ───
+  16498: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: 'QjJ4iPOQF_Y',
+      video_title: 'Attack on Titan - Episode 01 [Hindi Dub] | Muse India',
+      channel_name: 'Muse India',
+      channel_id: 'UCYYhAzgWuxPauRXdPpLAX3Q',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'Hindi Dub',
+      source_url: 'https://www.youtube.com/watch?v=QjJ4iPOQF_Y',
+      thumbnail_url: 'https://img.youtube.com/vi/QjJ4iPOQF_Y/hqdefault.jpg'
+    }
+  ],
+  // ── Parallel World Pharmacy – Muse Asia (English Sub) ───
+  145815: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: '3I4WniXydag',
+      video_title: 'Parallel World Pharmacy - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=3I4WniXydag',
+      thumbnail_url: 'https://img.youtube.com/vi/3I4WniXydag/hqdefault.jpg'
+    }
+  ],
+  // ── Reborn to Master the Blade: From Hero-King to Extraordinary Squire – Muse Asia (English Sub) ───
+  139772: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: 'A0G_VKH-q58',
+      video_title: 'Reborn to Master the Blade - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=A0G_VKH-q58',
+      thumbnail_url: 'https://img.youtube.com/vi/A0G_VKH-q58/hqdefault.jpg'
+    }
+  ],
+  // ── The Legendary Hero Is Dead! – Muse Asia (English Sub) ───
+  145397: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: 'tEZSjKhAjHw',
+      video_title: 'The Legendary Hero Is Dead! - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=tEZSjKhAjHw',
+      thumbnail_url: 'https://img.youtube.com/vi/tEZSjKhAjHw/hqdefault.jpg'
+    }
+  ],
+  // ── Ouran High School Host Club – Muse Asia (English Sub) ───
+  836: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: 'oT2Hl8vm4-A',
+      video_title: 'Ouran High School Host Club - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=oT2Hl8vm4-A',
+      thumbnail_url: 'https://img.youtube.com/vi/oT2Hl8vm4-A/hqdefault.jpg'
+    }
+  ],
+  // ── Higehiro: After Being Rejected, I Shaved and Took in a High School Girl – Muse Asia (English Sub) ───
+  124858: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: 'ZkQfco3tX0w',
+      video_title: 'Higehiro - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=ZkQfco3tX0w',
+      thumbnail_url: 'https://img.youtube.com/vi/ZkQfco3tX0w/hqdefault.jpg'
+    }
+  ],
+  // ── I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too – Muse Asia (English Sub) ───
+  155389: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: 'bzfrykgqkpE',
+      video_title: 'I Got a Cheat Skill in Another World - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=bzfrykgqkpE',
+      thumbnail_url: 'https://img.youtube.com/vi/bzfrykgqkpE/hqdefault.jpg'
+    }
+  ],
+  // ── I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability – Muse Asia (English Sub) ───
+  168623: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: '0pTqr2M1z0E',
+      video_title: 'I Was Reincarnated as the 7th Prince - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=0pTqr2M1z0E',
+      thumbnail_url: 'https://img.youtube.com/vi/0pTqr2M1z0E/hqdefault.jpg'
+    }
+  ],
+  // ── Failure Frame: I Became the Strongest and Annihilated Everything with Low-Level Spells – Muse Asia (English Sub) ───
+  168887: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: '2yYyOnugFLc',
+      video_title: 'Failure Frame - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=2yYyOnugFLc',
+      thumbnail_url: 'https://img.youtube.com/vi/2yYyOnugFLc/hqdefault.jpg'
+    }
+  ],
+  // ── Wistoria: Wand and Sword – Muse Asia (English Sub) ───
+  174576: [
+    {
+      episode_number: 1,
+      season_number: 1,
+      video_id: 'GuVZX-wMSq8',
+      video_title: 'Wistoria: Wand and Sword - Complete Series [English Sub] | Muse Asia',
+      channel_name: 'Muse Asia',
+      channel_id: 'UCGbshtvS9t-8CW11W7TooQg',
+      region: 'IN',
+      is_official: true,
+      is_embeddable: true,
+      language: 'English Sub',
+      source_url: 'https://www.youtube.com/watch?v=GuVZX-wMSq8',
+      thumbnail_url: 'https://img.youtube.com/vi/GuVZX-wMSq8/hqdefault.jpg'
+    }
   ],
 };
 

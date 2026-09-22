@@ -612,6 +612,102 @@ const OFFICIAL_YOUTUBE_CATALOG = [
   { keywords: ['uma musume', 'pretty derby', 'road to the top'], ids: [149596, 103047, 120852], distributor: 'pakatube', url: 'https://www.youtube.com/@pakatube', title: 'Uma Musume: Pretty Derby on PakaTube (Cygames Official)' },
   // Pokémon Diamond and Pearl (Pokemon Official)
   { keywords: ['pokemon diamond and pearl', 'pocket monsters diamond and pearl'], ids: [1564], distributor: 'pokemon-official', url: 'https://www.youtube.com/@Pokemon', title: 'Pokémon: Diamond and Pearl on The Official Pokémon Channel' },
+  // Attack on Titan (Muse India)
+  {
+    keywords: ["attack on titan","shingeki no kyojin"],
+    ids: [16498],
+    distributor: 'muse-india',
+    url: 'https://www.youtube.com/watch?v=QjJ4iPOQF_Y',
+    title: 'Attack on Titan - Episode 01 [Hindi Dub] | Muse India',
+  },
+  // Fairy Tail (Muse Asia)
+  {
+    keywords: ["fairy tail"],
+    ids: [6702],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=jKrujeN3C9I',
+    title: 'Fairy Tail – Episode 220 [English Sub] | Muse Asia',
+  },
+  // Parallel World Pharmacy (Muse Asia)
+  {
+    keywords: ["parallel world pharmacy","isekai yakkyoku"],
+    ids: [145815],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=3I4WniXydag',
+    title: 'Parallel World Pharmacy - Complete Series [English Sub] | Muse Asia',
+  },
+  // Reborn to Master the Blade: From Hero-King to Extraordinary Squire (Muse Asia)
+  {
+    keywords: ["reborn to master the blade","eiyuuou"],
+    ids: [139772],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=A0G_VKH-q58',
+    title: 'Reborn to Master the Blade - Complete Series [English Sub] | Muse Asia',
+  },
+  // The Legendary Hero Is Dead! (Muse Asia)
+  {
+    keywords: ["the legendary hero is dead","yuusha ga shinda"],
+    ids: [145397],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=tEZSjKhAjHw',
+    title: 'The Legendary Hero Is Dead! - Complete Series [English Sub] | Muse Asia',
+  },
+  // Ouran High School Host Club (Muse Asia)
+  {
+    keywords: ["ouran high school host club","ouran koukou host club"],
+    ids: [836],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=oT2Hl8vm4-A',
+    title: 'Ouran High School Host Club - Complete Series [English Sub] | Muse Asia',
+  },
+  // Higehiro: After Being Rejected, I Shaved and Took in a High School Girl (Muse Asia)
+  {
+    keywords: ["higehiro","hige wo soru"],
+    ids: [124858],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=ZkQfco3tX0w',
+    title: 'Higehiro - Complete Series [English Sub] | Muse Asia',
+  },
+  // I Got a Cheat Skill in Another World and Became Unrivaled in the Real World, Too (Muse Asia)
+  {
+    keywords: ["i got a cheat skill in another world","cheat skill"],
+    ids: [155389],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=bzfrykgqkpE',
+    title: 'I Got a Cheat Skill in Another World - Complete Series [English Sub] | Muse Asia',
+  },
+  // I Was Reincarnated as the 7th Prince so I Can Take My Time Perfecting My Magical Ability (Muse Asia)
+  {
+    keywords: ["i was reincarnated as the 7th prince","dainana ouji"],
+    ids: [168623],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=0pTqr2M1z0E',
+    title: 'I Was Reincarnated as the 7th Prince - Complete Series [English Sub] | Muse Asia',
+  },
+  // Failure Frame: I Became the Strongest and Annihilated Everything with Low-Level Spells (Muse Asia)
+  {
+    keywords: ["failure frame","hazurewaku"],
+    ids: [168887],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=2yYyOnugFLc',
+    title: 'Failure Frame - Complete Series [English Sub] | Muse Asia',
+  },
+  // Wistoria: Wand and Sword (Muse Asia)
+  {
+    keywords: ["wistoria: wand and sword","tsue to tsurugi no wistoria","wistoria"],
+    ids: [174576],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=GuVZX-wMSq8',
+    title: 'Wistoria: Wand and Sword - Complete Series [English Sub] | Muse Asia',
+  },
+  // Classroom of the Elite (Muse Asia)
+  {
+    keywords: ["classroom of the elite","youkoso jitsuryoku"],
+    ids: [98659],
+    distributor: 'muse-asia',
+    url: 'https://www.youtube.com/watch?v=UQLqvjHvrwc',
+    title: 'Classroom of the Elite Season 1 - Complete Series [English Sub] | Muse Asia',
+  },
 ];
 
 
