@@ -687,6 +687,21 @@ select,
     gap: 12px;
   }
 
+  .player-play-icon-circle {
+    width: 54px;
+    height: 54px;
+  }
+
+  .player-play-icon-circle svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .player-watch-episode-text {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+  }
+
   .player-info-meta {
     width: 100%;
   }

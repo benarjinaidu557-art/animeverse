@@ -355,25 +355,25 @@ export const DetailsView = {
             <!-- Verified Official YouTube Streaming -->
             <div class="youtube-official-banner">
               <div class="youtube-banner-header">
-                <div class="youtube-icon-pill">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                <div class="youtube-icon-pill animeverse-watch-pill">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
                   </svg>
                 </div>
                 <div>
                   <div style="font-weight: 700; font-size: 1.05rem; color: #fff; display: flex; align-items: center; gap: 8px;">
-                    Free Official YouTube Streams
+                    Free Official Streams
                     <span style="font-size: 0.72rem; background: #22c55e; color: #000; font-weight: 800; padding: 2px 7px; border-radius: 9999px;">FREE TO WATCH</span>
                   </div>
-                  <div style="font-size: 0.82rem; color: var(--text-muted);">
-                    Legally licensed by official distributors for India & South Asia (No subscription required)
+                  <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                    Legally licensed by official distributors for India & South Asia &bull; <span class="source-sublabel" style="font-size: 0.76rem; color: var(--text-dim);">Verified YouTube source</span>
                   </div>
                 </div>
               </div>
 
               <div class="youtube-sources-grid">
                 ${youtubeSources.map(yt => `
-                  <a href="${yt.url}" target="_blank" rel="noopener noreferrer" class="youtube-source-card" title="${escapeHtml(yt.title || yt.badge)}">
+                  <a href="${yt.url}" target="_blank" rel="noopener noreferrer" class="youtube-source-card" title="Watch Episode (Verified YouTube source — Opens on YouTube)">
                     <div style="min-width: 0;">
                       <div style="font-weight: 700; font-size: 0.95rem; color: #fff; margin-bottom: 2px; display: flex; align-items: center; gap: 6px;">
                         ${escapeHtml(yt.name)}
@@ -382,10 +382,13 @@ export const DetailsView = {
                       <div style="font-size: 0.76rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                         ${escapeHtml(yt.description || 'Official Full Episodes / Clips')}
                       </div>
+                      <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">
+                        Verified YouTube source
+                      </div>
                     </div>
-                    <span class="youtube-card-btn">
+                    <span class="youtube-card-btn animeverse-play-btn">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                      ${escapeHtml(yt.badge || 'Watch on YouTube')}
+                      Watch Episode
                     </span>
                   </a>
                 `).join('')}

@@ -31,16 +31,16 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-function buildEmbedUrl(ep) {
-  if (!ep) return '';
+function buildWatchUrl(ep) {
+  if (!ep) return '#';
+  if (ep.source_url) return ep.source_url;
   if (ep.playlist_id) {
-    const videoParam = ep.video_id && !ep.video_id.startsWith('PL') ? ep.video_id : 'videoseries';
-    return `https://www.youtube.com/embed/${videoParam}?list=${encodeURIComponent(ep.playlist_id)}&enablejsapi=1&rel=0&modestbranding=1`;
+    return `https://www.youtube.com/playlist?list=${encodeURIComponent(ep.playlist_id)}`;
   }
   if (ep.video_id && (ep.video_id.startsWith('PL') || ep.video_id.startsWith('UU'))) {
-    return `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(ep.video_id)}&enablejsapi=1&rel=0&modestbranding=1`;
+    return `https://www.youtube.com/playlist?list=${encodeURIComponent(ep.video_id)}`;
   }
-  return `https://www.youtube.com/embed/${ep.video_id}?enablejsapi=1&rel=0&modestbranding=1`;
+  return `https://www.youtube.com/watch?v=${ep.video_id}`;
 }
 
 export const YouTubePlayer = {
@@ -73,6 +73,9 @@ export const YouTubePlayer = {
 
     const hasEpisodes = this.episodes.length > 0;
     const currentEp = hasEpisodes ? this.episodes[this.currentIndex] : null;
+    const animeTitle = anime?.title ? (anime.title.english || anime.title.romaji || anime.title.userPreferred || 'Anime') : 'Anime';
+    const previewImage = anime?.bannerImage || anime?.coverImage?.extraLarge || anime?.coverImage?.large || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=80';
+    const watchUrl = currentEp ? buildWatchUrl(currentEp) : '#';
 
     if (!hasEpisodes) {
       return `
@@ -141,12 +144,12 @@ export const YouTubePlayer = {
                 <h2 class="watch-player-title">WATCH ANIME</h2>
                 <span class="watch-player-badge official">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                  Official In-App Player
+                  Official Streams
                 </span>
                 <span class="watch-player-badge india">India Verified</span>
                 ${this.selectedLanguage ? `<span class="watch-player-badge" style="background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.4); color: #a5b4fc; font-weight: 700;">${escapeHtml(this.selectedLanguage)}</span>` : ''}
               </div>
-              <p class="watch-player-subtitle">Watch verified distributor streams directly inside AnimeVerse</p>
+              <p class="watch-player-subtitle">Official licensed anime episodes verified for legal viewing</p>
             </div>
           </div>
 
@@ -198,35 +201,62 @@ export const YouTubePlayer = {
           </div>
         </div>
 
-        <!-- 16:9 Responsive Embedded YouTube Player -->
-        <div class="player-viewport-container">
-          <div class="youtube-player-aspect-box">
-            <iframe 
-              id="animeverse-yt-iframe"
-              src="${buildEmbedUrl(currentEp)}" 
-              title="${escapeHtml(currentEp.video_title || 'Official Anime Episode')}" 
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              referrerpolicy="strict-origin-when-cross-origin" 
-              allowfullscreen
-            ></iframe>
-          </div>
+        <!-- Large Anime Poster Card with Clean AnimeVerse Play Button -->
+        <div class="player-viewport-container player-poster-card-wrap">
+          <a 
+            id="animeverse-main-watch-btn" 
+            href="${watchUrl}" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="player-poster-card" 
+            title="Watch ${escapeHtml(currentEp.video_title || `Episode ${currentEp.episode_number}`)} on YouTube"
+          >
+            <img 
+              id="player-preview-image" 
+              class="player-preview-img" 
+              src="${previewImage}" 
+              alt="${escapeHtml(animeTitle)}" 
+              onerror="this.src='https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=80';"
+            />
+            <div class="player-poster-overlay"></div>
+            
+            <!-- Clean AnimeVerse Play Button Over Anime Cover -->
+            <div class="player-center-play-action">
+              <span class="player-play-icon-circle">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="6 4 20 12 6 20 6 4"/>
+                </svg>
+              </span>
+              <span class="player-watch-episode-text">WATCH EPISODE</span>
+            </div>
+            
+            <div class="player-poster-badge-top">
+              <span class="player-ep-pill-badge" id="player-card-ep-badge">
+                ${currentEp.video_id?.startsWith('PL') || currentEp.playlist_id ? 'Full Series Playlist' : `Episode ${currentEp.episode_number}`}
+              </span>
+            </div>
+          </a>
         </div>
 
-        <!-- Episode Info & Navigation Controls Bar -->
+        <!-- Episode Info & Navigation Controls Bar Below Poster Card -->
         <div class="player-control-bar">
           <div class="player-info-meta">
-            <div class="player-now-playing-tag">NOW PLAYING</div>
             <h3 class="player-current-title" id="player-current-title">
               ${escapeHtml(currentEp.video_title || `Episode ${currentEp.episode_number}`)}
             </h3>
             <div class="player-channel-attribution" id="player-channel-attribution">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#ff0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-              <span>Official Distributor: <strong id="player-channel-name">${escapeHtml(currentEp.channel_name || 'Muse India')}</strong></span>
-              <span class="badge-channel-verified">Channel Verified</span>
+              <span>Official Distributor: <strong id="player-channel-name">${escapeHtml(currentEp.channel_name || 'Ani-One India')}</strong></span>
+              <span class="badge-channel-verified">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                Channel Verified
+              </span>
               <span class="badge-lang" id="player-lang-badge">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-                <span id="player-lang-text">${escapeHtml(currentEp.language || 'Telugu')}</span>
+                <span id="player-lang-text">${escapeHtml(currentEp.language || 'English Sub')}</span>
+              </span>
+              <span class="badge-source-yt" title="Official YouTube source">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#ff0000" style="vertical-align: middle; flex-shrink: 0;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>Official YouTube source</span>
               </span>
               <span class="badge-playlist" id="player-playlist-badge" style="display: ${(currentEp.playlist_id || currentEp.video_id?.startsWith('PL')) ? 'inline-flex' : 'none'};">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
@@ -236,19 +266,18 @@ export const YouTubePlayer = {
           </div>
 
           <div class="player-action-buttons">
-            <!-- External Watch Link directly to Muse India YouTube Video -->
+            <!-- External Watch Link directly to verified YouTube Video -->
             <a 
-              href="https://www.youtube.com/watch?v=${currentEp.video_id}" 
+              href="${watchUrl}" 
               target="_blank" 
               rel="noopener noreferrer" 
               class="btn-player-external" 
               id="btn-player-external-link"
-              title="Watch on official YouTube channel"
-              style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: rgba(255, 0, 0, 0.12); border: 1px solid rgba(255, 0, 0, 0.35); border-radius: var(--radius-md); color: #fff; font-size: 0.82rem; font-weight: 600; text-decoration: none; transition: all 0.2s;"
+              title="Watch Episode on official YouTube channel"
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#ff0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-              <span>Watch on YouTube</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Watch Episode</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>
 
             <button 
@@ -395,13 +424,28 @@ export const YouTubePlayer = {
     if (!this.episodes || this.episodes.length === 0) return;
 
     const epButtons = root.querySelectorAll('.btn-player-ep');
-    const iframe = root.querySelector('#animeverse-yt-iframe');
     const titleElem = root.querySelector('#player-current-title');
     const channelNameElem = root.querySelector('#player-channel-name');
     const prevBtn = root.querySelector('#btn-player-prev');
     const nextBtn = root.querySelector('#btn-player-next');
     const extLink = root.querySelector('#btn-player-external-link');
+    const mainWatchBtn = root.querySelector('#animeverse-main-watch-btn');
+    const cardEpBadge = root.querySelector('#player-card-ep-badge');
     const langSelect = root.querySelector('#yt-lang-select');
+
+    // Bind click to auto-save watch progress on main poster button
+    if (mainWatchBtn) {
+      mainWatchBtn.addEventListener('click', async () => {
+        const ep = this.episodes[this.currentIndex];
+        if (this.currentAnime?.id && ep?.episode_number) {
+          try {
+            await StorageService.toggleEpisodeWatched(this.currentAnime.id, ep.episode_number);
+          } catch (e) {
+            console.warn('[YouTubePlayer] Progress save notice:', e);
+          }
+        }
+      });
+    }
 
     // Language selector change listener
     if (langSelect) {
@@ -421,27 +465,30 @@ export const YouTubePlayer = {
       this.currentIndex = index;
       const ep = this.episodes[this.currentIndex];
 
-      // Update iframe source without reloading page
-      if (iframe) {
-        iframe.src = buildEmbedUrl(ep);
-      }
-
       // Update texts
       if (titleElem) {
         titleElem.textContent = ep.video_title || `Episode ${ep.episode_number}`;
       }
       if (channelNameElem) {
-        channelNameElem.textContent = ep.channel_name || 'Muse India';
+        channelNameElem.textContent = ep.channel_name || 'Ani-One India';
       }
 
       const langText = root.querySelector('#player-lang-text');
       if (langText) {
-        langText.textContent = ep.language || 'Telugu';
+        langText.textContent = ep.language || 'English Sub';
       }
 
-      // Update external watch link
-      if (extLink && ep.video_id) {
-        extLink.href = `https://www.youtube.com/watch?v=${ep.video_id}`;
+      // Update watch link to exact verified YouTube URL
+      const watchUrl = buildWatchUrl(ep);
+      if (extLink) {
+        extLink.href = watchUrl;
+      }
+      if (mainWatchBtn) {
+        mainWatchBtn.href = watchUrl;
+        mainWatchBtn.title = `Watch ${ep.video_title || `Episode ${ep.episode_number}`} on YouTube`;
+      }
+      if (cardEpBadge) {
+        cardEpBadge.textContent = ep.video_id?.startsWith('PL') || ep.playlist_id ? 'Full Series Playlist' : `Episode ${ep.episode_number}`;
       }
 
       const playlistBadge = root.querySelector('#player-playlist-badge');
